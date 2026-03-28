@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p supabase/migrations supabase/functions/mollie-webhook supabase/functions/send-booking-notification supabase/functions/send-order-notification nginx)",
+      "Bash(mkdir -p src/components/layout src/components/ui src/components/booking src/components/shop src/components/blog src/components/home src/components/admin)",
+      "Bash(mkdir -p src/pages/public src/pages/admin src/api)",
+      "Bash(mv 001_initial_schema.sql supabase/migrations/001_initial_schema.sql)",
+      "Bash(mv seed.sql supabase/seed.sql)",
+      "Bash(mv ico.conf nginx/ico.conf)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"premium car detailing mobile wash automotive service luxury dark\" --design-system -p \"ICO\" --persist -f markdown)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"dark luxury premium automotive service\" --domain style -n 5 -f markdown)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"dark mode premium service landing hero CTA\" --domain landing -n 3 -f markdown)",
+      "Bash(ls \"C:\\\\Users\\\\Jasper Van Zeir\\\\Documents\\\\Github\\\\ICO_Website\\\\.env\"*)",
+      "Bash(supabase --version)",
+      "Bash(xargs -0 grep -l \"style.*=\")",
+      "Bash(npm list:*)",
+      "Bash(grep -rl \"from ''''lucide-react''''\" --include=\"*.jsx\" --include=\"*.js\")",
+      "Bash(xargs sed:*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(grep -v \"DynamicIcon\\\\|^$\\\\|\\\\*\")",
+      "Bash(grep -A 10 \"from ''''@/lib/icons''''\" src/pages/admin/DashboardPage.jsx)",
+      "Bash(grep -B 10 \"from ''''@/lib/icons''''\" src/pages/admin/DashboardPage.jsx)",
+      "Bash(grep -rh \"from ''''@/lib/icons''''\" src/)",
+      "Bash(grep -v \"DynamicIcon\\\\|^\\\\.\\\\.\\\\.\\\\|^$\")",
+      "Bash(grep -v \"^$\\\\|DynamicIcon\\\\|\\\\.\\\\.\\\\.\")",
+      "Bash(cd:*)",
+      "Bash(npx vite:*)",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"require\\(''''./src/components/ppf/PPFConfigurator.jsx''''\\)\")",
+      "Bash(node -e \"const d = require\\(''./node_modules/@react-three/drei/index.cjs''\\); console.log\\(typeof d.OrbitControls, typeof d.PerspectiveCamera\\)\")",
+      "Bash(node -e \"const three = require\\(''./node_modules/three/build/three.cjs.js''\\); console.log\\(''three OK'', three.WebGLRenderer ? ''WebGLRenderer OK'' : ''no''\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\Jasper Van Zeir\\\\Documents\\\\Github\\\\ICO_Website\\\\node_modules\\\\three\\\\build\"\" 2>/dev/null | head -10 || ls \"C:UsersJasper Van ZeirDocumentsGithubICO_Websitenode_modulesthree\"\")",
+      "Bash(npm uninstall:*)",
+      "Bash(rm -rf src/components/ppf)",
+      "Bash(rm -rf node_modules/.vite)",
+      "Bash(grep -v \"//.*unsplash\")"
+    ]
+  }
+}
