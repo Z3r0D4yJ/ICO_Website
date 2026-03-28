@@ -5,6 +5,7 @@
     "booking": "Boek Nu",
     "shop": "Shop",
     "blog": "Blog",
+    "projects": "Projecten",
     "about": "Over Ons",
     "contact": "Contact",
     "faq": "FAQ",
@@ -44,10 +45,10 @@
   },
   "hero": {
     "tagline": "Premium Services For Premium Customers",
-    "subtitle": "Mobiliteit ontmoet vakmanschap — wij komen naar u toe in Vlaanderen",
+    "subtitle": "Wasbeurten aan huis in heel Vlaanderen — coating en PPF in onze garage in Hamme. Altijd door Rico & Nico, altijd vakkundig.",
     "cta_book": "Boek Uw DetailWash",
     "cta_services": "Bekijk Onze Diensten",
-    "badge": "Mobiel Car Detailing"
+    "badge": "Mobiel Car Detailing • Heel Vlaanderen"
   },
   "services": {
     "title": "Onze Diensten",

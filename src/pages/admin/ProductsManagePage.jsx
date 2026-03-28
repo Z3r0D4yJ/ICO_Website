@@ -87,7 +87,7 @@ function ProductForm({ product, onSave, onCancel }) {
           <select
             value={form.category}
             onChange={set('category')}
-            className="w-full px-3 py-2.5 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="w-full px-3 py-2.5 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ backgroundColor: 'var(--color-surface-overlay)', border: '1px solid rgba(196,130,111,0.2)', color: 'var(--color-text-primary)' }}
           >
             <option value="">Geen</option>
@@ -225,7 +225,7 @@ export default function ProductsManagePage() {
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => updateStock(product, -1)}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                   style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                   aria-label="Voorraad verminderen"
                 >
@@ -239,7 +239,7 @@ export default function ProductsManagePage() {
                 </span>
                 <button
                   onClick={() => updateStock(product, 1)}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                   style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                   aria-label="Voorraad verhogen"
                 >

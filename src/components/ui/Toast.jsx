@@ -96,7 +96,7 @@ function ToastItem({ id, type = 'info', title, message, duration = 5000 }) {
       <button
         onClick={() => removeToast(id)}
         aria-label="Notificatie sluiten"
-        className="flex-shrink-0 p-1 rounded cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-primary)]"
+        className="flex-shrink-0 p-1 rounded cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
         style={{ color: 'var(--color-text-muted)' }}
       >
         <X className="w-4 h-4" aria-hidden="true" />

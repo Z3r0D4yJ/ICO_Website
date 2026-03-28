@@ -43,8 +43,8 @@ const Button = forwardRef(function Button(
 
   // Colors defined in globals.css as .btn-* classes — CSS variables work reliably there
   const variantClasses = {
-    primary: 'btn-primary focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-[var(--color-surface)]',
-    secondary: 'btn-secondary focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-[var(--color-surface)]',
+    primary: 'btn-primary focus-visible:ring-[rgba(196,130,111,0.45)] focus-visible:ring-offset-[var(--color-surface)]',
+    secondary: 'btn-secondary focus-visible:ring-[rgba(196,130,111,0.45)] focus-visible:ring-offset-[var(--color-surface)]',
     ghost: 'btn-ghost focus-visible:ring-[rgba(196,130,111,0.4)] focus-visible:ring-offset-[var(--color-surface)]',
     danger: 'btn-danger focus-visible:ring-[var(--color-error)] focus-visible:ring-offset-[var(--color-surface)]',
   }

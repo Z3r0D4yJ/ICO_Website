@@ -1,23 +1,18 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle2, ArrowRight, MapPin, Star, Car, Users, Sparkle, MessageCircle } from '@/lib/icons'
+import { CheckCircle2, ArrowRight, MapPin, Star, Car, Users, Sparkle, MessageCircle, Image } from '@/lib/icons'
 import Button from '@/components/ui/Button'
 import CTASection from '@/components/home/CTASection'
-import { WHATSAPP_NUMBER } from '@/lib/constants'
+import { WHATSAPP_NUMBER, SERVICE_CATEGORIES } from '@/lib/constants'
 import { whatsappLink } from '@/lib/utils'
+import { useProjects } from '@/hooks/useProjects'
 
 // ── ICO eigen foto's ────────────────────────────────────────────────────────────
 const PHOTOS = {
-  hero:       '/images/ferrari-testarossa-ico.jpg',
-  team:       '/images/opel-gt-washbus.jpg',
-  rico:       '/images/rico-interieur-reiniging.jpg',
-  nico:       '/images/nico-exterieur-behandeling.jpg',
-  washbus:    '/images/opel-gt-washbus.jpg',
-  project1:   '/images/ferrari-testarossa-ico.jpg',
-  project2:   '/images/porsche-taycan-zonsondergang.jpg',
-  project3:   '/images/audi-rs-zetels-detail.jpg',
-  project4:   '/images/bmw-interieur-detail.jpg',
-  project5:   '/images/nico-exterieur-behandeling.jpg',
-  project6:   '/images/rico-interieur-reiniging.jpg',
+  hero:    '/images/porsche-taycan-zonsondergang.jpg',
+  team:    '/images/rico-interieur-reiniging.jpg',
+  rico:    '/images/rico-interieur-reiniging.jpg',
+  nico:    '/images/nico-exterieur-behandeling.jpg',
+  washbus: '/images/washbus.webp',
 }
 
 const STATS = [
@@ -43,17 +38,13 @@ const WASHBUS_FEATURES = [
   'GPS-tracking voor optimale routeplanning',
 ]
 
-// ── Project galerij data ───────────────────────────────────────────────────────
-const PROJECTS = [
-  { img: PHOTOS.project1, label: 'DetailWash — Lamborghini',    size: 'tall' },
-  { img: PHOTOS.project2, label: 'DetailWash — BMW 5-serie',     size: 'normal' },
-  { img: PHOTOS.project4, label: 'Dieptereiniging — Interieur',  size: 'normal' },
-  { img: PHOTOS.project3, label: 'DetailWash — Porsche 911',     size: 'tall' },
-  { img: PHOTOS.project5, label: 'DetailWash — Mercedes GLE',    size: 'normal' },
-  { img: PHOTOS.project6, label: 'EasyWash — Volkswagen Golf',   size: 'normal' },
-]
+function serviceLabel(value) {
+  return SERVICE_CATEGORIES.find((c) => c.value === value)?.label_nl ?? value
+}
 
 export default function AboutPage() {
+  const { projects } = useProjects()
+  const recentProjects = projects.slice(0, 6)
   return (
     <>
       {/* ── Hero met foto-achtergrond ── */}
@@ -123,13 +114,6 @@ export default function AboutPage() {
                 aria-hidden="true"
                 style={{ backgroundColor: 'rgba(196,130,111,0.15)', border: '1px solid rgba(196,130,111,0.3)' }}
               />
-              {/* Label */}
-              <div
-                className="absolute bottom-4 left-4 px-4 py-2 rounded-xl text-sm font-semibold"
-                style={{ backgroundColor: 'rgba(17,16,16,0.85)', color: 'var(--color-primary)', backdropFilter: 'blur(8px)', border: '1px solid rgba(196,130,111,0.3)' }}
-              >
-                📍 Actief in heel Vlaanderen
-              </div>
             </div>
 
             {/* Tekst */}
@@ -143,6 +127,7 @@ export default function AboutPage() {
               >
                 PASSIE VOOR <span style={{ color: 'var(--color-primary)' }}>PERFECTIE</span>
               </h2>
+              <div className="divider-gold mb-6" style={{ marginLeft: 0 }} aria-hidden="true" />
 
               <div className="space-y-4 text-base" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75 }}>
                 <p>
@@ -211,6 +196,7 @@ export default function AboutPage() {
             >
               MAAK KENNIS MET HET <span style={{ color: 'var(--color-primary)' }}>TEAM</span>
             </h2>
+            <div className="divider-gold mt-4" aria-hidden="true" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -219,7 +205,7 @@ export default function AboutPage() {
               className="rounded-2xl overflow-hidden"
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
             >
-              <div style={{ aspectRatio: '3/4', overflow: 'hidden', maxHeight: 380 }}>
+              <div className="w-full" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
                 <img
                   src={PHOTOS.rico}
                   alt="Rico — medeoprichter ICO"
@@ -247,7 +233,7 @@ export default function AboutPage() {
               className="rounded-2xl overflow-hidden"
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
             >
-              <div style={{ aspectRatio: '3/4', overflow: 'hidden', maxHeight: 380 }}>
+              <div className="w-full" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
                 <img
                   src={PHOTOS.nico}
                   alt="Nico — medeoprichter ICO"
@@ -345,6 +331,7 @@ export default function AboutPage() {
             >
               ONZE <span style={{ color: 'var(--color-primary)' }}>WAARDEN</span>
             </h2>
+            <div className="divider-gold mt-4" aria-hidden="true" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -390,47 +377,61 @@ export default function AboutPage() {
             <div className="divider-gold mt-4" aria-hidden="true" />
           </div>
 
-          {/* Masonry-stijl grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {PROJECTS.map((project, i) => (
-              <div
-                key={i}
-                className={`group relative rounded-xl overflow-hidden cursor-default ${project.size === 'tall' ? 'row-span-1' : ''}`}
-                style={{
-                  aspectRatio: project.size === 'tall' ? '3/4' : '4/3',
-                  border: '1px solid rgba(196,130,111,0.2)',
-                }}
-              >
-                <img
-                  src={project.img}
-                  alt={project.label}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                {/* Hover overlay */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end"
-                  style={{ background: 'linear-gradient(to top, rgba(17,16,16,0.85) 0%, transparent 60%)' }}
-                >
-                  <p
-                    className="p-4 text-sm font-medium"
-                    style={{ color: 'var(--color-text-primary)' }}
+          {recentProjects.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+              {recentProjects.map((project, i) => {
+                const label = [
+                  project.service_type ? serviceLabel(project.service_type) : null,
+                  project.vehicle_brand,
+                ].filter(Boolean).join(' — ')
+                return (
+                  <Link
+                    key={project.id}
+                    to={`/projecten/${project.slug}`}
+                    className="group relative rounded-xl overflow-hidden"
+                    style={{
+                      aspectRatio: i % 5 === 0 || i % 5 === 3 ? '3/4' : '4/3',
+                      border: '1px solid rgba(196,130,111,0.2)',
+                    }}
                   >
-                    {project.label}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+                    {project.cover_image_url ? (
+                      <img
+                        src={project.cover_image_url}
+                        alt={project.title_nl}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-surface) 100%)' }}
+                        aria-hidden="true"
+                      >
+                        <Image className="w-10 h-10 opacity-20" style={{ color: 'var(--color-primary)' }} />
+                      </div>
+                    )}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end"
+                      style={{ background: 'linear-gradient(to top, rgba(17,16,16,0.85) 0%, transparent 60%)' }}
+                    >
+                      <p className="p-4 text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
+                        {label || project.title_nl}
+                      </p>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
 
           <div className="text-center mt-10">
             <Button
               as={Link}
-              to="/diensten"
+              to="/projecten"
               variant="secondary"
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Bekijk onze diensten
+              Bekijk alle projecten
             </Button>
           </div>
         </div>

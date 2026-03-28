@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 const NAV_LINKS = [
   { to: '/diensten', labelKey: 'nav.services' },
   { to: '/shop',     labelKey: 'nav.shop' },
-  { to: '/blog',     labelKey: 'nav.blog' },
+  { to: '/projecten', labelKey: 'nav.projects' },
   { to: '/over-ons', labelKey: 'nav.about' },
   { to: '/faq',      labelKey: 'nav.faq' },
   { to: '/contact',  labelKey: 'nav.contact' },
@@ -53,7 +53,7 @@ export default function Header() {
           <Link
             to="/"
             aria-label="ICO — Intensive Cleaning Organization, ga naar homepage"
-            className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-lg"
+            className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded-lg"
           >
             <img
               src="/images/logo.png"
@@ -71,7 +71,7 @@ export default function Header() {
                 className={({ isActive }) => cn(
                   'px-3 py-2 rounded-md text-sm font-medium',
                   'transition-colors duration-150 cursor-pointer',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
                   isActive
                     ? 'text-[var(--color-primary)]'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
@@ -93,7 +93,7 @@ export default function Header() {
             <button
               onClick={openCart}
               aria-label={`Winkelwagen${itemCount > 0 ? `, ${itemCount} item${itemCount > 1 ? 's' : ''}` : ' (leeg)'}`}
-              className="relative p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+              className="relative p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
               style={{ color: 'var(--color-text-secondary)' }}
             >
               <ShoppingBag className="w-5 h-5" aria-hidden="true" />
@@ -127,7 +127,7 @@ export default function Header() {
               aria-label="Menu openen"
               aria-expanded={false}
               aria-controls="mobile-menu"
-              className="lg:hidden p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+              className="lg:hidden p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
               style={{ color: 'var(--color-text-secondary)' }}
             >
               <Menu className="w-5 h-5" aria-hidden="true" />

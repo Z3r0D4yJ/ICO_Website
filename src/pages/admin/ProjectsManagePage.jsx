@@ -7,11 +7,17 @@ import {
   Eye,
   EyeOff,
   ArrowRight,
-  BookOpen,
+  Image,
   Calendar,
+  Car,
 } from '@/lib/icons'
-import { useAdminBlogPosts } from '@/hooks/useBlog'
-import { deletePost, togglePublish } from '@/api/blog'
+import { useAdminProjects } from '@/hooks/useProjects'
+import { deleteProject, toggleProjectPublish } from '@/api/projects'
+import { SERVICE_CATEGORIES } from '@/lib/constants'
+
+function serviceLabel(value) {
+  return SERVICE_CATEGORIES.find((c) => c.value === value)?.label_nl ?? value
+}
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import Skeleton from '@/components/ui/Skeleton'
@@ -24,19 +30,19 @@ function formatDate(dateStr) {
   })
 }
 
-export default function BlogManagePage() {
-  const { posts, setPosts, loading } = useAdminBlogPosts()
+export default function ProjectsManagePage() {
+  const { projects, setProjects, loading } = useAdminProjects()
   const [deleteTarget, setDeleteTarget] = useState(null)
   const [deleting, setDeleting] = useState(false)
   const [togglingId, setTogglingId] = useState(null)
 
-  const handleTogglePublish = async (post) => {
-    setTogglingId(post.id)
+  const handleTogglePublish = async (project) => {
+    setTogglingId(project.id)
     try {
-      await togglePublish(post.id, !post.is_published)
-      setPosts((prev) =>
+      await toggleProjectPublish(project.id, !project.is_published)
+      setProjects((prev) =>
         prev.map((p) =>
-          p.id === post.id
+          p.id === project.id
             ? { ...p, is_published: !p.is_published, published_at: !p.is_published ? new Date().toISOString() : null }
             : p
         )
@@ -50,8 +56,8 @@ export default function BlogManagePage() {
     if (!deleteTarget) return
     setDeleting(true)
     try {
-      await deletePost(deleteTarget.id)
-      setPosts((prev) => prev.filter((p) => p.id !== deleteTarget.id))
+      await deleteProject(deleteTarget.id)
+      setProjects((prev) => prev.filter((p) => p.id !== deleteTarget.id))
       setDeleteTarget(null)
     } finally {
       setDeleting(false)
@@ -71,24 +77,24 @@ export default function BlogManagePage() {
               letterSpacing: '0.03em',
             }}
           >
-            BLOG
+            PROJECTEN
           </h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
-            {posts.length} {posts.length === 1 ? 'artikel' : 'artikels'}
+            {projects.length} {projects.length === 1 ? 'project' : 'projecten'}
           </p>
         </div>
         <Button
           as={Link}
-          to="/admin/blog/nieuw"
+          to="/admin/projecten/nieuw"
           variant="primary"
           size="sm"
           leftIcon={<Plus className="w-4 h-4" />}
         >
-          Nieuw artikel
+          Nieuw project
         </Button>
       </div>
 
-      {/* Posts lijst */}
+      {/* Projecten lijst */}
       <div
         className="rounded-xl overflow-hidden"
         style={{
@@ -108,31 +114,42 @@ export default function BlogManagePage() {
               </div>
             ))}
           </div>
-        ) : posts.length === 0 ? (
+        ) : projects.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-16 text-center">
-            <BookOpen className="w-10 h-10" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+            <Image className="w-10 h-10" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
             <div>
-              <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Nog geen artikels</p>
-              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Schrijf uw eerste blog post.</p>
+              <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Nog geen projecten</p>
+              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Voeg uw eerste project toe.</p>
             </div>
-            <Button as={Link} to="/admin/blog/nieuw" variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>
-              Nieuw artikel
+            <Button as={Link} to="/admin/projecten/nieuw" variant="primary" size="sm" leftIcon={<Plus className="w-4 h-4" />}>
+              Nieuw project
             </Button>
           </div>
         ) : (
-          <ul className="divide-y" style={{ '--tw-divide-opacity': 1, borderColor: 'rgba(196,130,111,0.1)' }}>
-            {posts.map((post) => (
+          <ul>
+            {projects.map((project) => (
               <li
-                key={post.id}
+                key={project.id}
                 className="flex items-center gap-4 px-5 py-4"
                 style={{ borderBottom: '1px solid rgba(196,130,111,0.1)' }}
               >
-                {/* Status indicator */}
+                {/* Cover thumbnail */}
                 <div
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: post.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
-                  aria-label={post.is_published ? 'Gepubliceerd' : 'Concept'}
-                />
+                  className="w-20 h-14 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
+                  style={{ backgroundColor: 'var(--color-surface-overlay)' }}
+                >
+                  {project.cover_image_url ? (
+                    <img
+                      src={project.cover_image_url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Image className="w-6 h-6" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+                  )}
+                </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
@@ -140,22 +157,30 @@ export default function BlogManagePage() {
                     className="font-medium truncate"
                     style={{ color: 'var(--color-text-primary)', fontSize: '0.9375rem' }}
                   >
-                    {post.title_nl}
+                    {project.title_nl}
                   </p>
                   <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-0.5">
-                    <Badge
-                      variant={post.is_published ? 'success' : 'neutral'}
-                      size="sm"
-                    >
-                      {post.is_published ? 'Gepubliceerd' : 'Concept'}
+                    <Badge variant={project.is_published ? 'success' : 'neutral'} size="sm">
+                      {project.is_published ? 'Gepubliceerd' : 'Concept'}
                     </Badge>
-                    {post.published_at && post.is_published && (
+                    {project.vehicle_brand && (
                       <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                        <Calendar className="w-3 h-3" aria-hidden="true" />
-                        {formatDate(post.published_at)}
+                        <Car className="w-3 h-3" aria-hidden="true" />
+                        {project.vehicle_brand}
                       </span>
                     )}
-                    {post.tags?.slice(0, 2).map((tag) => (
+                    {project.service_type && (
+                      <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                        {serviceLabel(project.service_type)}
+                      </span>
+                    )}
+                    {project.published_at && project.is_published && (
+                      <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                        <Calendar className="w-3 h-3" aria-hidden="true" />
+                        {formatDate(project.published_at)}
+                      </span>
+                    )}
+                    {project.tags?.slice(0, 2).map((tag) => (
                       <span
                         key={tag}
                         className="text-xs px-1.5 py-0.5 rounded-full capitalize"
@@ -171,33 +196,30 @@ export default function BlogManagePage() {
                 <div className="flex items-center gap-1 flex-shrink-0">
                   {/* Publiceer toggle */}
                   <button
-                    onClick={() => handleTogglePublish(post)}
-                    disabled={togglingId === post.id}
+                    onClick={() => handleTogglePublish(project)}
+                    disabled={togglingId === project.id}
                     className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-50"
-                    style={{ color: post.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
-                    aria-label={post.is_published ? 'Verwijder publicatie' : 'Publiceer'}
-                    title={post.is_published ? 'Depubliceren' : 'Publiceren'}
+                    style={{ color: project.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
+                    aria-label={project.is_published ? 'Depubliceren' : 'Publiceren'}
+                    title={project.is_published ? 'Depubliceren' : 'Publiceren'}
                   >
-                    {post.is_published
-                      ? <Eye className="w-4 h-4" />
-                      : <EyeOff className="w-4 h-4" />
-                    }
+                    {project.is_published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                   </button>
 
                   {/* Bewerk */}
                   <Link
-                    to={`/admin/blog/${post.id}/edit`}
+                    to={`/admin/projecten/${project.id}/edit`}
                     className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={{ color: 'var(--color-text-muted)' }}
-                    aria-label="Bewerk artikel"
+                    aria-label="Bewerk project"
                   >
                     <Edit className="w-4 h-4" />
                   </Link>
 
                   {/* Preview */}
-                  {post.is_published && (
+                  {project.is_published && (
                     <Link
-                      to={`/blog/${post.slug}`}
+                      to={`/projecten/${project.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
@@ -210,10 +232,10 @@ export default function BlogManagePage() {
 
                   {/* Verwijder */}
                   <button
-                    onClick={() => setDeleteTarget(post)}
+                    onClick={() => setDeleteTarget(project)}
                     className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={{ color: 'var(--color-error)' }}
-                    aria-label="Verwijder artikel"
+                    aria-label="Verwijder project"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -229,7 +251,7 @@ export default function BlogManagePage() {
         <Modal
           isOpen
           onClose={() => setDeleteTarget(null)}
-          title="Artikel verwijderen?"
+          title="Project verwijderen?"
           size="sm"
         >
           <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>

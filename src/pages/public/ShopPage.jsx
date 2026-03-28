@@ -16,13 +16,23 @@ export default function ShopPage() {
     <>
       {/* Hero */}
       <div
-        className="py-14 md:py-20 border-b"
+        className="relative py-14 md:py-20 border-b overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, var(--color-secondary) 0%, var(--color-surface) 100%)',
           borderColor: 'rgba(196,130,111,0.15)',
         }}
       >
-        <div className="container-ico text-center">
+        {/* Grid patroon */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          aria-hidden="true"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px),' +
+              'repeating-linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px)',
+          }}
+        />
+        <div className="container-ico relative z-10 text-center">
           <p
             className="text-sm font-semibold uppercase tracking-widest mb-3"
             style={{ color: 'var(--color-primary)' }}
@@ -58,7 +68,7 @@ export default function ShopPage() {
                   key={cat.value}
                   onClick={() => setActiveCategory(cat.value)}
                   aria-pressed={isActive}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                   style={
                     isActive
                       ? {

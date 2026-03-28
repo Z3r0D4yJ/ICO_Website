@@ -183,7 +183,7 @@ export default function ServicesManagePage() {
                   {/* Actief toggle */}
                   <button
                     onClick={() => toggleActive(service)}
-                    className="text-xs px-2.5 py-1 rounded-full cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                    className="text-xs px-2.5 py-1 rounded-full cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={
                       service.is_active
                         ? { backgroundColor: 'rgba(34,197,94,0.1)', color: 'var(--color-success)', border: '1px solid rgba(34,197,94,0.2)' }

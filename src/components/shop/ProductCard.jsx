@@ -25,10 +25,20 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={`/shop/${product.slug}`}
-      className="group flex flex-col rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+      className="group flex flex-col rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
       style={{
         backgroundColor: 'var(--color-surface-elevated)',
         border: '1px solid rgba(196,130,111,0.2)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.border = '1px solid rgba(196,130,111,0.35)'
+        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.25)'
+        e.currentTarget.style.transform = 'translateY(-2px)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.border = '1px solid rgba(196,130,111,0.2)'
+        e.currentTarget.style.boxShadow = 'none'
+        e.currentTarget.style.transform = 'translateY(0)'
       }}
     >
       {/* Afbeelding */}
@@ -40,7 +50,7 @@ export default function ProductCard({ product }) {
           <img
             src={product.image_url}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover"
             loading="lazy"
           />
         ) : (
@@ -117,7 +127,7 @@ export default function ProductCard({ product }) {
             <button
               onClick={handleAddToCart}
               aria-label={`${product.name} toevoegen aan winkelwagen`}
-              className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+              className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-150 hover:scale-110 hover:brightness-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
               style={{
                 backgroundColor: 'var(--color-primary)',
                 color: 'var(--color-text-inverse)',

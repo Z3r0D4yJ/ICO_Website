@@ -23,6 +23,7 @@ const ServicesPage = lazy(() => import('@/pages/public/ServicesPage'))
 const ServiceDetailPage = lazy(() => import('@/pages/public/ServiceDetailPage'))
 const BookingPage = lazy(() => import('@/pages/public/BookingPage'))
 const BookingConfirmation = lazy(() => import('@/pages/public/BookingConfirmation'))
+const BookingTrackingPage = lazy(() => import('@/pages/public/BookingTrackingPage'))
 const ShopPage = lazy(() => import('@/pages/public/ShopPage'))
 const ProductDetailPage = lazy(() => import('@/pages/public/ProductDetailPage'))
 const CartPage = lazy(() => import('@/pages/public/CartPage'))
@@ -30,6 +31,8 @@ const CheckoutPage = lazy(() => import('@/pages/public/CheckoutPage'))
 const OrderConfirmation = lazy(() => import('@/pages/public/OrderConfirmation'))
 const BlogPage = lazy(() => import('@/pages/public/BlogPage'))
 const BlogPostPage = lazy(() => import('@/pages/public/BlogPostPage'))
+const ProjectsPage = lazy(() => import('@/pages/public/ProjectsPage'))
+const ProjectDetailPage = lazy(() => import('@/pages/public/ProjectDetailPage'))
 const AboutPage = lazy(() => import('@/pages/public/AboutPage'))
 const ContactPage = lazy(() => import('@/pages/public/ContactPage'))
 const FAQPage = lazy(() => import('@/pages/public/FAQPage'))
@@ -45,6 +48,8 @@ const ServicesManagePage = lazy(() => import('@/pages/admin/ServicesManagePage')
 const ProductsManagePage = lazy(() => import('@/pages/admin/ProductsManagePage'))
 const BlogManagePage = lazy(() => import('@/pages/admin/BlogManagePage'))
 const BlogEditorPage = lazy(() => import('@/pages/admin/BlogEditorPage'))
+const ProjectsManagePage = lazy(() => import('@/pages/admin/ProjectsManagePage'))
+const ProjectEditorPage = lazy(() => import('@/pages/admin/ProjectEditorPage'))
 const MediaLibraryPage = lazy(() => import('@/pages/admin/MediaLibraryPage'))
 const SettingsPage = lazy(() => import('@/pages/admin/SettingsPage'))
 const QuotesPage = lazy(() => import('@/pages/admin/QuotesPage'))
@@ -114,6 +119,9 @@ export default function App() {
         <Route path="/boeken/bevestiging" element={
           <PublicLayout><BookingConfirmation /></PublicLayout>
         } />
+        <Route path="/mijn-boeking/:token" element={
+          <PublicLayout><BookingTrackingPage /></PublicLayout>
+        } />
         <Route path="/shop" element={
           <PublicLayout><ShopPage /></PublicLayout>
         } />
@@ -134,6 +142,12 @@ export default function App() {
         } />
         <Route path="/blog/:slug" element={
           <PublicLayout><BlogPostPage /></PublicLayout>
+        } />
+        <Route path="/projecten" element={
+          <PublicLayout><ProjectsPage /></PublicLayout>
+        } />
+        <Route path="/projecten/:slug" element={
+          <PublicLayout><ProjectDetailPage /></PublicLayout>
         } />
         <Route path="/over-ons" element={
           <PublicLayout><AboutPage /></PublicLayout>
@@ -196,6 +210,21 @@ export default function App() {
         <Route path="/admin/blog/:id/edit" element={
           <AuthGuard>
             <AdminLayout><BlogEditorPage /></AdminLayout>
+          </AuthGuard>
+        } />
+        <Route path="/admin/projecten" element={
+          <AuthGuard>
+            <AdminLayout><ProjectsManagePage /></AdminLayout>
+          </AuthGuard>
+        } />
+        <Route path="/admin/projecten/nieuw" element={
+          <AuthGuard>
+            <AdminLayout><ProjectEditorPage /></AdminLayout>
+          </AuthGuard>
+        } />
+        <Route path="/admin/projecten/:id/edit" element={
+          <AuthGuard>
+            <AdminLayout><ProjectEditorPage /></AdminLayout>
           </AuthGuard>
         } />
         <Route path="/admin/media" element={

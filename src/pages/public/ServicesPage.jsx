@@ -126,15 +126,15 @@ export default function ServicesPage() {
                       <Link
                         key={service.id}
                         to={`/diensten/${service.slug}`}
-                        className="group flex flex-col h-full rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                        className="group flex flex-col h-full rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={{
                           backgroundColor: 'var(--color-surface-elevated)',
                           border: '1px solid rgba(196,130,111,0.25)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = 'rgba(196,130,111,0.5)'
+                          e.currentTarget.style.borderColor = 'rgba(196,130,111,0.35)'
                           e.currentTarget.style.transform = 'translateY(-2px)'
-                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)'
+                          e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.25)'
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.borderColor = 'rgba(196,130,111,0.25)'
@@ -154,7 +154,7 @@ export default function ServicesPage() {
                             <img
                               src={service.image_url}
                               alt={getTitle(service)}
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              className="w-full h-full object-cover"
                               loading="lazy"
                             />
                           ) : (

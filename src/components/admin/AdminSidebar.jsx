@@ -4,7 +4,6 @@ import {
   CalendarDays,
   Wrench,
   ShoppingBag,
-  FileText,
   ClipboardText,
   Image,
   Settings,
@@ -20,7 +19,7 @@ const NAV_ITEMS = [
   { to: '/admin/offertes', label: 'Offertes', icon: ClipboardText },
   { to: '/admin/diensten', label: 'Diensten', icon: Wrench },
   { to: '/admin/producten', label: 'Producten', icon: ShoppingBag },
-  { to: '/admin/blog', label: 'Blog', icon: FileText },
+  { to: '/admin/projecten', label: 'Projecten', icon: Image },
   { to: '/admin/media', label: 'Media', icon: Image },
   { to: '/admin/instellingen', label: 'Instellingen', icon: Settings },
 ]
@@ -60,7 +59,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
         {/* Sluitknop (alleen mobiel) */}
         <button
           onClick={onClose}
-          className="lg:hidden cursor-pointer p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          className="lg:hidden cursor-pointer p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
           aria-label="Sluit menu"
           style={{ color: 'var(--color-text-muted)' }}
         >
@@ -79,7 +78,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
                 isActive
                   ? 'cursor-default'
                   : 'cursor-pointer hover:bg-[var(--color-surface-overlay)]'
@@ -113,7 +112,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
       <div className="px-3 py-4 border-t" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <LogOut className="w-4 h-4 flex-shrink-0" aria-hidden="true" />

@@ -49,7 +49,7 @@ export default function TimeSlotPicker({ date, selected, onSelect }) {
             className={cn(
               'w-full flex items-center justify-between px-4 py-3.5 rounded-xl',
               'transition-all duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
               !isBlocked && !loading ? 'cursor-pointer' : 'cursor-not-allowed',
               isSelected
                 ? 'border-2'

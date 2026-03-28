@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { X, Car, Sparkles, ShoppingBag, BookOpen, Users, Phone, HelpCircle } from '@/lib/icons'
+import { X, Car, Sparkles, ShoppingBag, Image, Users, Phone, HelpCircle } from '@/lib/icons'
 import { useTranslation } from 'react-i18next'
 import { useUiStore } from '@/stores/uiStore'
 import { useCartStore } from '@/stores/cartStore'
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 const NAV_ITEMS = [
   { to: '/diensten',  labelKey: 'nav.services', icon: Car },
   { to: '/shop',      labelKey: 'nav.shop',     icon: ShoppingBag },
-  { to: '/blog',      labelKey: 'nav.blog',     icon: BookOpen },
+  { to: '/projecten', labelKey: 'nav.projects', icon: Image },
   { to: '/over-ons',  labelKey: 'nav.about',    icon: Users },
   { to: '/contact',   labelKey: 'nav.contact',  icon: Phone },
   { to: '/faq',       labelKey: 'nav.faq',      icon: HelpCircle },
@@ -82,7 +82,7 @@ export default function MobileMenu() {
           <Link
             to="/"
             onClick={closeMobileMenu}
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-lg"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded-lg"
           >
             <img
               src="/images/logo.png"
@@ -95,7 +95,7 @@ export default function MobileMenu() {
             ref={closeButtonRef}
             onClick={closeMobileMenu}
             aria-label="Menu sluiten"
-            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -113,7 +113,7 @@ export default function MobileMenu() {
                   className={({ isActive }) => cn(
                     'flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium',
                     'transition-colors duration-150 cursor-pointer',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
                     isActive
                       ? 'text-[var(--color-primary)] bg-[rgba(196,130,111,0.1)]'
                       : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-overlay)]'

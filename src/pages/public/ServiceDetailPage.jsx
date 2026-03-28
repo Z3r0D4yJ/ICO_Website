@@ -596,7 +596,7 @@ export default function ServiceDetailPage() {
                 <Link
                   key={rel.id}
                   to={`/diensten/${rel.slug}`}
-                  className="group flex flex-col rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                  className="group flex flex-col rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                   style={{
                     backgroundColor: 'var(--color-surface-elevated)',
                     border: '1px solid rgba(196,130,111,0.2)',

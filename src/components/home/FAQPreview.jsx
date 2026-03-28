@@ -6,10 +6,31 @@ import Button from '@/components/ui/Button'
 
 // Statische fallback — meest gestelde vragen
 const FALLBACK_FAQ = [
-  { id: 'f1', question_nl: 'Hoe lang duurt een DetailWash?', answer_nl: 'Een DetailWash duurt gemiddeld 2 à 3 uur, afhankelijk van de staat en het type van uw voertuig.' },
-  { id: 'f2', question_nl: 'Wat is het werkgebied van ICO?', answer_nl: 'Wij bedienen heel Vlaanderen. Of u nu in Antwerpen, Gent, Leuven of Brugge woont — wij komen naar u toe.' },
-  { id: 'f3', question_nl: 'Hoe maak ik een afspraak?', answer_nl: 'U kunt eenvoudig online boeken via onze boekingspagina. Kies uw dienst, selecteer een datum en tijdslot, vul uw gegevens in en bevestig.' },
-  { id: 'f4', question_nl: 'Kan ik mijn afspraak annuleren of verplaatsen?', answer_nl: 'Annuleren of verplaatsen kan kosteloos tot 24 uur voor de afspraak. Neem contact met ons op via WhatsApp of e-mail.' },
+  {
+    id: 'f1',
+    question_nl: 'Hoe lang duurt een DetailWash?',
+    answer_nl: 'Gemiddeld nemen onze behandelingen zo\'n 2 uur in beslag, afhankelijk van de staat van het voertuig. We proberen steeds met twee personen te werken om de tijd zo efficiënt mogelijk te houden.',
+  },
+  {
+    id: 'f2',
+    question_nl: 'Wat is inbegrepen bij een Dieptereiniging?',
+    answer_nl: 'Bij een dieptereiniging reinigen we de zetels en tapijten grondig met een extractiemachine om vuil, vlekken en geuren te verwijderen. Voor het beste resultaat raden we aan dit te combineren met een DetailWash.',
+  },
+  {
+    id: 'f3',
+    question_nl: 'Hoe boek ik een afspraak bij ICO?',
+    answer_nl: 'Neem contact op via het contactformulier op onze website of via onze socials (Instagram, Facebook, WhatsApp). Vermeld zeker het type voertuig en de gewenste dienst, dan helpen Rico & Nico je zo snel mogelijk verder.',
+  },
+  {
+    id: 'f4',
+    question_nl: 'Komen jullie bij mij thuis of moet ik naar jullie komen?',
+    answer_nl: 'Voor wasbeurten komt de Washbus naar u toe — thuis, op het werk of elke andere locatie in Vlaanderen. Coating en PPF voeren we uit in onze professionele garage in Hamme, waar we het perfecte licht en de ideale omstandigheden hebben voor een vlekkeloos resultaat.',
+  },
+  {
+    id: 'f5',
+    question_nl: 'Mijn vraag staat hier niet bij?',
+    answer_nl: 'Stuur ons een berichtje via WhatsApp of het contactformulier en wij helpen u vrijblijvend met alle vragen.',
+  },
 ]
 
 export default function FAQPreview() {

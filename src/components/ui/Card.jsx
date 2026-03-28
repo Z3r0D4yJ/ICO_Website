@@ -18,7 +18,7 @@ export default function Card({
 }) {
   const base = [
     'rounded-xl overflow-hidden',
-    'transition-all duration-250',
+    'transition-all duration-200',
   ]
 
   const variants = {
@@ -46,8 +46,8 @@ export default function Card({
   const hoverClass = hoverable || clickable
     ? [
         'hover:-translate-y-0.5',
-        'hover:shadow-[var(--shadow-lg)]',
-        'hover:border-[rgba(196,130,111,0.4)]',
+        'hover:border-[rgba(196,130,111,0.35)]',
+        'hover:shadow-[0_4px_16px_rgba(0,0,0,0.25)]',
         clickable ? 'cursor-pointer' : '',
       ]
     : []

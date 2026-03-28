@@ -119,7 +119,7 @@ export default function BookingCalendar({
           disabled={!canGoPrev()}
           aria-label="Vorige maand"
           className={cn(
-            'p-1.5 rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+            'p-1.5 rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
             canGoPrev()
               ? 'cursor-pointer hover:bg-[var(--color-surface-overlay)]'
               : 'opacity-30 cursor-not-allowed'
@@ -142,7 +142,7 @@ export default function BookingCalendar({
           disabled={!canGoNext()}
           aria-label="Volgende maand"
           className={cn(
-            'p-1.5 rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+            'p-1.5 rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
             canGoNext()
               ? 'cursor-pointer hover:bg-[var(--color-surface-overlay)]'
               : 'opacity-30 cursor-not-allowed'
@@ -188,7 +188,7 @@ export default function BookingCalendar({
               className={cn(
                 'w-full aspect-square rounded-lg text-sm font-medium',
                 'transition-all duration-150',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
                 disabled
                   ? 'opacity-25 cursor-not-allowed'
                   : sel

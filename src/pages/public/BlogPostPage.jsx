@@ -203,6 +203,7 @@ export default function BlogPostPage() {
             >
               MEER ARTIKELS
             </h2>
+            <div className="divider-gold mt-4 mb-8" aria-hidden="true" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {related.map((p) => {
@@ -212,7 +213,7 @@ export default function BlogPostPage() {
                   <Link
                     key={p.id}
                     to={`/blog/${p.slug}`}
-                    className="group flex flex-col rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                    className="group flex flex-col rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
                   >
                     {p.cover_image_url ? (
@@ -220,7 +221,7 @@ export default function BlogPostPage() {
                         <img
                           src={p.cover_image_url}
                           alt={t}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </div>

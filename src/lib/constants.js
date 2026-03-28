@@ -71,7 +71,13 @@ export const SERVICE_CATEGORIES = [
   { value: 'homecare', label_nl: 'Home Care', label_en: 'Home Care' },
 ]
 
-// Boeking statussen
+// Service categorieën die in de garage worden uitgevoerd (niet mobiel)
+export const GARAGE_SERVICE_CATEGORIES = ['coating', 'ppf', 'homecare']
+
+// Garage adres
+export const GARAGE_ADDRESS = 'Hamme, 9220 Oost-Vlaanderen'
+
+// Boeking statussen (mobiel)
 export const BOOKING_STATUSES = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -80,20 +86,48 @@ export const BOOKING_STATUSES = {
   CANCELLED: 'cancelled',
 }
 
+// Garage-specifieke statussen (meerdaagse behandeling)
+export const GARAGE_BOOKING_STATUSES = [
+  { value: 'pending',          label: 'In afwachting' },
+  { value: 'confirmed',        label: 'Bevestigd' },
+  { value: 'dropped_off',      label: 'Ingebracht' },
+  { value: 'in_progress',      label: 'In behandeling' },
+  { value: 'curing',           label: 'Aan het uitharden' },
+  { value: 'ready_for_pickup', label: 'Klaar voor afhaling' },
+  { value: 'picked_up',        label: 'Afgehaald' },
+  { value: 'cancelled',        label: 'Geannuleerd' },
+]
+
+export const MOBILE_BOOKING_STATUSES = [
+  { value: 'pending',     label: 'In afwachting' },
+  { value: 'confirmed',   label: 'Bevestigd' },
+  { value: 'in_progress', label: 'Bezig' },
+  { value: 'completed',   label: 'Voltooid' },
+  { value: 'cancelled',   label: 'Geannuleerd' },
+]
+
 export const BOOKING_STATUS_LABELS = {
-  pending: { nl: 'In afwachting', en: 'Pending' },
-  confirmed: { nl: 'Bevestigd', en: 'Confirmed' },
-  in_progress: { nl: 'Bezig', en: 'In Progress' },
-  completed: { nl: 'Voltooid', en: 'Completed' },
-  cancelled: { nl: 'Geannuleerd', en: 'Cancelled' },
+  pending:          { nl: 'In afwachting',       en: 'Pending' },
+  confirmed:        { nl: 'Bevestigd',           en: 'Confirmed' },
+  dropped_off:      { nl: 'Ingebracht',          en: 'Dropped Off' },
+  in_progress:      { nl: 'In behandeling',      en: 'In Progress' },
+  curing:           { nl: 'Aan het uitharden',   en: 'Curing' },
+  ready_for_pickup: { nl: 'Klaar voor afhaling', en: 'Ready for Pickup' },
+  picked_up:        { nl: 'Afgehaald',           en: 'Picked Up' },
+  completed:        { nl: 'Voltooid',            en: 'Completed' },
+  cancelled:        { nl: 'Geannuleerd',         en: 'Cancelled' },
 }
 
 export const BOOKING_STATUS_COLORS = {
-  pending: 'warning',
-  confirmed: 'info',
-  in_progress: 'primary',
-  completed: 'success',
-  cancelled: 'error',
+  pending:          'warning',
+  confirmed:        'info',
+  dropped_off:      'info',
+  in_progress:      'primary',
+  curing:           'primary',
+  ready_for_pickup: 'success',
+  picked_up:        'neutral',
+  completed:        'success',
+  cancelled:        'error',
 }
 
 // Bestelling statussen

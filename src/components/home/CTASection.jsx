@@ -14,7 +14,7 @@ export default function CTASection() {
       style={{ backgroundColor: 'var(--color-surface)' }}
       aria-labelledby="cta-title"
     >
-      {/* Achtergrond glow */}
+      {/* Achtergrond glow — ellips centered */}
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
@@ -38,7 +38,7 @@ export default function CTASection() {
             className="text-sm font-semibold uppercase tracking-widest mb-4"
             style={{ color: 'var(--color-primary)' }}
           >
-            Klaar om te starten?
+            Rico & Nico staan voor u klaar
           </p>
 
           {/* Headline */}
@@ -61,8 +61,9 @@ export default function CTASection() {
             className="text-base md:text-lg mb-10 max-w-xl mx-auto"
             style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}
           >
-            Maak een afspraak en onze Washbus staat binnen 24 uur bij u voor de deur.
-            Regio Vlaanderen — altijd en overal.
+            Wasbeurten aan huis in heel Vlaanderen — coating en PPF in onze
+            professionele garage in Hamme. Rico & Nico staan klaar voor elk
+            voertuig, altijd met passie voor het resultaat.
           </p>
 
           {/* Knoppen */}

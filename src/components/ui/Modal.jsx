@@ -147,7 +147,7 @@ export default function Modal({
               <button
                 onClick={onClose}
                 aria-label="Modal sluiten"
-                className="p-1.5 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                className="p-1.5 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={{ color: 'var(--color-text-muted)', marginLeft: 'auto' }}
               >
                 <X className="w-5 h-5" aria-hidden="true" />

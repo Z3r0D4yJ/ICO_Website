@@ -3,12 +3,13 @@ import { CheckCircle2, ArrowRight } from '@/lib/icons'
 import Button from '@/components/ui/Button'
 
 const WASHBUS_FEATURES = [
-  'Volledig uitgerust voor elke wasbeurt',
-  'Professionele extractiemachine aan boord',
   'Eigen watervoorraad — geen aansluiting nodig',
-  'CleanTech producten steeds mee',
-  'Generator voor stroom op elke locatie',
-  'Actief in heel Vlaanderen',
+  'Generator aan boord — stroom op elke locatie',
+  'Professionele extractiemachine voor dieptereiniging',
+  'Coating & PPF: in onze garage in Hamme',
+  'Eigen CleanTech productlijn — exclusief bij ICO',
+  'Auto\'s, SUV\'s, bestelwagens én motoren welkom',
+  'Actief in heel Vlaanderen — 6 dagen op 7',
 ]
 
 export default function WashbusShowcase() {
@@ -32,7 +33,7 @@ export default function WashbusShowcase() {
             >
               {/* Washbus foto */}
               <img
-                src="/images/opel-gt-washbus.jpg"
+                src="/images/washbus.webp"
                 alt="De ICO Washbus — volledig uitgerust mobiel detailing voertuig"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
@@ -95,10 +96,11 @@ export default function WashbusShowcase() {
               className="text-base leading-relaxed mb-6"
               style={{ color: 'var(--color-text-secondary)' }}
             >
-              Onze Washbus is meer dan een bestelwagen — het is ons rijdend
-              laboratorium. Volledig uitgerust met alles wat nodig is voor een
-              premium wasbeurt, overal in Vlaanderen. Geen wateraansluiting nodig,
-              geen stopcontact — wij regelen alles zelf.
+              De Washbus is het hart van Team ICO — volledig uitgerust voor
+              wasbeurten aan huis in heel Vlaanderen. Geen wateraansluiting,
+              geen stopcontact nodig. Voor keramische coating en PPF werken
+              Rico & Nico vanuit hun professionele garage in Hamme, waar
+              perfect licht en een gecontroleerde omgeving het verschil maken.
             </p>
 
             {/* Feature lijst */}

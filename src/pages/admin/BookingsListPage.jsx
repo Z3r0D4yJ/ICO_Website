@@ -49,7 +49,7 @@ function StatusSelect({ bookingId, current, onChange }) {
         value={current}
         onChange={handleChange}
         disabled={loading}
-        className="appearance-none text-xs font-medium pl-2.5 pr-7 py-1.5 rounded-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] transition-opacity"
+        className="appearance-none text-xs font-medium pl-2.5 pr-7 py-1.5 rounded-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 transition-opacity"
         style={{
           backgroundColor: 'var(--color-surface-overlay)',
           border: '1px solid rgba(196,130,111,0.2)',
@@ -156,7 +156,7 @@ export default function BookingsListPage() {
             placeholder="Naam, boekingsnummer, telefoon..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="w-full pl-9 pr-3 py-2 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={inputStyle}
           />
         </div>
@@ -166,7 +166,7 @@ export default function BookingsListPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="appearance-none pl-3 pr-8 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="appearance-none pl-3 pr-8 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={inputStyle}
           >
             {STATUS_FILTER_OPTIONS.map((o) => (
@@ -183,7 +183,7 @@ export default function BookingsListPage() {
           type="date"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
-          className="px-3 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          className="px-3 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
           style={inputStyle}
           aria-label="Datum van"
         />
@@ -191,7 +191,7 @@ export default function BookingsListPage() {
           type="date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
-          className="px-3 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          className="px-3 py-2 rounded-lg text-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
           style={inputStyle}
           aria-label="Datum tot"
         />

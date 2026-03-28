@@ -35,7 +35,7 @@ export default function VehicleSelector({ selected, onSelect, pricingTiers = nul
             className={cn(
               'flex items-center gap-3 px-4 py-3.5 rounded-xl text-left',
               'transition-all duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
               'cursor-pointer',
               isSelected ? 'border-2' : 'border'
             )}

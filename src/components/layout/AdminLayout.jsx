@@ -32,7 +32,7 @@ export default function AdminLayout({ children }) {
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
-            className="cursor-pointer p-1.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="cursor-pointer p-1.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             <Menu className="w-5 h-5" aria-hidden="true" />

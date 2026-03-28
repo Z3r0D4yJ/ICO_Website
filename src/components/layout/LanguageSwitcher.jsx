@@ -33,7 +33,7 @@ export default function LanguageSwitcher({ className }) {
             className={cn(
               'px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider',
               'transition-all duration-150 cursor-pointer',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
               isActive
                 ? 'text-[var(--color-text-inverse)]'
                 : 'hover:text-[var(--color-text-primary)]'

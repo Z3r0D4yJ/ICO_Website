@@ -3,33 +3,33 @@ import { MapPin, Users, Sparkles, ShieldCheck, Clock, Star } from '@/lib/icons'
 const FEATURES = [
   {
     icon: MapPin,
-    title: 'Wij komen naar u',
-    desc: 'Geen gedoe met rijden naar een wasstraat. Onze Washbus komt naar uw thuis of werkplek in heel Vlaanderen.',
+    title: 'Wij komen naar u toe',
+    desc: 'Wasbeurten aan huis, op het werk of waar u ook bent in Vlaanderen. Coating en PPF voeren we uit in onze garage in Hamme — optimaal licht, perfecte omstandigheden.',
   },
   {
     icon: Users,
-    title: 'Team van twee',
-    desc: 'Rico & Nico werken steeds samen. Twee paar handen betekent sneller klaar en dubbel zo grondig.',
+    title: 'Rico & Nico — altijd samen',
+    desc: 'U wordt steeds bediend door het vaste duo. Twee paar handen = sneller klaar én dubbel zo grondig, elke keer.',
   },
   {
     icon: Sparkles,
-    title: 'CleanTech producten',
-    desc: 'Wij werken uitsluitend met onze eigen professionele producten — dezelfde die wij ook in onze shop verkopen.',
+    title: 'Eigen CleanTech producten',
+    desc: 'We werken uitsluitend met onze eigen professionele CleanTech lijn — dezelfde die we ook in onze shop verkopen.',
   },
   {
     icon: ShieldCheck,
-    title: 'Kwaliteitsgarantie',
-    desc: 'Niet tevreden? Wij komen terug. Uw tevredenheid is onze prioriteit, altijd en zonder discussie.',
+    title: 'Alle voertuigen welkom',
+    desc: 'Auto\'s, bestelwagens, motoren, SUV\'s — wij behandelen ze allemaal. Ook voor PPF en coating op maat van uw voertuig.',
   },
   {
     icon: Clock,
-    title: 'Flexibele tijdslots',
-    desc: 'Kies zelf wanneer het u past — 4 tijdslots per dag van maandag tot zaterdag.',
+    title: 'Flexibele planning',
+    desc: 'Kies zelf uw tijdslot — 4 vaste blokken per dag, 6 dagen op 7. U ontvangt een bevestiging én herinnering.',
   },
   {
     icon: Star,
-    title: 'Premium resultaat',
-    desc: 'Elk voertuig behandelen wij met de zorg die het verdient. Van kleintje tot groot — steeds tiptop.',
+    title: 'Prijzen incl. 21% BTW',
+    desc: 'Geen verrassingen achteraf. Alle weergegeven prijzen zijn inclusief BTW en op maat van uw voertuigtype.',
   },
 ]
 
@@ -71,9 +71,9 @@ export default function WhyICO() {
               style={{ color: 'var(--color-text-secondary)' }}
             >
               Team ICO is opgericht door Rico en Nico met één doel: premium car detailing
-              toegankelijk maken voor iedereen in Vlaanderen. Met onze volledig uitgeruste
-              Washbus brengen wij de was naar u toe — professioneel, stipt en met passie voor
-              elk detail.
+              toegankelijk maken voor iedereen in Vlaanderen. Wasbeurten komen naar u toe
+              met de Washbus — coating en PPF worden vakkundig uitgevoerd in onze garage
+              in Hamme. Altijd professioneel, stipt en met passie voor elk detail.
             </p>
 
             {/* Stat blokjes */}

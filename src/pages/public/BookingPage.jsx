@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Check, Plus, CheckCircle2 } from '@/lib/icons'
+import { ChevronLeft, ChevronRight, Check, Plus, CheckCircle2, MapPin, Wrench } from '@/lib/icons'
 import { useServices } from '@/hooks/useServices'
 import { createBooking } from '@/api/bookings'
 import { useUiStore } from '@/stores/uiStore'
 import { useRateLimit } from '@/hooks/useRateLimit'
-import { SERVICE_INCLUDED_EXTRAS } from '@/lib/constants'
+import { SERVICE_INCLUDED_EXTRAS, GARAGE_SERVICE_CATEGORIES, GARAGE_ADDRESS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
 import Button from '@/components/ui/Button'
 import BookingCalendar from '@/components/booking/BookingCalendar'
@@ -182,7 +182,9 @@ export default function BookingPage() {
 
   const [booking, setBooking] = useState({
     service_id: '',
-    extra_ids: [],          // array van extra dienst-IDs
+    extra_ids: [],
+    ppf_ids: [],              // PPF — meerdere delen mogelijk
+    booking_type: 'mobiel',   // 'mobiel' | 'garage'
     preferred_date: null,
     preferred_time_slot: null,
     vehicle_type: '',
@@ -217,8 +219,10 @@ export default function BookingPage() {
   }, [services, extraParam, extrasInited])
 
   // Diensten per categorie
-  const washServices = services.filter((s) => s.service_category === 'wash')
-  const extraServices = services.filter((s) => s.service_category === 'extra')
+  const washServices   = services.filter((s) => s.service_category === 'wash')
+  const extraServices  = services.filter((s) => s.service_category === 'extra')
+  const garageServices = services.filter((s) => GARAGE_SERVICE_CATEGORIES.includes(s.service_category))
+  const isGarage       = booking.booking_type === 'garage'
 
   // Extra's die al inbegrepen zijn bij de geselecteerde wasbeurt
   const includedExtraSlugs = SERVICE_INCLUDED_EXTRAS[selectedService?.slug] || []
@@ -245,9 +249,34 @@ export default function BookingPage() {
       .map((s) => s.id)
     setBooking((b) => ({
       ...b,
+      booking_type: 'mobiel',
       service_id: service.id,
       vehicle_type: '',
       extra_ids: b.extra_ids.filter((id) => !newIncludedIds.includes(id)),
+    }))
+  }
+
+  // Selecteer een garage dienst (coating/PPF/homecare)
+  const selectGarageService = (service) => {
+    setBooking((b) => ({
+      ...b,
+      booking_type: 'garage',
+      service_id: service.id,
+      vehicle_type: '',
+      extra_ids: [],
+    }))
+  }
+
+  // Wissel afspraaktype
+  const switchBookingType = (type) => {
+    setBooking((b) => ({
+      ...b,
+      booking_type: type,
+      service_id: '',
+      extra_ids: [],
+      vehicle_type: '',
+      preferred_date: null,
+      preferred_time_slot: null,
     }))
   }
 
@@ -344,7 +373,61 @@ export default function BookingPage() {
         {step === 1 && (
           <div className="space-y-6">
 
-            {/* Wasbeurten (radio — kies één) */}
+            {/* Afspraaktype switcher */}
+            <section
+              className="rounded-xl p-5"
+              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
+            >
+              <h2 className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-text-muted)' }}>
+                Kies uw afspraaktype
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  {
+                    type: 'mobiel',
+                    icon: MapPin,
+                    title: 'Wassen aan huis',
+                    sub: 'De Washbus komt naar u toe in heel Vlaanderen',
+                    badge: 'Mobiel',
+                  },
+                  {
+                    type: 'garage',
+                    icon: Wrench,
+                    title: 'Coating & PPF',
+                    sub: 'U brengt uw wagen naar onze garage in Hamme',
+                    badge: 'Garage',
+                  },
+                ].map(({ type, icon: Icon, title, sub, badge }) => {
+                  const sel = booking.booking_type === type
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => switchBookingType(type)}
+                      aria-pressed={sel}
+                      className="flex items-start gap-3 p-4 rounded-xl text-left transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                      style={serviceButtonStyle(sel)}
+                    >
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{ backgroundColor: sel ? 'rgba(196,130,111,0.2)' : 'rgba(196,130,111,0.08)', border: '1px solid rgba(196,130,111,0.2)' }}
+                      >
+                        <Icon className="w-4 h-4" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+                      </div>
+                      <div className="flex-1">
+                        <span className="font-medium text-sm block mb-0.5" style={{ color: sel ? 'var(--color-primary)' : 'var(--color-text-primary)' }}>
+                          {title}
+                        </span>
+                        <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{sub}</span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
+
+            {/* Wasbeurten (radio — kies één) — alleen voor mobiel */}
+            {!isGarage && (
             <section
               className="rounded-xl p-5"
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
@@ -371,7 +454,7 @@ export default function BookingPage() {
                         type="button"
                         onClick={() => selectWashService(service)}
                         aria-pressed={isSelected}
-                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={serviceButtonStyle(isSelected)}
                       >
                         <div className="flex items-center gap-3">
@@ -431,8 +514,92 @@ export default function BookingPage() {
               )}
             </section>
 
-            {/* Extra's (checkbox — kies meerdere) */}
-            {!servicesLoading && extraServices.length > 0 && (
+            )} {/* einde !isGarage was-sectie */}
+
+            {/* Garage diensten (coating / PPF / HomeCare) */}
+            {isGarage && (
+              <section
+                className="rounded-xl p-5"
+                style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
+              >
+                <h2 className="text-sm font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                  Kies uw behandeling
+                </h2>
+                <p className="text-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>
+                  Uitgevoerd in onze garage in Hamme — klaar in enkele dagen
+                </p>
+                {servicesLoading ? (
+                  <div className="space-y-2">
+                    {[1, 2].map((i) => (
+                      <div key={i} className="h-16 rounded-xl animate-pulse" style={{ backgroundColor: 'var(--color-surface-overlay)' }} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {garageServices.map((service) => {
+                      const isSelected = selectedServiceId === service.id
+                      const priceFrom  = service.pricing_tiers?.[0]?.price ?? service.price_from
+                      return (
+                        <button
+                          key={service.id}
+                          type="button"
+                          onClick={() => selectGarageService(service)}
+                          aria-pressed={isSelected}
+                          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                          style={serviceButtonStyle(isSelected)}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                              style={{ backgroundColor: isSelected ? 'rgba(196,130,111,0.2)' : 'rgba(196,130,111,0.08)', border: '1px solid rgba(196,130,111,0.2)' }}
+                            >
+                              <DynamicIcon name={service.icon || 'Shield'} className="w-4 h-4" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+                            </div>
+                            <div className="text-left">
+                              <span className="font-medium text-sm block" style={{ color: isSelected ? 'var(--color-primary)' : 'var(--color-text-primary)' }}>
+                                {service.title_nl}
+                              </span>
+                              {service.short_description_nl && (
+                                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{service.short_description_nl}</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 flex-shrink-0">
+                            {priceFrom && (
+                              <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>
+                                {service.pricing_tiers ? `Vanaf ${formatPrice(priceFrom)}` : formatPrice(priceFrom)}
+                              </span>
+                            )}
+                            <div
+                              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                              style={{ backgroundColor: isSelected ? 'var(--color-primary)' : 'transparent', border: isSelected ? 'none' : '2px solid rgba(196,130,111,0.3)', transition: 'all 0.15s' }}
+                            >
+                              {isSelected && <Check size={11} weight="bold" style={{ color: '#fff' }} aria-hidden="true" />}
+                            </div>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {/* Garage info banner */}
+                <div
+                  className="mt-4 px-4 py-3 rounded-xl flex items-start gap-3"
+                  style={{ backgroundColor: 'rgba(196,130,111,0.07)', border: '1px solid rgba(196,130,111,0.2)' }}
+                >
+                  <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+                    U brengt uw wagen naar onze garage in{' '}
+                    <strong style={{ color: 'var(--color-text-primary)' }}>{GARAGE_ADDRESS}</strong>.
+                    Wij contacteren u wanneer uw wagen klaar is voor afhaling — u volgt de voortgang via uw persoonlijke trackingpagina.
+                  </p>
+                </div>
+              </section>
+            )}
+
+            {/* Extra's (checkbox — kies meerdere) — alleen voor mobiel */}
+            {!isGarage && !servicesLoading && extraServices.length > 0 && (
               <section
                 className="rounded-xl p-5"
                 style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
@@ -478,7 +645,7 @@ export default function BookingPage() {
                           type="button"
                           onClick={() => toggleExtra(service.id)}
                           aria-pressed={isSelected}
-                          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                           style={serviceButtonStyle(isSelected)}
                         >
                           <div className="flex items-center gap-3">
@@ -544,9 +711,14 @@ export default function BookingPage() {
               className="rounded-xl p-5"
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
             >
-              <h2 className="text-sm font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--color-text-muted)' }}>
-                Kies een datum
+              <h2 className="text-sm font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                {isGarage ? 'Kies uw inbrengdatum' : 'Kies een datum'}
               </h2>
+              {isGarage && (
+                <p className="text-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>
+                  Wanneer brengt u uw wagen naar onze garage in Hamme?
+                </p>
+              )}
               <BookingCalendar
                 selected={booking.preferred_date}
                 onSelect={(date) => setBooking((b) => ({ ...b, preferred_date: date, preferred_time_slot: null }))}
@@ -559,7 +731,7 @@ export default function BookingPage() {
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
             >
               <h2 className="text-sm font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--color-text-muted)' }}>
-                Kies een tijdslot
+                {isGarage ? 'Kies uw inbrengtijdslot' : 'Kies een tijdslot'}
               </h2>
               <TimeSlotPicker
                 date={booking.preferred_date}
@@ -606,7 +778,7 @@ export default function BookingPage() {
                 value={booking.vehicle_brand}
                 onChange={(e) => setBooking((b) => ({ ...b, vehicle_brand: e.target.value }))}
                 maxLength={50}
-                className="w-full px-4 py-3 rounded-xl text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                className="w-full px-4 py-3 rounded-xl text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={{
                   backgroundColor: 'var(--color-surface-overlay)',
                   border: '1px solid rgba(196,130,111,0.2)',
@@ -626,6 +798,18 @@ export default function BookingPage() {
             <h2 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: 'var(--color-text-muted)' }}>
               Uw contactgegevens
             </h2>
+            {isGarage && (
+              <div
+                className="mb-4 px-4 py-3 rounded-xl flex items-start gap-3"
+                style={{ backgroundColor: 'rgba(196,130,111,0.07)', border: '1px solid rgba(196,130,111,0.2)' }}
+              >
+                <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+                  Garage boeking — u brengt uw wagen naar <strong style={{ color: 'var(--color-text-primary)' }}>{GARAGE_ADDRESS}</strong>.
+                  Geen thuisadres vereist.
+                </p>
+              </div>
+            )}
             <BookingForm
               defaultValues={{
                 customer_name: booking.customer_name,
@@ -638,6 +822,7 @@ export default function BookingPage() {
               }}
               onSubmit={handleFormSubmit}
               submitRef={formRef}
+              isGarage={isGarage}
             />
           </section>
         )}

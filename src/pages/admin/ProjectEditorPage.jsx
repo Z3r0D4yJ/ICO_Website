@@ -1,14 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useUiStore } from '@/stores/uiStore'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import TipTapImage from '@tiptap/extension-image'
-import TipTapLink from '@tiptap/extension-link'
 import {
   ArrowLeft,
-  Bold,
-  Italic,
   Image,
   Upload,
   Save,
@@ -19,165 +13,13 @@ import {
   Plus,
   X,
 } from '@/lib/icons'
-import { useAdminBlogPost } from '@/hooks/useBlog'
-import { createPost, updatePost, uploadBlogImage } from '@/api/blog'
+import { useAdminProject } from '@/hooks/useProjects'
+import { createProject, updateProject, uploadProjectImage } from '@/api/projects'
 import { slugify } from '@/lib/utils'
 import Button from '@/components/ui/Button'
 import Input, { Textarea } from '@/components/ui/Input'
 import Badge from '@/components/ui/Badge'
-
-// ── Toolbar button ────────────────────────────────────────────────────────────
-
-function ToolbarBtn({ onClick, active, disabled, title, children }) {
-  return (
-    <button
-      type="button"
-      onMouseDown={(e) => { e.preventDefault(); onClick() }}
-      disabled={disabled}
-      title={title}
-      aria-label={title}
-      aria-pressed={active}
-      className="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-40"
-      style={
-        active
-          ? { backgroundColor: 'rgba(196,130,111,0.2)', color: 'var(--color-primary)' }
-          : { color: 'var(--color-text-muted)' }
-      }
-    >
-      {children}
-    </button>
-  )
-}
-
-function ToolbarSep() {
-  return <div className="w-px h-5 mx-1" style={{ backgroundColor: 'rgba(196,130,111,0.2)' }} aria-hidden="true" />
-}
-
-// ── Editor toolbar ────────────────────────────────────────────────────────────
-
-function EditorToolbar({ editor, onImageUpload }) {
-  const imageInputRef = useRef(null)
-
-  const handleLinkInsert = useCallback(() => {
-    const url = window.prompt('URL invoeren:', 'https://')
-    if (!url) return
-    if (url === '') {
-      editor.chain().focus().unsetLink().run()
-    } else {
-      editor.chain().focus().setLink({ href: url }).run()
-    }
-  }, [editor])
-
-  if (!editor) return null
-
-  return (
-    <div
-      className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b"
-      style={{ borderColor: 'rgba(196,130,111,0.2)' }}
-    >
-      {/* Heading H2 */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        active={editor.isActive('heading', { level: 2 })}
-        title="Kop 2 (H2)"
-      >
-        <span className="text-xs font-bold">H2</span>
-      </ToolbarBtn>
-
-      {/* Heading H3 */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        active={editor.isActive('heading', { level: 3 })}
-        title="Kop 3 (H3)"
-      >
-        <span className="text-xs font-bold">H3</span>
-      </ToolbarBtn>
-
-      <ToolbarSep />
-
-      {/* Bold */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        active={editor.isActive('bold')}
-        title="Vet (Ctrl+B)"
-      >
-        <Bold className="w-3.5 h-3.5" weight="bold" />
-      </ToolbarBtn>
-
-      {/* Italic */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        active={editor.isActive('italic')}
-        title="Cursief (Ctrl+I)"
-      >
-        <Italic className="w-3.5 h-3.5" />
-      </ToolbarBtn>
-
-      <ToolbarSep />
-
-      {/* Bullet list */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        active={editor.isActive('bulletList')}
-        title="Lijst met opsommingstekens"
-      >
-        <span className="text-xs font-bold">• —</span>
-      </ToolbarBtn>
-
-      {/* Ordered list */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        active={editor.isActive('orderedList')}
-        title="Genummerde lijst"
-      >
-        <span className="text-xs font-bold">1.</span>
-      </ToolbarBtn>
-
-      {/* Blockquote */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        active={editor.isActive('blockquote')}
-        title="Citaat"
-      >
-        <span className="text-base leading-none">"</span>
-      </ToolbarBtn>
-
-      <ToolbarSep />
-
-      {/* Link */}
-      <ToolbarBtn
-        onClick={handleLinkInsert}
-        active={editor.isActive('link')}
-        title="Link invoegen"
-      >
-        <span className="text-xs font-bold underline">URL</span>
-      </ToolbarBtn>
-
-      {/* Horizontale lijn */}
-      <ToolbarBtn
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        title="Horizontale lijn"
-      >
-        <span className="text-xs font-bold">—</span>
-      </ToolbarBtn>
-
-      <ToolbarSep />
-
-      {/* Afbeelding uploaden */}
-      <ToolbarBtn onClick={() => imageInputRef.current?.click()} title="Afbeelding invoegen">
-        <Image className="w-3.5 h-3.5" />
-      </ToolbarBtn>
-      <input
-        ref={imageInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={onImageUpload}
-        aria-hidden="true"
-      />
-    </div>
-  )
-}
+import { VEHICLE_TYPES, SERVICE_CATEGORIES } from '@/lib/constants'
 
 // ── TagInput ──────────────────────────────────────────────────────────────────
 
@@ -245,6 +87,45 @@ function TagInput({ tags, onChange }) {
   )
 }
 
+// ── ImageUploadButton ─────────────────────────────────────────────────────────
+
+function ImageUploadButton({ onUpload, uploading, label = 'Afbeelding uploaden' }) {
+  const inputRef = useRef(null)
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="w-full flex flex-col items-center gap-2 py-6 rounded-xl cursor-pointer transition-all duration-150 hover:opacity-80 disabled:opacity-50"
+        style={{
+          border: '2px dashed rgba(196,130,111,0.3)',
+          backgroundColor: 'rgba(196,130,111,0.05)',
+          color: 'var(--color-text-muted)',
+        }}
+      >
+        {uploading ? (
+          <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--color-primary)' }} />
+        ) : (
+          <>
+            <Upload className="w-6 h-6" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+            <span className="text-sm">{label}</span>
+            <span className="text-xs">JPG, PNG, WebP — max 10MB</span>
+          </>
+        )}
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onUpload}
+        aria-hidden="true"
+      />
+    </>
+  )
+}
+
 // ── CoverImageUpload ──────────────────────────────────────────────────────────
 
 function CoverImageUpload({ value, onChange }) {
@@ -259,13 +140,12 @@ function CoverImageUpload({ value, onChange }) {
     setUploading(true)
     setError(null)
     try {
-      const url = await uploadBlogImage(file)
+      const url = await uploadProjectImage(file)
       onChange(url)
     } catch (err) {
       const msg = err?.message || 'Upload mislukt'
       setError(msg)
       showError(msg, 'Upload mislukt')
-      console.error('Cover upload failed:', err)
     } finally {
       setUploading(false)
       e.target.value = ''
@@ -302,92 +182,106 @@ function CoverImageUpload({ value, onChange }) {
           </div>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          disabled={uploading}
-          className="w-full flex flex-col items-center gap-2 py-8 rounded-xl cursor-pointer transition-all duration-150 hover:opacity-80"
-          style={{
-            border: '2px dashed rgba(196,130,111,0.3)',
-            backgroundColor: 'rgba(196,130,111,0.05)',
-            color: 'var(--color-text-muted)',
-          }}
-        >
-          {uploading ? (
-            <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--color-primary)' }} />
-          ) : (
-            <>
-              <Upload className="w-6 h-6" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
-              <span className="text-sm">Klik om cover te uploaden</span>
-              <span className="text-xs">JPG, PNG, WebP</span>
-            </>
-          )}
-        </button>
+        <ImageUploadButton onUpload={handleFile} uploading={uploading} label="Klik om cover te uploaden" />
       )}
-      {error && (
-        <p className="text-xs mt-1.5" style={{ color: 'var(--color-error)' }}>
-          {error}
-        </p>
+      {error && <p className="text-xs mt-1.5" style={{ color: 'var(--color-error)' }}>{error}</p>}
+      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} aria-hidden="true" />
+    </div>
+  )
+}
+
+// ── GalleryUpload ─────────────────────────────────────────────────────────────
+
+function GalleryUpload({ images, onChange }) {
+  const [uploading, setUploading] = useState(false)
+  const showError = useUiStore((s) => s.showError)
+
+  const handleFiles = useCallback(async (e) => {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    setUploading(true)
+    try {
+      const urls = await Promise.all(files.map((f) => uploadProjectImage(f)))
+      onChange([...images, ...urls])
+    } catch (err) {
+      showError(err?.message || 'Upload mislukt', 'Upload mislukt')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
+  }, [images, onChange, showError])
+
+  const removeImage = (index) => onChange(images.filter((_, i) => i !== index))
+
+  return (
+    <div>
+      <label className="text-sm font-medium mb-1.5 block" style={{ color: 'var(--color-text-primary)' }}>
+        Galerij foto&apos;s
+      </label>
+      {images.length > 0 && (
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          {images.map((url, index) => (
+            <div key={index} className="relative rounded-lg overflow-hidden group" style={{ aspectRatio: '4/3' }}>
+              <img src={url} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" loading="lazy" />
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-1 right-1 p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer"
+                style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                aria-label={`Verwijder foto ${index + 1}`}
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+        </div>
       )}
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFile}
-        aria-hidden="true"
-      />
+      <ImageUploadButton onUpload={handleFiles} uploading={uploading} label="Foto's toevoegen (meerdere mogelijk)" />
     </div>
   )
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function BlogEditorPage() {
+export default function ProjectEditorPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isEdit = Boolean(id)
-  const { post, loading: loadingPost } = useAdminBlogPost(isEdit ? id : null)
+  const { project, loading: loadingProject } = useAdminProject(isEdit ? id : null)
 
   const [title, setTitle] = useState('')
   const [slug, setSlugState] = useState('')
   const [slugManual, setSlugManual] = useState(false)
-  const [excerpt, setExcerpt] = useState('')
+  const [descriptionNl, setDescriptionNl] = useState('')
+  const [descriptionEn, setDescriptionEn] = useState('')
   const [coverImageUrl, setCoverImageUrl] = useState('')
+  const [images, setImages] = useState([])
+  const [vehicleBrand, setVehicleBrand] = useState('')
+  const [vehicleType, setVehicleType] = useState('')
+  const [serviceType, setServiceType] = useState('')
   const [tags, setTags] = useState([])
-  const [author, setAuthor] = useState('Team ICO')
   const [isPublished, setIsPublished] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [savedState, setSavedState] = useState(null) // 'saved' | 'error'
-  const [imageUploading, setImageUploading] = useState(false)
+  const [savedState, setSavedState] = useState(null)
   const showError = useUiStore((s) => s.showError)
   const showSuccess = useUiStore((s) => s.showSuccess)
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TipTapImage.configure({ inline: false, allowBase64: false }),
-      TipTapLink.configure({ openOnClick: false, autolink: true }),
-    ],
-    content: '',
-    editorProps: {
-      attributes: { class: 'tiptap-editor-content' },
-    },
-  })
-
-  // Laad bestaande post bij edit
+  // Laad bestaand project bij edit
   useEffect(() => {
-    if (!post || !editor) return
-    setTitle(post.title_nl || '')
-    setSlugState(post.slug || '')
+    if (!project) return
+    setTitle(project.title_nl || '')
+    setSlugState(project.slug || '')
     setSlugManual(true)
-    setExcerpt(post.excerpt_nl || '')
-    setCoverImageUrl(post.cover_image_url || '')
-    setTags(post.tags || [])
-    setAuthor(post.author || 'Team ICO')
-    setIsPublished(post.is_published || false)
-    editor.commands.setContent(post.content_nl || '')
-  }, [post, editor])
+    setDescriptionNl(project.description_nl || '')
+    setDescriptionEn(project.description_en || '')
+    setCoverImageUrl(project.cover_image_url || '')
+    setImages(project.images || [])
+    setVehicleBrand(project.vehicle_brand || '')
+    setVehicleType(project.vehicle_type || '')
+    setServiceType(project.service_type || '')
+    setTags(project.tags || [])
+    setIsPublished(project.is_published || false)
+  }, [project])
 
   // Auto-slug van titel
   useEffect(() => {
@@ -396,56 +290,40 @@ export default function BlogEditorPage() {
     }
   }, [title, slugManual])
 
-  const handleImageInEditor = useCallback(async (e) => {
-    const file = e.target.files[0]
-    if (!file || !editor) return
-    setImageUploading(true)
-    try {
-      const url = await uploadBlogImage(file)
-      editor.chain().focus().setImage({ src: url, alt: file.name }).run()
-    } catch (err) {
-      const msg = err?.message || 'Upload mislukt'
-      showError(msg, 'Afbeelding upload mislukt')
-      console.error('Image upload failed:', err)
-    } finally {
-      setImageUploading(false)
-      e.target.value = ''
-    }
-  }, [editor, showError])
-
   const handleSave = async (publish = null) => {
     if (!title.trim()) return
     setSaving(true)
     setSavedState(null)
 
     const willPublish = publish !== null ? publish : isPublished
-    const content = editor ? editor.getHTML() : ''
 
     const payload = {
       title_nl: title.trim(),
       slug: slug.trim() || slugify(title.trim()),
-      excerpt_nl: excerpt.trim() || null,
-      content_nl: content,
+      description_nl: descriptionNl.trim() || null,
+      description_en: descriptionEn.trim() || null,
       cover_image_url: coverImageUrl || null,
+      images: images,
+      vehicle_brand: vehicleBrand.trim() || null,
+      vehicle_type: vehicleType || null,
+      service_type: serviceType || null,
       tags: tags,
-      author: author.trim() || 'Team ICO',
       is_published: willPublish,
-      published_at: willPublish ? (post?.published_at || new Date().toISOString()) : null,
+      published_at: willPublish ? (project?.published_at || new Date().toISOString()) : null,
     }
 
     try {
       if (isEdit) {
-        await updatePost(id, payload)
+        await updateProject(id, payload)
       } else {
-        const created = await createPost(payload)
-        navigate(`/admin/blog/${created.id}/edit`, { replace: true })
+        const created = await createProject(payload)
+        navigate(`/admin/projecten/${created.id}/edit`, { replace: true })
       }
       setIsPublished(willPublish)
       setSavedState('saved')
-      showSuccess(willPublish ? 'Artikel gepubliceerd!' : 'Concept opgeslagen', '')
+      showSuccess(willPublish ? 'Project gepubliceerd!' : 'Concept opgeslagen', '')
       setTimeout(() => setSavedState(null), 3000)
     } catch (err) {
-      console.error('Save failed:', err)
       setSavedState('error')
       showError(err?.message || 'Opslaan mislukt', 'Fout')
     } finally {
@@ -453,7 +331,19 @@ export default function BlogEditorPage() {
     }
   }
 
-  if (loadingPost) {
+  const selectStyle = {
+    height: '2.5rem',
+    width: '100%',
+    padding: '0 0.75rem',
+    borderRadius: '0.5rem',
+    fontSize: '0.875rem',
+    backgroundColor: 'var(--color-surface-overlay)',
+    border: '1px solid rgba(196,130,111,0.2)',
+    color: 'var(--color-text-primary)',
+    outline: 'none',
+  }
+
+  if (loadingProject) {
     return (
       <div className="max-w-5xl space-y-6">
         <div className="flex items-center gap-4">
@@ -472,16 +362,15 @@ export default function BlogEditorPage() {
       {/* Top bar */}
       <div className="flex items-center gap-3 flex-wrap">
         <Link
-          to="/admin/blog"
+          to="/admin/projecten"
           className="flex items-center gap-1.5 text-sm cursor-pointer transition-opacity hover:opacity-80"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-          Blog
+          Projecten
         </Link>
 
         <div className="flex items-center gap-2 ml-auto flex-wrap">
-          {/* Opslaan status */}
           {savedState === 'saved' && (
             <span className="flex items-center gap-1.5 text-sm" style={{ color: 'var(--color-success)' }}>
               <CheckCircle2 className="w-4 h-4" />
@@ -489,17 +378,13 @@ export default function BlogEditorPage() {
             </span>
           )}
           {savedState === 'error' && (
-            <span className="text-sm" style={{ color: 'var(--color-error)' }}>
-              Opslaan mislukt
-            </span>
+            <span className="text-sm" style={{ color: 'var(--color-error)' }}>Opslaan mislukt</span>
           )}
 
-          {/* Status badge */}
           <Badge variant={isPublished ? 'success' : 'neutral'} size="sm">
             {isPublished ? 'Gepubliceerd' : 'Concept'}
           </Badge>
 
-          {/* Draft opslaan */}
           <Button
             variant="ghost"
             size="sm"
@@ -510,7 +395,6 @@ export default function BlogEditorPage() {
             {isPublished ? 'Opslaan' : 'Opslaan als concept'}
           </Button>
 
-          {/* Publiceren */}
           {!isPublished ? (
             <Button
               variant="primary"
@@ -537,7 +421,7 @@ export default function BlogEditorPage() {
       {/* Twee-kolom layout */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
 
-        {/* Links — editor */}
+        {/* Links — tekst info */}
         <div
           className="rounded-xl overflow-hidden"
           style={{
@@ -545,12 +429,12 @@ export default function BlogEditorPage() {
             border: '1px solid rgba(196,130,111,0.2)',
           }}
         >
-          {/* Titel input */}
+          {/* Titel */}
           <div className="p-5 pb-4 border-b" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
             <textarea
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Titel van het artikel..."
+              placeholder="Titel van het project..."
               rows={2}
               className="w-full resize-none bg-transparent border-none outline-none text-2xl font-semibold placeholder:text-[var(--color-text-muted)]"
               style={{
@@ -562,9 +446,7 @@ export default function BlogEditorPage() {
             />
             {/* Slug preview */}
             <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                /blog/
-              </span>
+              <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>/projecten/</span>
               <input
                 type="text"
                 value={slug}
@@ -577,79 +459,95 @@ export default function BlogEditorPage() {
             </div>
           </div>
 
-          {/* TipTap toolbar */}
-          <div className="tiptap-editor">
-            <EditorToolbar
-              editor={editor}
-              onImageUpload={handleImageInEditor}
+          {/* Beschrijvingen */}
+          <div className="p-5 space-y-5">
+            <Textarea
+              label="Beschrijving (NL)"
+              rows={5}
+              value={descriptionNl}
+              onChange={(e) => setDescriptionNl(e.target.value)}
+              placeholder="Beschrijf het project in het Nederlands..."
             />
-            {imageUploading && (
-              <div
-                className="flex items-center gap-2 px-4 py-2 text-xs"
-                style={{ backgroundColor: 'rgba(196,130,111,0.06)', color: 'var(--color-text-muted)' }}
-              >
-                <Loader2 className="w-3.5 h-3.5 animate-spin" style={{ color: 'var(--color-primary)' }} />
-                Afbeelding uploaden...
-              </div>
-            )}
-
-            {/* Editor content */}
-            <div className="px-5 py-4">
-              <EditorContent
-                editor={editor}
-                className="min-h-[380px]"
-              />
-            </div>
+            <Textarea
+              label="Beschrijving (EN)"
+              rows={5}
+              value={descriptionEn}
+              onChange={(e) => setDescriptionEn(e.target.value)}
+              placeholder="Describe the project in English..."
+              hint="Optioneel — valt terug op NL als leeg"
+            />
           </div>
         </div>
 
-        {/* Rechts — instellingen sidebar */}
+        {/* Rechts — instellingen */}
         <div className="space-y-4">
           {/* Cover afbeelding */}
           <div
             className="rounded-xl p-4"
-            style={{
-              backgroundColor: 'var(--color-surface-elevated)',
-              border: '1px solid rgba(196,130,111,0.2)',
-            }}
+            style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
           >
             <CoverImageUpload value={coverImageUrl} onChange={setCoverImageUrl} />
           </div>
 
-          {/* Excerpt */}
+          {/* Galerij */}
           <div
             className="rounded-xl p-4"
-            style={{
-              backgroundColor: 'var(--color-surface-elevated)',
-              border: '1px solid rgba(196,130,111,0.2)',
-            }}
+            style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
           >
-            <Textarea
-              label="Samenvatting (excerpt)"
-              rows={3}
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="Korte samenvatting die getoond wordt in de blog overzicht..."
-              hint="Zichtbaar op de blog overzichtspagina"
-            />
+            <GalleryUpload images={images} onChange={setImages} />
           </div>
 
-          {/* Tags + Auteur */}
+          {/* Voertuig info */}
           <div
             className="rounded-xl p-4 space-y-4"
-            style={{
-              backgroundColor: 'var(--color-surface-elevated)',
-              border: '1px solid rgba(196,130,111,0.2)',
-            }}
+            style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
+          >
+            <Input
+              label="Voertuigmerk"
+              value={vehicleBrand}
+              onChange={(e) => setVehicleBrand(e.target.value)}
+              placeholder="bv. BMW, Mercedes, Audi..."
+            />
+
+            <div>
+              <label className="text-sm font-medium mb-1.5 block" style={{ color: 'var(--color-text-primary)' }}>
+                Voertuigtype
+              </label>
+              <select
+                value={vehicleType}
+                onChange={(e) => setVehicleType(e.target.value)}
+                style={selectStyle}
+              >
+                <option value="">— Selecteer type —</option>
+                {VEHICLE_TYPES.map(({ value, label_nl }) => (
+                  <option key={value} value={value}>{label_nl}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1.5 block" style={{ color: 'var(--color-text-primary)' }}>
+                Dienst
+              </label>
+              <select
+                value={serviceType}
+                onChange={(e) => setServiceType(e.target.value)}
+                style={selectStyle}
+              >
+                <option value="">— Selecteer dienst —</option>
+                {SERVICE_CATEGORIES.map(({ value, label_nl }) => (
+                  <option key={value} value={value}>{label_nl}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div
+            className="rounded-xl p-4"
+            style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
           >
             <TagInput tags={tags} onChange={setTags} />
-
-            <Input
-              label="Auteur"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Team ICO"
-            />
           </div>
         </div>
       </div>

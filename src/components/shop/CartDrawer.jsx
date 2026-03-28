@@ -47,7 +47,7 @@ export default function CartDrawer() {
           <button
             onClick={closeCart}
             aria-label="Winkelwagen sluiten"
-            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -97,7 +97,7 @@ export default function CartDrawer() {
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         aria-label={`Minder ${item.name}`}
-                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-primary)]"
+                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                       >
                         <Minus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
@@ -106,7 +106,7 @@ export default function CartDrawer() {
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         aria-label={`Meer ${item.name}`}
-                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-primary)]"
+                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                       >
                         <Plus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
@@ -118,7 +118,7 @@ export default function CartDrawer() {
                   <button
                     onClick={() => removeItem(item.id)}
                     aria-label={`${item.name} verwijderen`}
-                    className="p-1.5 rounded cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-error)] flex-shrink-0 self-start"
+                    className="p-1.5 rounded cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-error)] flex-shrink-0 self-start"
                     style={{ color: 'var(--color-text-muted)' }}
                   >
                     <Trash2 className="w-4 h-4" aria-hidden="true" />

@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { useTestimonials } from '@/hooks/useTestimonials'
-import Card from '@/components/ui/Card'
 import Skeleton from '@/components/ui/Skeleton'
 
 function StarRating({ rating }) {
@@ -9,11 +8,11 @@ function StarRating({ rating }) {
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
-          className="w-4 h-4"
+          className="w-3.5 h-3.5"
           fill="currentColor"
           viewBox="0 0 20 20"
           aria-hidden="true"
-          style={{ color: i < rating ? 'var(--color-primary)' : 'var(--color-border-light)' }}
+          style={{ color: i < rating ? 'var(--color-primary)' : 'rgba(196,130,111,0.2)' }}
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
@@ -29,56 +28,73 @@ function TestimonialCard({ testimonial, lang }) {
       : testimonial.content_nl
 
   return (
-    <Card
-      variant="default"
-      className="flex flex-col h-full"
-      style={{ minWidth: '280px' }}
+    <div
+      className="relative flex flex-col h-full rounded-2xl p-7 overflow-hidden"
+      style={{
+        backgroundColor: 'var(--color-surface)',
+        border: '1px solid rgba(196,130,111,0.2)',
+      }}
     >
-      {/* Quote icoon */}
+      {/* Decoratief aanhalingsteken achtergrond */}
       <div
-        className="text-4xl leading-none mb-4 select-none"
+        className="absolute top-4 right-5 select-none pointer-events-none"
         aria-hidden="true"
-        style={{ color: 'var(--color-primary)', fontFamily: 'Georgia, serif', opacity: 0.6 }}
+        style={{
+          fontFamily: 'Georgia, serif',
+          fontSize: '7rem',
+          lineHeight: 1,
+          color: 'var(--color-primary)',
+          opacity: 0.06,
+        }}
       >
         "
       </div>
 
-      <p
-        className="text-sm leading-relaxed flex-1 mb-5"
-        style={{ color: 'var(--color-text-secondary)' }}
-      >
-        {content}
-      </p>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-        <div className="flex items-center gap-3">
-          {/* Avatar initiaal */}
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-            style={{
-              backgroundColor: 'rgba(196,130,111,0.15)',
-              color: 'var(--color-primary)',
-              border: '1px solid rgba(196,130,111,0.3)',
-            }}
-            aria-hidden="true"
-          >
-            {testimonial.customer_name.charAt(0)}
-          </div>
-          <div>
-            <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-              {testimonial.customer_name}
-            </p>
-            {testimonial.vehicle && (
-              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                {testimonial.vehicle}
-              </p>
-            )}
-          </div>
-        </div>
+      {/* Sterren */}
+      <div className="mb-4">
         <StarRating rating={testimonial.rating || 5} />
       </div>
-    </Card>
+
+      {/* Quote tekst */}
+      <p
+        className="text-sm leading-relaxed flex-1 mb-6 relative z-10"
+        style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75 }}
+      >
+        "{content}"
+      </p>
+
+      {/* Scheidingslijn */}
+      <div
+        className="w-8 mb-5"
+        style={{ height: '1px', backgroundColor: 'rgba(196,130,111,0.3)' }}
+        aria-hidden="true"
+      />
+
+      {/* Auteur */}
+      <div className="flex items-center gap-3">
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(196,130,111,0.25) 0%, rgba(196,130,111,0.1) 100%)',
+            color: 'var(--color-primary)',
+            border: '1px solid rgba(196,130,111,0.3)',
+          }}
+          aria-hidden="true"
+        >
+          {testimonial.customer_name.charAt(0)}
+        </div>
+        <div>
+          <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+            {testimonial.customer_name}
+          </p>
+          {testimonial.vehicle && (
+            <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
+              {testimonial.vehicle}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -96,7 +112,7 @@ export default function TestimonialsSlider() {
       <div className="container-ico">
 
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <p
             className="text-sm font-semibold uppercase tracking-widest mb-3"
             style={{ color: 'var(--color-primary)' }}
@@ -115,7 +131,7 @@ export default function TestimonialsSlider() {
             {t('testimonials.title')}
           </h2>
           <div className="divider-gold mt-4 mb-4" aria-hidden="true" />
-          <p style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="max-w-md mx-auto text-sm" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
             {t('testimonials.subtitle')}
           </p>
         </div>
@@ -126,18 +142,18 @@ export default function TestimonialsSlider() {
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-xl p-6"
+                className="rounded-2xl p-7"
                 style={{ backgroundColor: 'var(--color-surface)', border: '1px solid rgba(196,130,111,0.2)' }}
               >
-                <Skeleton variant="line" width="40px" height="40px" className="mb-4 rounded" />
+                <Skeleton variant="line" width="80px" height="14px" className="mb-5 rounded" />
                 <Skeleton variant="line" className="mb-2" />
                 <Skeleton variant="line" className="mb-2" />
                 <Skeleton variant="line" width="70%" className="mb-6" />
-                <div className="flex items-center gap-3 pt-4 border-t" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-                  <Skeleton variant="circle" width="36px" height="36px" />
+                <div className="flex items-center gap-3 mt-6">
+                  <Skeleton variant="circle" width="40px" height="40px" />
                   <div className="flex-1">
-                    <Skeleton variant="line" width="60%" className="mb-1.5" />
-                    <Skeleton variant="line" width="40%" />
+                    <Skeleton variant="line" width="55%" className="mb-1.5" />
+                    <Skeleton variant="line" width="35%" />
                   </div>
                 </div>
               </div>
@@ -173,28 +189,29 @@ export default function TestimonialsSlider() {
           </>
         )}
 
-        {/* Google Reviews badge */}
+        {/* Onderste badge */}
         <div className="flex justify-center mt-10">
           <div
             className="inline-flex items-center gap-3 px-5 py-3 rounded-full text-sm"
             style={{
-              backgroundColor: 'var(--color-surface-overlay)',
+              backgroundColor: 'var(--color-surface)',
               border: '1px solid rgba(196,130,111,0.2)',
               color: 'var(--color-text-secondary)',
             }}
           >
-            <div className="flex items-center gap-1" aria-hidden="true">
+            <div className="flex items-center gap-0.5" aria-hidden="true">
               {[...Array(5)].map((_, i) => (
-                <svg key={i} className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: 'var(--color-primary)' }}>
+                <svg key={i} className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" style={{ color: 'var(--color-primary)' }}>
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
             </div>
             <span>
-              <strong style={{ color: 'var(--color-text-primary)' }}>5.0</strong> gemiddelde score
+              <strong style={{ color: 'var(--color-text-primary)' }}>5.0</strong> · 100+ tevreden klanten in heel Vlaanderen
             </span>
           </div>
         </div>
+
       </div>
     </section>
   )

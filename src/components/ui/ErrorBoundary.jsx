@@ -53,7 +53,7 @@ export default class ErrorBoundary extends Component {
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => window.location.reload()}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-150 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-150 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }}
               >
                 Pagina vernieuwen
@@ -63,7 +63,7 @@ export default class ErrorBoundary extends Component {
                   this.setState({ hasError: false, error: null })
                   window.history.back()
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={{
                   backgroundColor: 'var(--color-surface-overlay)',
                   color: 'var(--color-text-secondary)',

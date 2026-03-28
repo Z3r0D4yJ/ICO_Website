@@ -93,7 +93,7 @@ export default function ProductDetailPage() {
                     <button
                       key={idx}
                       onClick={() => setActiveImage(idx)}
-                      className="w-16 h-16 rounded-lg overflow-hidden cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                      className="w-16 h-16 rounded-lg overflow-hidden cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                       style={{
                         border: idx === activeImage
                           ? '2px solid var(--color-primary)'

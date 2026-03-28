@@ -135,7 +135,7 @@ export default function CartPage() {
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         aria-label="Minder"
                         disabled={item.quantity <= 1}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                       >
                         <Minus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
@@ -146,7 +146,7 @@ export default function CartPage() {
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         aria-label="Meer"
-                        className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                         style={{ border: '1px solid rgba(196,130,111,0.2)' }}
                       >
                         <Plus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />

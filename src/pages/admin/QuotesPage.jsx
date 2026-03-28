@@ -330,7 +330,7 @@ export default function QuotesPage() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveStatus(tab.key)}
-              className="px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+              className="px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
               style={
                 isActive
                   ? { backgroundColor: 'rgba(196,130,111,0.15)', color: 'var(--color-primary)' }

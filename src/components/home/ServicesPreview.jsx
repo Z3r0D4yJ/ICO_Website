@@ -8,7 +8,7 @@ const CATEGORIES = [
     label: 'Wassen',
     title: 'Wasbeurt',
     description:
-      'Professionele handwas aan huis. EasyWash of DetailWash — exterieur én interieur behandeld door Rico & Nico.',
+      'EasyWash of DetailWash — professionele handwas aan huis voor auto\'s, SUV\'s en bestelwagens. Exterieur én interieur behandeld door Rico & Nico, gemiddeld in 2 uur.',
     price: 'Vanaf €55',
     cta: 'Bekijk & boek',
     href: '/diensten?categorie=wash',
@@ -19,7 +19,7 @@ const CATEGORIES = [
     label: 'Coaten',
     title: 'Keramische Coating',
     description:
-      'Permanente lakbescherming met hydrofobisch effect. Velgen, ramen, leder of volledige carrosserie coating.',
+      'Langdurige lakbescherming met Diamond Infused Ceramic Coating. Uitgevoerd in onze professionele garage in Hamme — optimaal licht, gecontroleerde omgeving. Prijzen inclusief 21% BTW.',
     price: 'Vanaf €200',
     cta: 'Meer info',
     href: '/diensten?categorie=coating',
@@ -30,7 +30,7 @@ const CATEGORIES = [
     label: 'PPF',
     title: 'Paint Protection Film',
     description:
-      'Onzichtbare zelfherstellende folie tegen steenslag, krassen en insecten. Van koplampen tot full body.',
+      'Transparante, zelfherstellende folie tegen steenslag, krassen en insecten. Geplaatst in onze garage in Hamme voor een perfect resultaat. Van koplampen tot volledige carrosserie — ook voor woninginterieurs.',
     price: 'Vanaf €75',
     cta: 'Meer info',
     href: '/diensten?categorie=ppf',
@@ -41,7 +41,7 @@ const CATEGORIES = [
     label: "Extra's",
     title: "Add-ons & Extra's",
     description:
-      "Dieptereiniging, stoomreiniging, polijstbehandeling, airco reiniging en meer — combineer met uw wasbeurt.",
+      "Dieptereiniging met extractiemachine, stoomreiniging, 3-staps polijstbehandeling, airco reiniging en hydrofobe ruitenvloeistof — combineer naar keuze.",
     price: 'Vanaf €10',
     cta: 'Bekijk',
     href: '/diensten?categorie=extra',
@@ -52,8 +52,8 @@ const CATEGORIES = [
     label: 'HomeCare',
     title: 'Home Care',
     description:
-      'Professioneel advies en producten voor thuisonderhoud. Houd uw voertuig proper tussen onze wasbeurten door.',
-    price: 'Binnenkort',
+      'Beschermende PPF-oplossingen voor interieurs van woningen én unieke diensten zoals het wrappen van keukens. Schoonmaken en beschermen — niet alleen voor uw wagen.',
+    price: 'Op maat',
     cta: 'Ontdek',
     href: '/diensten?categorie=homecare',
   },
@@ -89,7 +89,7 @@ export default function ServicesPreview() {
           </h2>
           <div className="divider-gold mt-4 mb-4" aria-hidden="true" />
           <p className="max-w-lg mx-auto text-base" style={{ color: 'var(--color-text-secondary)' }}>
-            Van grondige handwas tot permanente lakbescherming — altijd bij u thuis in heel Vlaanderen.
+            Wassen aan huis in heel Vlaanderen — coating en PPF in onze professionele garage in Hamme.
           </p>
         </div>
 
@@ -99,18 +99,20 @@ export default function ServicesPreview() {
             <Link
               key={key}
               to={href}
-              className="group flex flex-col rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] hover:-translate-y-1"
+              className="group flex flex-col rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
               style={{
                 backgroundColor: 'var(--color-surface-elevated)',
                 border: '1px solid rgba(196,130,111,0.18)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.border = '1px solid rgba(196,130,111,0.45)'
-                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.35)'
+                e.currentTarget.style.border = '1px solid rgba(196,130,111,0.35)'
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.25)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.border = '1px solid rgba(196,130,111,0.18)'
                 e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.transform = 'translateY(0)'
               }}
               aria-label={`${title} — bekijk alle ${label} diensten`}
             >
@@ -120,7 +122,7 @@ export default function ServicesPreview() {
                 {/* Icon + categorie label */}
                 <div className="flex items-center gap-3 mb-6">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-110"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{
                       backgroundColor: 'rgba(196,130,111,0.1)',
                       border: '1px solid rgba(196,130,111,0.25)',
@@ -183,15 +185,11 @@ export default function ServicesPreview() {
                   </div>
 
                   <div
-                    className="flex items-center gap-2 text-sm font-medium transition-all duration-150 group-hover:gap-3"
+                    className="flex items-center gap-2 text-sm font-medium"
                     style={{ color: 'var(--color-primary)' }}
                   >
                     <span>{cta}</span>
-                    <ArrowRight
-                      className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5"
-                      weight="bold"
-                      aria-hidden="true"
-                    />
+                    <ArrowRight className="w-4 h-4" weight="bold" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -215,7 +213,7 @@ export default function ServicesPreview() {
                   <div key={key} className="snap-start flex-shrink-0 w-[calc(100vw-3rem)]" role="listitem">
                     <Link
                       to={href}
-                      className="group flex flex-col h-full rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                      className="group flex flex-col h-full rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                       style={{
                         backgroundColor: 'var(--color-surface-elevated)',
                         border: '1px solid rgba(196,130,111,0.18)',

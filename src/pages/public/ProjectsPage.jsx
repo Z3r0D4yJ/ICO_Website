@@ -1,24 +1,18 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, Calendar, User } from '@/lib/icons'
+import { Image, Car, ArrowRight } from '@/lib/icons'
 import { useTranslation } from 'react-i18next'
-import { useBlogPosts } from '@/hooks/useBlog'
+import { useProjects } from '@/hooks/useProjects'
 import Skeleton from '@/components/ui/Skeleton'
+import { SERVICE_CATEGORIES } from '@/lib/constants'
 
-function formatDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('nl-BE', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  })
-}
-
-function BlogCard({ post, lang }) {
-  const title = (lang === 'en' && post.title_en) ? post.title_en : post.title_nl
-  const excerpt = (lang === 'en' && post.excerpt_en) ? post.excerpt_en : post.excerpt_nl
+function ProjectCard({ project, lang }) {
+  const title = (lang === 'en' && project.title_en) ? project.title_en : project.title_nl
+  const description = (lang === 'en' && project.description_en) ? project.description_en : project.description_nl
 
   return (
     <Link
-      to={`/blog/${post.slug}`}
+      to={`/projecten/${project.slug}`}
       className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
       style={{
         backgroundColor: 'var(--color-surface-elevated)',
@@ -36,13 +30,10 @@ function BlogCard({ post, lang }) {
       }}
     >
       {/* Cover image */}
-      <div
-        className="relative overflow-hidden flex-shrink-0"
-        style={{ aspectRatio: '16/9' }}
-      >
-        {post.cover_image_url ? (
+      <div className="relative overflow-hidden flex-shrink-0" style={{ aspectRatio: '16/9' }}>
+        {project.cover_image_url ? (
           <img
-            src={post.cover_image_url}
+            src={project.cover_image_url}
             alt={title}
             className="w-full h-full object-cover"
             loading="lazy"
@@ -53,46 +44,42 @@ function BlogCard({ post, lang }) {
             style={{ background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-surface) 100%)' }}
             aria-hidden="true"
           >
-            <BookOpen
-              className="w-10 h-10 opacity-30"
-              style={{ color: 'var(--color-primary)' }}
-            />
+            <Image className="w-10 h-10 opacity-30" style={{ color: 'var(--color-primary)' }} />
           </div>
         )}
-        {/* Gradient overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 50%)' }}
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%)' }}
           aria-hidden="true"
         />
+        {project.service_type && (
+          <div className="absolute bottom-3 left-3">
+            <span
+              className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full"
+              style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }}
+            >
+              {SERVICE_CATEGORIES.find((c) => c.value === project.service_type)?.label_nl ?? project.service_type}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
-      <div className="flex flex-col flex-1 p-6">
-        {/* Tags */}
-        {post.tags?.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {post.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                style={{
-                  backgroundColor: 'rgba(196,130,111,0.1)',
-                  color: 'var(--color-primary)',
-                }}
-              >
-                {tag}
-              </span>
-            ))}
+      <div className="flex flex-col flex-1 p-5">
+        {(project.vehicle_brand || project.vehicle_type) && (
+          <div className="flex items-center gap-1.5 mb-2">
+            <Car className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+              {[project.vehicle_brand, project.vehicle_type].filter(Boolean).join(' · ')}
+            </span>
           </div>
         )}
 
-        {/* Title */}
         <h2
-          className="mb-3 line-clamp-2"
+          className="mb-2 line-clamp-2"
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.375rem',
+            fontSize: '1.25rem',
             color: 'var(--color-text-primary)',
             letterSpacing: '0.02em',
             lineHeight: 1.2,
@@ -101,40 +88,38 @@ function BlogCard({ post, lang }) {
           {title}
         </h2>
 
-        {/* Excerpt */}
-        {excerpt && (
+        {description && (
           <p
-            className="text-sm leading-relaxed flex-1 line-clamp-3 mb-5"
+            className="text-sm leading-relaxed flex-1 line-clamp-2 mb-4"
             style={{ color: 'var(--color-text-secondary)' }}
           >
-            {excerpt}
+            {description}
           </p>
         )}
 
-        {/* Footer: meta + lees meer */}
+        {project.tags?.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {project.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="text-xs font-medium px-2 py-0.5 rounded-full capitalize"
+                style={{ backgroundColor: 'rgba(196,130,111,0.1)', color: 'var(--color-primary)' }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
         <div
-          className="flex items-center justify-between pt-4 border-t mt-auto"
+          className="flex items-center justify-end pt-3 border-t mt-auto"
           style={{ borderColor: 'rgba(196,130,111,0.15)' }}
         >
-          <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-            {post.author && (
-              <span className="flex items-center gap-1">
-                <User className="w-3.5 h-3.5" aria-hidden="true" />
-                {post.author}
-              </span>
-            )}
-            {post.published_at && (
-              <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
-                {formatDate(post.published_at)}
-              </span>
-            )}
-          </div>
           <div
             className="flex items-center gap-1.5 text-xs font-medium transition-all duration-150 group-hover:gap-2.5"
             style={{ color: 'var(--color-primary)' }}
           >
-            Lees meer
+            Bekijk project
             <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
           </div>
         </div>
@@ -143,33 +128,29 @@ function BlogCard({ post, lang }) {
   )
 }
 
-function BlogCardSkeleton() {
+function ProjectCardSkeleton() {
   return (
     <div
       className="rounded-2xl overflow-hidden"
       style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.18)' }}
     >
       <Skeleton variant="rect" style={{ aspectRatio: '16/9', width: '100%' }} />
-      <div className="p-6 space-y-3">
-        <Skeleton variant="line" width="60px" height="20px" />
-        <Skeleton variant="line" width="85%" height="24px" />
-        <Skeleton variant="line" width="70%" height="24px" />
-        <Skeleton variant="rect" height="60px" />
+      <div className="p-5 space-y-3">
+        <Skeleton variant="line" width="40%" height="14px" />
+        <Skeleton variant="line" width="80%" height="22px" />
+        <Skeleton variant="rect" height="40px" />
         <Skeleton variant="line" width="100%" height="1px" />
-        <Skeleton variant="line" width="50%" height="16px" />
+        <Skeleton variant="line" width="30%" height="14px" />
       </div>
     </div>
   )
 }
 
-export default function BlogPage() {
+export default function ProjectsPage() {
   const { i18n } = useTranslation()
   const lang = i18n.language?.slice(0, 2) || 'nl'
-  const [activeTag, setActiveTag] = useState(null)
-  const { posts, loading } = useBlogPosts(activeTag)
-
-  // Verzamel alle unieke tags uit gepubliceerde posts
-  const allTags = [...new Set(posts.flatMap((p) => p.tags || []))].sort()
+  const [activeType, setActiveType] = useState(null)
+  const { projects, loading } = useProjects({ serviceType: activeType })
 
   return (
     <>
@@ -195,7 +176,7 @@ export default function BlogPage() {
             className="text-sm font-semibold uppercase tracking-widest mb-3"
             style={{ color: 'var(--color-primary)' }}
           >
-            ICO Magazine
+            Portfolio
           </p>
           <h1
             style={{
@@ -206,89 +187,75 @@ export default function BlogPage() {
               lineHeight: 1.0,
             }}
           >
-            BLOG &amp; NIEUWS
+            ONZE PROJECTEN
           </h1>
           <div className="divider-gold mt-4 mb-4" aria-hidden="true" />
           <p
             className="max-w-lg mx-auto text-base"
             style={{ color: 'var(--color-text-secondary)' }}
           >
-            Tips, nieuws en achter de schermen bij Team ICO — alles over auto detailing en lakbescherming.
+            Voor en na — ontdek de transformaties die wij elke dag realiseren voor onze klanten in Vlaanderen.
           </p>
         </div>
       </div>
 
       {/* Content */}
-      <section
-        className="section-padding"
-        style={{ backgroundColor: 'var(--color-surface)' }}
-      >
+      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
         <div className="container-ico">
-          {/* Tag filters */}
-          {allTags.length > 0 && (
-            <div
-              className="flex flex-wrap gap-2 mb-10"
-              role="group"
-              aria-label="Filter op tag"
+          {/* Service type filters */}
+          <div className="flex flex-wrap gap-2 mb-10" role="group" aria-label="Filter op dienst">
+            <button
+              onClick={() => setActiveType(null)}
+              className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+              style={
+                activeType === null
+                  ? { backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }
+                  : { backgroundColor: 'var(--color-surface-elevated)', color: 'var(--color-text-secondary)', border: '1px solid rgba(196,130,111,0.2)' }
+              }
             >
+              Alle
+            </button>
+            {SERVICE_CATEGORIES.map(({ value, label_nl }) => (
               <button
-                onClick={() => setActiveTag(null)}
+                key={value}
+                onClick={() => setActiveType(value === activeType ? null : value)}
                 className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={
-                  activeTag === null
+                  activeType === value
                     ? { backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }
                     : { backgroundColor: 'var(--color-surface-elevated)', color: 'var(--color-text-secondary)', border: '1px solid rgba(196,130,111,0.2)' }
                 }
               >
-                Alle
+                {label_nl}
               </button>
-              {allTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                  style={
-                    activeTag === tag
-                      ? { backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }
-                      : { backgroundColor: 'var(--color-surface-elevated)', color: 'var(--color-text-secondary)', border: '1px solid rgba(196,130,111,0.2)' }
-                  }
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          )}
+            ))}
+          </div>
 
-          {/* Grid */}
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => <BlogCardSkeleton key={i} />)}
+              {[1, 2, 3, 4, 5, 6].map((i) => <ProjectCardSkeleton key={i} />)}
             </div>
-          ) : posts.length === 0 ? (
+          ) : projects.length === 0 ? (
             <div
               className="flex flex-col items-center gap-4 py-20 rounded-2xl text-center"
               style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.15)' }}
             >
-              <BookOpen
-                className="w-12 h-12"
-                style={{ color: 'var(--color-text-muted)' }}
-                aria-hidden="true"
-              />
+              <Image className="w-12 h-12" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
               <div>
                 <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                  {activeTag ? `Geen artikels gevonden voor "${activeTag}"` : 'Nog geen artikels gepubliceerd'}
+                  {activeType ? `Geen projecten gevonden voor "${SERVICE_CATEGORIES.find(c => c.value === activeType)?.label_nl ?? activeType}"` : 'Nog geen projecten gepubliceerd'}
                 </p>
                 <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
-                  Kom binnenkort terug — we zijn druk aan het schrijven!
+                  Kom binnenkort terug — we zijn druk bezig!
                 </p>
               </div>
-              {activeTag && (
+              {activeType && (
                 <button
-                  onClick={() => setActiveTag(null)}
+                  onClick={() => setActiveType(null)}
                   className="text-sm font-medium cursor-pointer"
                   style={{ color: 'var(--color-primary)' }}
                 >
-                  Toon alle artikels
+                  Toon alle projecten
                 </button>
               )}
             </div>
@@ -296,8 +263,8 @@ export default function BlogPage() {
             <>
               {/* Desktop grid */}
               <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {posts.map((post) => (
-                  <BlogCard key={post.id} post={post} lang={lang} />
+                {projects.map((project) => (
+                  <ProjectCard key={project.id} project={project} lang={lang} />
                 ))}
               </div>
 
@@ -306,10 +273,10 @@ export default function BlogPage() {
                 className="sm:hidden -mx-4 overflow-x-auto snap-x snap-mandatory"
                 style={{ scrollbarWidth: 'none', scrollPaddingInline: '1.5rem' }}
               >
-                <div className="flex gap-4 px-4" role="list" aria-label="Blog artikels">
-                  {posts.map((post) => (
-                    <div key={post.id} className="snap-start flex-shrink-0 w-[calc(100vw-3rem)]" role="listitem">
-                      <BlogCard post={post} lang={lang} />
+                <div className="flex gap-4 px-4" role="list" aria-label="Projecten">
+                  {projects.map((project) => (
+                    <div key={project.id} className="snap-start flex-shrink-0 w-[calc(100vw-3rem)]" role="listitem">
+                      <ProjectCard project={project} lang={lang} />
                     </div>
                   ))}
                   <div className="flex-shrink-0 w-1" aria-hidden="true" />

@@ -84,6 +84,12 @@
   }
   .btn-primary:not(:disabled):hover {
     background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(196, 130, 111, 0.18);
+  }
+  .btn-primary:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: none;
   }
   .btn-secondary {
     background-color: rgba(196, 130, 111, 0.08);
@@ -94,6 +100,12 @@
   .btn-secondary:not(:disabled):hover {
     background-color: rgba(196, 130, 111, 0.14);
     border-color: rgba(196, 130, 111, 0.55);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+  .btn-secondary:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: none;
   }
   .btn-ghost {
     background-color: transparent;
@@ -104,7 +116,7 @@
   .btn-ghost:not(:disabled):hover {
     background-color: var(--color-surface-overlay);
     color: var(--color-text-primary);
-    border-color: rgba(196, 130, 111, 0.2);
+    border-color: rgba(196, 130, 111, 0.25);
   }
   .btn-danger {
     background-color: var(--color-error);
@@ -114,6 +126,12 @@
   }
   .btn-danger:not(:disabled):hover {
     background-color: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.18);
+  }
+  .btn-danger:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: none;
   }
 
   /* --- Container --- */

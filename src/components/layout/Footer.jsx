@@ -14,7 +14,7 @@ const DIENSTEN_LINKS = [
 const NUTTIGE_LINKS = [
   { to: '/boeken', label: 'Afspraak Maken' },
   { to: '/over-ons', label: 'Over Team ICO' },
-  { to: '/blog', label: 'Blog & Tips' },
+  { to: '/projecten', label: 'Onze Projecten' },
   { to: '/faq', label: 'FAQ' },
   { to: '/contact', label: 'Contact' },
   { to: '/privacy', label: 'Privacybeleid' },
@@ -41,7 +41,7 @@ export default function Footer() {
             href={whatsappLink(WHATSAPP_NUMBER, 'Hallo, ik heb een vraag over ICO car detailing.')}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-150 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-150 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }}
           >
             <MessageCircle className="w-4 h-4" aria-hidden="true" />
@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link
               to="/"
-              className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-lg"
+              className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded-lg"
               aria-label="ICO homepage"
             >
               <img
@@ -81,7 +81,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="ICO op Instagram"
-                className="p-2 rounded-md transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] cursor-pointer"
+                className="p-2 rounded-md transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 cursor-pointer"
                 style={{ color: 'var(--color-text-muted)' }}
               >
                 <Instagram className="w-5 h-5" aria-hidden="true" />
@@ -91,7 +91,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="ICO op Facebook"
-                className="p-2 rounded-md transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] cursor-pointer"
+                className="p-2 rounded-md transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 cursor-pointer"
                 style={{ color: 'var(--color-text-muted)' }}
               >
                 <Facebook className="w-5 h-5" aria-hidden="true" />
