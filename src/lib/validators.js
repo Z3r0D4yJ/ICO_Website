@@ -38,7 +38,7 @@ export const bookingSchema = z.object({
 export const contactSchema = z.object({
   name: z.string().min(2, 'Naam moet minstens 2 tekens zijn').max(100),
   email: z.string().email('Ongeldig e-mailadres'),
-  phone: belgianPhone.optional().or(z.literal('')),
+  phone: belgianPhone.nullish().or(z.literal('')),
   subject: z.string().min(3, 'Onderwerp moet minstens 3 tekens zijn').max(100),
   message: z.string().min(10, 'Bericht moet minstens 10 tekens zijn').max(2000),
 })
@@ -47,7 +47,7 @@ export const contactSchema = z.object({
 export const checkoutSchema = z.object({
   customer_name: z.string().min(2, 'Naam moet minstens 2 tekens zijn').max(100),
   customer_email: z.string().email('Ongeldig e-mailadres'),
-  customer_phone: belgianPhone.optional().or(z.literal('')),
+  customer_phone: belgianPhone.nullish().or(z.literal('')),
   shipping_address: z.string().min(5, 'Vul uw straat en huisnummer in').max(200),
   shipping_city: z.string().min(2, 'Vul uw gemeente in').max(100),
   shipping_postal_code: belgianPostalCode,
@@ -63,11 +63,11 @@ export const serviceSchema = z.object({
   description_en: z.string().max(5000).optional(),
   short_description_nl: z.string().max(300).optional(),
   short_description_en: z.string().max(300).optional(),
-  price_from: z.number().min(0).optional().nullable(),
-  price_to: z.number().min(0).optional().nullable(),
+  price_from: z.number().min(0).nullish(),
+  price_to: z.number().min(0).nullish(),
   price_note_nl: z.string().max(200).optional(),
   price_note_en: z.string().max(200).optional(),
-  duration_minutes: z.number().int().min(0).optional().nullable(),
+  duration_minutes: z.number().int().min(0).nullish(),
   icon: z.string().max(50).optional(),
   is_active: z.boolean().default(true),
   sort_order: z.number().int().default(0),
@@ -80,7 +80,7 @@ export const productSchema = z.object({
   description_nl: z.string().max(5000).optional(),
   description_en: z.string().max(5000).optional(),
   price: z.number().min(0, 'Prijs moet 0 of hoger zijn'),
-  compare_at_price: z.number().min(0).optional().nullable(),
+  compare_at_price: z.number().min(0).nullish(),
   category: z.string().optional(),
   stock_quantity: z.number().int().min(0).default(0),
   is_active: z.boolean().default(true),
@@ -91,11 +91,11 @@ export const productSchema = z.object({
 export const quoteRequestSchema = z.object({
   name: z.string().min(2, 'Naam moet minstens 2 tekens zijn').max(100),
   email: z.string().email('Ongeldig e-mailadres'),
-  phone: belgianPhone.optional().or(z.literal('')),
-  service_interest: z.string().max(200).optional(),
-  vehicle_type: z.string().max(50).optional(),
-  vehicle_brand: z.string().max(100).optional(),
-  message: z.string().max(2000, 'Maximum 2000 tekens').optional(),
+  phone: belgianPhone.nullish().or(z.literal('')),
+  service_interest: z.string().max(200).nullish(),
+  vehicle_type: z.string().max(50).nullish(),
+  vehicle_brand: z.string().max(100).nullish(),
+  message: z.string().max(2000, 'Maximum 2000 tekens').nullish(),
 })
 
 // --- Admin: login formulier ---

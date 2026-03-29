@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   ArrowLeft, User, Mail, Phone, MapPin, Car,
-  Calendar, Clock, FileText, ChevronDown, Trash2,
+  Calendar, Clock, FileText, Trash2,
   Upload, X, Plus, MessageCircle, ExternalLink,
 } from '@/lib/icons'
 import { supabase } from '@/config/supabase'
@@ -121,7 +121,8 @@ export default function BookingDetailPage() {
       await updateBookingStatus(id, newStatus)
       setBooking((b) => ({ ...b, status: newStatus }))
       showSuccess('Status bijgewerkt.')
-    } catch {
+    } catch (err) {
+      console.error('Status update error:', err)
       showError('Status kon niet worden bijgewerkt.')
     }
     setStatusLoading(false)
@@ -187,7 +188,7 @@ export default function BookingDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-2xl space-y-4">
+      <div className="space-y-4">
         <Skeleton variant="line" width="120px" height="20px" />
         <Skeleton variant="rect" height="300px" className="rounded-xl" />
       </div>
@@ -226,7 +227,7 @@ export default function BookingDetailPage() {
   const whatsappConfirmMsg = `Hallo ${booking.customer_name}, uw boeking ${booking.booking_number} is bevestigd voor ${formattedDate} om ${booking.preferred_time_slot}. Groeten, Team ICO`
 
   return (
-    <div className="max-w-2xl space-y-5">
+    <div className="space-y-5">
 
       {/* Terug + header */}
       <div className="flex items-center gap-3">
@@ -261,27 +262,25 @@ export default function BookingDetailPage() {
       <div className="rounded-xl p-4 flex flex-wrap items-center gap-3"
         style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}>
         <p className="text-sm font-medium" style={{ color: 'var(--color-text-secondary)' }}>Status:</p>
-        <div className="relative">
-          <select
-            value={booking.status}
-            onChange={handleStatusChange}
-            disabled={statusLoading}
-            className="appearance-none pl-3 pr-8 py-2 rounded-lg text-sm cursor-pointer focus:outline-none"
-            style={{
-              backgroundColor: 'var(--color-surface-overlay)',
-              border: '1px solid rgba(196,130,111,0.2)',
-              color: 'var(--color-text-primary)',
-              opacity: statusLoading ? 0.5 : 1,
-            }}
-          >
-            {allStatuses.map((s) => (
-              <option key={s.value} value={s.value} style={{ backgroundColor: 'var(--color-surface-elevated)' }}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
-        </div>
+        <select
+          value={booking.status}
+          onChange={handleStatusChange}
+          disabled={statusLoading}
+          className="px-3 py-2 rounded-lg text-sm cursor-pointer focus:outline-none"
+          style={{
+            backgroundColor: 'var(--color-surface-overlay)',
+            border: '1px solid rgba(196,130,111,0.2)',
+            color: 'var(--color-text-primary)',
+            opacity: statusLoading ? 0.5 : 1,
+            colorScheme: 'dark',
+          }}
+        >
+          {allStatuses.map((s) => (
+            <option key={s.value} value={s.value} style={{ backgroundColor: 'var(--color-surface-elevated)' }}>
+              {s.label}
+            </option>
+          ))}
+        </select>
 
         <Button
           as="a"

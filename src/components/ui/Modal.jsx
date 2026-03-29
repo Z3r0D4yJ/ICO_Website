@@ -101,7 +101,7 @@ export default function Modal({
 
   return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center p-4"
+      className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4"
       style={{ zIndex: 'var(--z-overlay)' }}
       role="presentation"
     >
@@ -119,9 +119,10 @@ export default function Modal({
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
         className={cn(
-          'relative w-full rounded-xl shadow-[var(--shadow-lg)]',
+          'relative w-full rounded-t-xl sm:rounded-xl shadow-[var(--shadow-lg)]',
           'animate-slide-up',
           'border border-[rgba(196,130,111,0.2)]',
+          'max-h-[90vh] overflow-y-auto',
           sizes[size],
           className
         )}
@@ -131,13 +132,18 @@ export default function Modal({
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Mobile drag indicator */}
+        <div className="sm:hidden flex justify-center pt-2 pb-0">
+          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: 'rgba(196,130,111,0.3)' }} />
+        </div>
+
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
             {title && (
               <h2
                 id="modal-title"
-                className="text-lg font-semibold"
+                className="text-base sm:text-lg font-semibold"
                 style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-display)', letterSpacing: '0.03em' }}
               >
                 {title}
@@ -147,7 +153,7 @@ export default function Modal({
               <button
                 onClick={onClose}
                 aria-label="Modal sluiten"
-                className="p-1.5 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                 style={{ color: 'var(--color-text-muted)', marginLeft: 'auto' }}
               >
                 <X className="w-5 h-5" aria-hidden="true" />
@@ -157,7 +163,7 @@ export default function Modal({
         )}
 
         {/* Content */}
-        <div className="px-6 py-5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5">
           {children}
         </div>
       </div>
@@ -169,7 +175,7 @@ export default function Modal({
 // Subcomponenten
 Modal.Footer = function ModalFooter({ className, children }) {
   return (
-    <div className={cn('flex items-center justify-end gap-3 mt-6 pt-4 border-t', className)} style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
+    <div className={cn('flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 mt-6 pt-4 border-t', className)} style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
       {children}
     </div>
   )

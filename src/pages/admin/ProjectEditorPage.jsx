@@ -204,6 +204,7 @@ function GalleryUpload({ images, onChange }) {
       const urls = await Promise.all(files.map((f) => uploadProjectImage(f)))
       onChange([...images, ...urls])
     } catch (err) {
+      console.error('Gallery upload error:', err)
       showError(err?.message || 'Upload mislukt', 'Upload mislukt')
     } finally {
       setUploading(false)
@@ -219,7 +220,7 @@ function GalleryUpload({ images, onChange }) {
         Galerij foto&apos;s
       </label>
       {images.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 mb-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
           {images.map((url, index) => (
             <div key={index} className="relative rounded-lg overflow-hidden group" style={{ aspectRatio: '4/3' }}>
               <img src={url} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" loading="lazy" />
@@ -324,6 +325,7 @@ export default function ProjectEditorPage() {
       showSuccess(willPublish ? 'Project gepubliceerd!' : 'Concept opgeslagen', '')
       setTimeout(() => setSavedState(null), 3000)
     } catch (err) {
+      console.error('Project save error:', err)
       setSavedState('error')
       showError(err?.message || 'Opslaan mislukt', 'Fout')
     } finally {
@@ -340,12 +342,13 @@ export default function ProjectEditorPage() {
     backgroundColor: 'var(--color-surface-overlay)',
     border: '1px solid rgba(196,130,111,0.2)',
     color: 'var(--color-text-primary)',
+    colorScheme: 'dark',
     outline: 'none',
   }
 
   if (loadingProject) {
     return (
-      <div className="max-w-5xl space-y-6">
+      <div className="space-y-6">
         <div className="flex items-center gap-4">
           <div className="h-8 w-32 rounded-lg animate-pulse" style={{ backgroundColor: 'var(--color-surface-elevated)' }} />
           <div className="flex-1" />
@@ -358,7 +361,7 @@ export default function ProjectEditorPage() {
   }
 
   return (
-    <div className="max-w-5xl space-y-5">
+    <div className="space-y-5">
       {/* Top bar */}
       <div className="flex items-center gap-3 flex-wrap">
         <Link

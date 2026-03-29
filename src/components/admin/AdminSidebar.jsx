@@ -146,7 +146,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
             aria-hidden="true"
           />
           <aside
-            className="fixed top-0 left-0 bottom-0 w-56 flex flex-col lg:hidden"
+            className="fixed top-0 left-0 bottom-0 w-64 max-w-[80vw] flex flex-col lg:hidden"
             style={{
               backgroundColor: 'var(--color-surface-elevated)',
               borderRight: '1px solid rgba(196,130,111,0.2)',

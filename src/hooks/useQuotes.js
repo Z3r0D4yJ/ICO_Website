@@ -13,6 +13,7 @@ export function useQuotes(statusFilter = null) {
       const data = await fetchQuoteRequests({ status: statusFilter })
       setQuotes(data)
     } catch (err) {
+      console.error('Quotes fetch error:', err)
       setError(err.message)
     } finally {
       setLoading(false)

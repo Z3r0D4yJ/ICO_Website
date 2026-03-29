@@ -2,13 +2,16 @@ import { supabase } from '@/config/supabase'
 import { quoteRequestSchema } from '@/lib/validators'
 
 export async function createQuoteRequest(data) {
-  // Valideer input voordat het naar de database gaat
   const validated = quoteRequestSchema.parse(data)
-  const { data: result, error } = await supabase
-    .from('quote_requests')
-    .insert([validated])
-    .select()
-    .single()
+  const { data: result, error } = await supabase.rpc('create_quote_public', {
+    p_name:             validated.name,
+    p_email:            validated.email,
+    p_phone:            validated.phone            || null,
+    p_service_interest: validated.service_interest || null,
+    p_vehicle_type:     validated.vehicle_type     || null,
+    p_vehicle_brand:    validated.vehicle_brand    || null,
+    p_message:          validated.message          || null,
+  })
   if (error) throw error
   return result
 }

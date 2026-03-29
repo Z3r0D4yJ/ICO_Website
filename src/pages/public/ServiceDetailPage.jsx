@@ -49,6 +49,7 @@ function QuoteModal({ service, onClose }) {
       })
       setSuccess(true)
     } catch (err) {
+      console.error('Quote error:', err)
       setErrors({ submit: 'Er is iets misgegaan. Probeer het opnieuw.' })
     } finally {
       setSubmitting(false)

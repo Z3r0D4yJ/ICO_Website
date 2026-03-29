@@ -65,7 +65,7 @@ export default function ProjectsManagePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
@@ -130,12 +130,13 @@ export default function ProjectsManagePage() {
             {projects.map((project) => (
               <li
                 key={project.id}
-                className="flex items-center gap-4 px-5 py-4"
+                className="px-3 sm:px-5 py-3 sm:py-4"
                 style={{ borderBottom: '1px solid rgba(196,130,111,0.1)' }}
               >
+                <div className="flex items-start gap-3">
                 {/* Cover thumbnail */}
                 <div
-                  className="w-20 h-14 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
+                  className="w-16 sm:w-20 h-11 sm:h-14 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
                   style={{ backgroundColor: 'var(--color-surface-overlay)' }}
                 >
                   {project.cover_image_url ? (
@@ -192,13 +193,14 @@ export default function ProjectsManagePage() {
                   </div>
                 </div>
 
-                {/* Acties */}
-                <div className="flex items-center gap-1 flex-shrink-0">
-                  {/* Publiceer toggle */}
+                </div>
+
+                {/* Acties - onder de info */}
+                <div className="flex items-center gap-1 mt-2 ml-[calc(4rem+0.75rem)] sm:ml-[calc(5rem+0.75rem)]">
                   <button
                     onClick={() => handleTogglePublish(project)}
                     disabled={togglingId === project.id}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-50"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-50"
                     style={{ color: project.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
                     aria-label={project.is_published ? 'Depubliceren' : 'Publiceren'}
                     title={project.is_published ? 'Depubliceren' : 'Publiceren'}
@@ -206,23 +208,21 @@ export default function ProjectsManagePage() {
                     {project.is_published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                   </button>
 
-                  {/* Bewerk */}
                   <Link
                     to={`/admin/projecten/${project.id}/edit`}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={{ color: 'var(--color-text-muted)' }}
                     aria-label="Bewerk project"
                   >
                     <Edit className="w-4 h-4" />
                   </Link>
 
-                  {/* Preview */}
                   {project.is_published && (
                     <Link
                       to={`/projecten/${project.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                      className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                       style={{ color: 'var(--color-text-muted)' }}
                       aria-label="Bekijk op website"
                     >
@@ -230,10 +230,9 @@ export default function ProjectsManagePage() {
                     </Link>
                   )}
 
-                  {/* Verwijder */}
                   <button
                     onClick={() => setDeleteTarget(project)}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 ml-auto"
                     style={{ color: 'var(--color-error)' }}
                     aria-label="Verwijder project"
                   >

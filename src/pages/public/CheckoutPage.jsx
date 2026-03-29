@@ -62,7 +62,8 @@ export default function CheckoutPage() {
 
       clearCart()
       navigate(`/shop/bevestiging?nummer=${orderNumber}`)
-    } catch {
+    } catch (err) {
+      console.error('Checkout error:', err)
       showError('Er ging iets mis. Probeer opnieuw.')
       setSubmitting(false)
     }

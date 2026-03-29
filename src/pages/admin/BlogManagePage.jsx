@@ -59,7 +59,7 @@ export default function BlogManagePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
@@ -124,56 +124,57 @@ export default function BlogManagePage() {
             {posts.map((post) => (
               <li
                 key={post.id}
-                className="flex items-center gap-4 px-5 py-4"
+                className="px-3 sm:px-5 py-3 sm:py-4"
                 style={{ borderBottom: '1px solid rgba(196,130,111,0.1)' }}
               >
-                {/* Status indicator */}
-                <div
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: post.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
-                  aria-label={post.is_published ? 'Gepubliceerd' : 'Concept'}
-                />
+                <div className="flex items-start gap-3">
+                  {/* Status indicator */}
+                  <div
+                    className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5"
+                    style={{ backgroundColor: post.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
+                    aria-label={post.is_published ? 'Gepubliceerd' : 'Concept'}
+                  />
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="font-medium truncate"
-                    style={{ color: 'var(--color-text-primary)', fontSize: '0.9375rem' }}
-                  >
-                    {post.title_nl}
-                  </p>
-                  <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-0.5">
-                    <Badge
-                      variant={post.is_published ? 'success' : 'neutral'}
-                      size="sm"
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="font-medium truncate"
+                      style={{ color: 'var(--color-text-primary)', fontSize: '0.9375rem' }}
                     >
-                      {post.is_published ? 'Gepubliceerd' : 'Concept'}
-                    </Badge>
-                    {post.published_at && post.is_published && (
-                      <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                        <Calendar className="w-3 h-3" aria-hidden="true" />
-                        {formatDate(post.published_at)}
-                      </span>
-                    )}
-                    {post.tags?.slice(0, 2).map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-1.5 py-0.5 rounded-full capitalize"
-                        style={{ backgroundColor: 'rgba(196,130,111,0.1)', color: 'var(--color-primary)' }}
+                      {post.title_nl}
+                    </p>
+                    <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-0.5">
+                      <Badge
+                        variant={post.is_published ? 'success' : 'neutral'}
+                        size="sm"
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        {post.is_published ? 'Gepubliceerd' : 'Concept'}
+                      </Badge>
+                      {post.published_at && post.is_published && (
+                        <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                          <Calendar className="w-3 h-3" aria-hidden="true" />
+                          {formatDate(post.published_at)}
+                        </span>
+                      )}
+                      {post.tags?.slice(0, 2).map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs px-1.5 py-0.5 rounded-full capitalize"
+                          style={{ backgroundColor: 'rgba(196,130,111,0.1)', color: 'var(--color-primary)' }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Acties */}
-                <div className="flex items-center gap-1 flex-shrink-0">
-                  {/* Publiceer toggle */}
+                {/* Acties - onder de info op mobiel */}
+                <div className="flex items-center gap-1 mt-2 ml-5">
                   <button
                     onClick={() => handleTogglePublish(post)}
                     disabled={togglingId === post.id}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-50"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 disabled:opacity-50"
                     style={{ color: post.is_published ? 'var(--color-success)' : 'var(--color-text-muted)' }}
                     aria-label={post.is_published ? 'Verwijder publicatie' : 'Publiceer'}
                     title={post.is_published ? 'Depubliceren' : 'Publiceren'}
@@ -184,23 +185,21 @@ export default function BlogManagePage() {
                     }
                   </button>
 
-                  {/* Bewerk */}
                   <Link
                     to={`/admin/blog/${post.id}/edit`}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                     style={{ color: 'var(--color-text-muted)' }}
                     aria-label="Bewerk artikel"
                   >
                     <Edit className="w-4 h-4" />
                   </Link>
 
-                  {/* Preview */}
                   {post.is_published && (
                     <Link
                       to={`/blog/${post.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                      className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
                       style={{ color: 'var(--color-text-muted)' }}
                       aria-label="Bekijk op website"
                     >
@@ -208,10 +207,9 @@ export default function BlogManagePage() {
                     </Link>
                   )}
 
-                  {/* Verwijder */}
                   <button
                     onClick={() => setDeleteTarget(post)}
-                    className="p-2 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                    className="p-2.5 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 ml-auto"
                     style={{ color: 'var(--color-error)' }}
                     aria-label="Verwijder artikel"
                   >

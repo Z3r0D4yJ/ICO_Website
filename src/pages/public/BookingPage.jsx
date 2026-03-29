@@ -55,88 +55,99 @@ function CarSVG() {
 }
 
 // ── Stap-indicator met rijdende auto ──────────────────────────────────────────
+// Verticale layout (px van top van container):
+//   y=3–29  : cirkels (26px diameter, center op y=16)
+//   y=29–56 : verticale tick-lijnen (verbinden cirkel met weg)
+//   y=56    : weg (horizontale lijn, 3px dik)
+//   y=36–56 : auto (20px hoog, wielen raken weg op y=56)
+//   y=62–76 : labels (tekst onder de weg)
+//   Totaal  : 80px
 function StepIndicator({ currentStep }) {
   const idx = currentStep - 1
   const total = STEPS.length - 1
   const pct = (idx / total) * 100
 
+  const ROAD_Y     = 56   // y van de weg
+  const CIRCLE_CY  = 16   // y van cirkel-centrum
+  const CIRCLE_R   = 13   // straal → diameter 26px
+  const CAR_H      = 20   // hoogte CarSVG
+  // auto top = ROAD_Y - CAR_H = 36 → cirkel bottom = 29 → 7px lucht ✓
+
   return (
     <div className="mb-8" role="list" aria-label="Boekingsstappen">
-      <div className="relative" style={{ height: 88 }}>
-        {/* Track achtergrond */}
+      <div className="relative" style={{ height: 80 }}>
+
+        {/* ── Weg achtergrond ── */}
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
-            top: 48,
-            left: 0,
-            right: 0,
-            height: 1,
-            backgroundColor: 'rgba(196,130,111,0.2)',
-          }}
-        />
-        {/* Progressie */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: 48,
-            left: 0,
-            height: 1,
-            width: `${pct}%`,
-            backgroundColor: 'var(--color-primary)',
-            transition: 'width 0.5s ease-in-out',
+            top: ROAD_Y,
+            left: 0, right: 0,
+            height: 3,
+            borderRadius: 2,
+            backgroundColor: 'rgba(196,130,111,0.18)',
           }}
         />
 
-        {/* Auto */}
+        {/* ── Weg progressie ── */}
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
-            top: 12,
+            top: ROAD_Y,
+            left: 0,
+            height: 3,
+            borderRadius: 2,
+            width: `${pct}%`,
+            backgroundColor: 'var(--color-primary)',
+            transition: 'width 0.55s ease-in-out',
+          }}
+        />
+
+        {/* ── Auto rijdt over de weg ── */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: ROAD_Y - CAR_H,
             left: `${pct}%`,
             transform: 'translateX(-50%)',
             color: 'var(--color-primary)',
-            transition: 'left 0.5s ease-in-out',
-            zIndex: 20,
+            transition: 'left 0.55s ease-in-out',
+            zIndex: 30,
+            filter: 'drop-shadow(0 1px 3px rgba(196,130,111,0.4))',
           }}
         >
           <CarSVG />
         </div>
 
-        {/* Stap-cirkels + labels */}
+        {/* ── Step markers ── */}
         {STEPS.map((step, i) => {
-          const isDone = step.id < currentStep
+          const isDone    = step.id < currentStep
           const isCurrent = step.id === currentStep
-          const dotPct = (i / total) * 100
+          const dotPct    = (i / total) * 100
+          const accentColor = isDone || isCurrent ? 'var(--color-primary)' : 'rgba(196,130,111,0.2)'
+
           return (
-            <div
-              key={step.id}
-              role="listitem"
-              aria-current={isCurrent ? 'step' : undefined}
-              style={{
-                position: 'absolute',
-                top: 32,
-                left: `${dotPct}%`,
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 4,
-                zIndex: 10,
-              }}
-            >
+            <div key={step.id} role="listitem" aria-current={isCurrent ? 'step' : undefined}>
+
+              {/* Cirkel boven de weg */}
               <div
                 style={{
-                  width: 32,
-                  height: 32,
+                  position: 'absolute',
+                  top: CIRCLE_CY - CIRCLE_R,
+                  left: `${dotPct}%`,
+                  transform: 'translateX(-50%)',
+                  width: CIRCLE_R * 2,
+                  height: CIRCLE_R * 2,
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 700,
+                  zIndex: 10,
                   transition: 'all 0.3s',
                   backgroundColor: isDone
                     ? 'var(--color-success)'
@@ -145,21 +156,51 @@ function StepIndicator({ currentStep }) {
                     : 'var(--color-surface-elevated)',
                   color: isDone || isCurrent ? '#fff' : 'var(--color-text-muted)',
                   border: isDone || isCurrent ? 'none' : '1px solid rgba(196,130,111,0.2)',
+                  boxShadow: isCurrent ? '0 0 0 3px rgba(196,130,111,0.2)' : 'none',
                 }}
               >
-                {isDone ? <Check size={14} weight="bold" aria-hidden="true" /> : step.id}
+                {isDone ? <Check size={12} weight="bold" aria-hidden="true" /> : step.id}
               </div>
-              <span
+
+              {/* Tick-lijn: van cirkel-onderkant tot weg */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  top: CIRCLE_CY + CIRCLE_R,
+                  left: `${dotPct}%`,
+                  transform: 'translateX(-50%)',
+                  width: 1,
+                  height: ROAD_Y - (CIRCLE_CY + CIRCLE_R),
+                  backgroundColor: accentColor,
+                  transition: 'background-color 0.3s',
+                }}
+              />
+
+              {/* Label onder de weg */}
+              <div
                 className="hidden sm:block"
                 style={{
-                  fontSize: 11,
-                  fontWeight: 500,
+                  position: 'absolute',
+                  top: ROAD_Y + 8,
+                  left: `${dotPct}%`,
+                  transform: 'translateX(-50%)',
+                  fontSize: 10,
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
                   whiteSpace: 'nowrap',
-                  color: isCurrent ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+                  color: isCurrent
+                    ? 'var(--color-primary)'
+                    : isDone
+                    ? 'var(--color-text-secondary)'
+                    : 'var(--color-text-muted)',
+                  transition: 'color 0.3s',
                 }}
               >
                 {step.label}
-              </span>
+              </div>
+
             </div>
           )
         })}
@@ -202,26 +243,41 @@ export default function BookingPage() {
   const dienstSlug = searchParams.get('dienst')
   const extraParam = searchParams.get('extra')
 
-  const preselectedService = services.find((s) => s.slug === dienstSlug) || null
-  const selectedServiceId = booking.service_id || preselectedService?.id || ''
-  const selectedService = services.find((s) => s.id === selectedServiceId) || preselectedService
+  const selectedServiceId = booking.service_id
+  const selectedService = services.find((s) => s.id === selectedServiceId) || null
 
-  // Eénmalig extra's pre-invullen vanuit URL
-  const [extrasInited, setExtrasInited] = useState(false)
+  // Eénmalig pre-invullen vanuit URL (dienst + extra's) zodra services geladen zijn
+  const [serviceInited, setServiceInited] = useState(false)
   useEffect(() => {
-    if (extrasInited || !extraParam || services.length === 0) return
-    const slugs = extraParam.split(',').filter(Boolean)
-    const ids = slugs.map((slug) => services.find((s) => s.slug === slug)?.id).filter(Boolean)
-    if (ids.length > 0) {
-      setBooking((b) => ({ ...b, extra_ids: ids }))
+    if (serviceInited || services.length === 0) return
+
+    const preselected = dienstSlug ? services.find((s) => s.slug === dienstSlug) : null
+    const extraSlugs = extraParam ? extraParam.split(',').filter(Boolean) : []
+    const extraIds = extraSlugs.map((slug) => services.find((s) => s.slug === slug)?.id).filter(Boolean)
+
+    if (preselected) {
+      const isPPF = preselected.service_category === 'ppf'
+      const isGarageCat = GARAGE_SERVICE_CATEGORIES.includes(preselected.service_category)
+
+      setBooking((b) => ({
+        ...b,
+        booking_type: isGarageCat ? 'garage' : 'mobiel',
+        service_id:   isPPF ? '' : preselected.id,
+        ppf_ids:      isPPF ? [preselected.id] : [],
+        extra_ids:    extraIds,
+      }))
+    } else if (extraIds.length > 0) {
+      setBooking((b) => ({ ...b, extra_ids: extraIds }))
     }
-    setExtrasInited(true)
-  }, [services, extraParam, extrasInited])
+
+    setServiceInited(true)
+  }, [services, dienstSlug, extraParam, serviceInited])
 
   // Diensten per categorie
   const washServices   = services.filter((s) => s.service_category === 'wash')
   const extraServices  = services.filter((s) => s.service_category === 'extra')
-  const garageServices = services.filter((s) => GARAGE_SERVICE_CATEGORIES.includes(s.service_category))
+  const ppfServices    = services.filter((s) => s.service_category === 'ppf')
+  const garageServices = services.filter((s) => GARAGE_SERVICE_CATEGORIES.includes(s.service_category) && s.service_category !== 'ppf')
   const isGarage       = booking.booking_type === 'garage'
 
   // Extra's die al inbegrepen zijn bij de geselecteerde wasbeurt
@@ -256,14 +312,26 @@ export default function BookingPage() {
     }))
   }
 
-  // Selecteer een garage dienst (coating/PPF/homecare)
+  // Selecteer een garage dienst (coating/homecare — single select)
   const selectGarageService = (service) => {
     setBooking((b) => ({
       ...b,
       booking_type: 'garage',
       service_id: service.id,
+      ppf_ids: [],
       vehicle_type: '',
       extra_ids: [],
+    }))
+  }
+
+  // Toggle een PPF-deel (multi-select)
+  const togglePpf = (serviceId) => {
+    setBooking((b) => ({
+      ...b,
+      service_id: '',           // geen andere garage dienst actief
+      ppf_ids: b.ppf_ids.includes(serviceId)
+        ? b.ppf_ids.filter((id) => id !== serviceId)
+        : [...b.ppf_ids, serviceId],
     }))
   }
 
@@ -274,13 +342,15 @@ export default function BookingPage() {
       booking_type: type,
       service_id: '',
       extra_ids: [],
+      ppf_ids: [],
       vehicle_type: '',
       preferred_date: null,
       preferred_time_slot: null,
     }))
   }
 
-  const step1Valid = selectedServiceId && booking.preferred_date && booking.preferred_time_slot
+  const garageServiceSelected = isGarage ? (!!selectedServiceId || booking.ppf_ids.length > 0) : !!selectedServiceId
+  const step1Valid = garageServiceSelected && booking.preferred_date && booking.preferred_time_slot
   const step2Valid = !!booking.vehicle_type
 
   const canGoNext = () => {
@@ -317,9 +387,16 @@ export default function BookingPage() {
     setSubmitting(true)
     recordAttempt()
     try {
+      // PPF: gebruik eerste ppf_id als service_id, rest in notes
+      const effectiveServiceId = selectedServiceId || booking.ppf_ids[0] || ''
+      const ppfServices_ = services.filter((s) => booking.ppf_ids.includes(s.id))
+      const ppfNote = ppfServices_.length > 0
+        ? `PPF delen: ${ppfServices_.map((s) => s.title_nl).join(', ')}`
+        : ''
       const result = await createBooking({
         ...booking,
-        service_id: selectedServiceId,
+        service_id: effectiveServiceId,
+        notes: [ppfNote, booking.notes].filter(Boolean).join('\n'),
       })
       navigate(`/boeken/bevestiging?nummer=${result.booking_number}`)
     } catch (err) {
@@ -583,6 +660,70 @@ export default function BookingPage() {
                   </div>
                 )}
 
+                {/* PPF — multi-select */}
+                {ppfServices.length > 0 && (
+                  <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(196,130,111,0.15)' }}>
+                    <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                      Paint Protection Film — kies uw delen
+                    </p>
+                    <p className="text-xs mb-3" style={{ color: 'var(--color-text-muted)' }}>
+                      Meerdere delen combineren mogelijk — prijs wordt op maat berekend
+                    </p>
+                    <div className="space-y-2">
+                      {ppfServices.map((service) => {
+                        const isSelected = booking.ppf_ids.includes(service.id)
+                        const priceFrom = service.pricing_tiers?.[0]?.price ?? service.price_from
+                        return (
+                          <button
+                            key={service.id}
+                            type="button"
+                            onClick={() => togglePpf(service.id)}
+                            aria-pressed={isSelected}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                            style={serviceButtonStyle(isSelected)}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div
+                                className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: isSelected ? 'rgba(196,130,111,0.2)' : 'rgba(196,130,111,0.08)', border: '1px solid rgba(196,130,111,0.2)' }}
+                              >
+                                <DynamicIcon name={service.icon || 'Shield'} className="w-4 h-4" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+                              </div>
+                              <div className="text-left">
+                                <span className="font-medium text-sm block" style={{ color: isSelected ? 'var(--color-primary)' : 'var(--color-text-primary)' }}>
+                                  {service.title_nl}
+                                </span>
+                                {service.short_description_nl && (
+                                  <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{service.short_description_nl}</span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                              {priceFrom && (
+                                <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>
+                                  {service.pricing_tiers ? `Vanaf ${formatPrice(priceFrom)}` : formatPrice(priceFrom)}
+                                </span>
+                              )}
+                              {/* Checkbox stijl */}
+                              <div
+                                className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: isSelected ? 'var(--color-primary)' : 'transparent', border: isSelected ? 'none' : '2px solid rgba(196,130,111,0.3)', transition: 'all 0.15s' }}
+                              >
+                                {isSelected && <Check size={11} weight="bold" style={{ color: '#fff' }} aria-hidden="true" />}
+                              </div>
+                            </div>
+                          </button>
+                        )
+                      })}
+                    </div>
+                    {booking.ppf_ids.length > 0 && (
+                      <p className="mt-2 text-xs" style={{ color: 'var(--color-primary)' }}>
+                        {booking.ppf_ids.length} deel{booking.ppf_ids.length > 1 ? 'en' : ''} geselecteerd — exacte prijs wordt berekend na inspectie
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {/* Garage info banner */}
                 <div
                   className="mt-4 px-4 py-3 rounded-xl flex items-start gap-3"
@@ -840,6 +981,7 @@ export default function BookingPage() {
               data={booking}
               service={selectedService}
               extras={selectedExtras}
+              ppfParts={services.filter((s) => booking.ppf_ids.includes(s.id))}
             />
           </section>
         )}

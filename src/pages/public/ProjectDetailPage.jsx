@@ -60,6 +60,7 @@ export default function ProjectDetailPage() {
             alt={title}
             className="w-full object-cover"
             style={{ maxHeight: '520px' }}
+            loading="lazy"
           />
           <div
             className="absolute inset-0 pointer-events-none"

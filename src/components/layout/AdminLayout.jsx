@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div
-      className="flex min-h-screen"
+      className="flex w-full min-h-screen"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       <AdminSidebar
@@ -32,7 +32,7 @@ export default function AdminLayout({ children }) {
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
-            className="cursor-pointer p-1.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+            className="cursor-pointer p-2.5 -ml-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             <Menu className="w-5 h-5" aria-hidden="true" />
@@ -49,7 +49,7 @@ export default function AdminLayout({ children }) {
           </span>
         </header>
 
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 lg:p-8 overflow-auto">
           {children}
         </main>
       </div>

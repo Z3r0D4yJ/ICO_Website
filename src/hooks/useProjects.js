@@ -16,7 +16,7 @@ export function useProjects({ tag = null, serviceType = null } = {}) {
     setLoading(true)
     fetchPublishedProjects({ tag, serviceType })
       .then((data) => { if (!cancelled) setProjects(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Projects fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [tag, serviceType])
@@ -35,7 +35,7 @@ export function useProject(slug) {
     setLoading(true)
     fetchProjectBySlug(slug)
       .then((data) => { if (!cancelled) setProject(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Projects fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [slug])
@@ -54,6 +54,7 @@ export function useAdminProjects() {
       const data = await fetchAllProjects()
       setProjects(data)
     } catch (err) {
+      console.error('Projects fetch error:', err)
       setError(err.message)
     } finally {
       setLoading(false)
@@ -76,7 +77,7 @@ export function useAdminProject(id) {
     setLoading(true)
     fetchProjectById(id)
       .then((data) => { if (!cancelled) setProject(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Projects fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [id])

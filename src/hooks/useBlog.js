@@ -16,7 +16,7 @@ export function useBlogPosts(tag = null) {
     setLoading(true)
     fetchPublishedPosts({ tag })
       .then((data) => { if (!cancelled) setPosts(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Blog fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [tag])
@@ -35,7 +35,7 @@ export function useBlogPost(slug) {
     setLoading(true)
     fetchPostBySlug(slug)
       .then((data) => { if (!cancelled) setPost(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Blog fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [slug])
@@ -54,6 +54,7 @@ export function useAdminBlogPosts() {
       const data = await fetchAllPosts()
       setPosts(data)
     } catch (err) {
+      console.error('Blog fetch error:', err)
       setError(err.message)
     } finally {
       setLoading(false)
@@ -76,7 +77,7 @@ export function useAdminBlogPost(id) {
     setLoading(true)
     fetchPostById(id)
       .then((data) => { if (!cancelled) setPost(data) })
-      .catch((err) => { if (!cancelled) setError(err.message) })
+      .catch((err) => { console.error('Blog fetch error:', err); if (!cancelled) setError(err.message) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [id])

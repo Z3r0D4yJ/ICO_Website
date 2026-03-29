@@ -248,6 +248,7 @@ function QuoteDetailModal({ quote, onClose, onUpdate }) {
                 backgroundColor: 'var(--color-surface-overlay)',
                 border: '1px solid rgba(196,130,111,0.2)',
                 color: 'var(--color-text-primary)',
+                colorScheme: 'dark',
               }}
             >
               {STATUS_OPTIONS.map((opt) => (
@@ -297,7 +298,7 @@ export default function QuotesPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1
@@ -345,7 +346,7 @@ export default function QuotesPage() {
 
       {/* Lijst */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <Skeleton key={i} variant="rect" height="140px" className="rounded-xl" />
           ))}
@@ -368,7 +369,7 @@ export default function QuotesPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {quotes.map((quote) => (
             <QuoteCard key={quote.id} quote={quote} onOpen={setSelectedQuote} />
           ))}

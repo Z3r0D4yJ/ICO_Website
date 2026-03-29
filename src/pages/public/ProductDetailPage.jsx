@@ -78,6 +78,7 @@ export default function ProductDetailPage() {
                     src={images[activeImage]}
                     alt={product.name}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
@@ -102,7 +103,7 @@ export default function ProductDetailPage() {
                       aria-label={`Afbeelding ${idx + 1}`}
                       aria-pressed={idx === activeImage}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
                     </button>
                   ))}
                 </div>
@@ -217,7 +218,7 @@ export default function ProductDetailPage() {
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                       aria-label="Minder"
-                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none"
+                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded"
                       disabled={quantity <= 1}
                       style={{ color: 'var(--color-text-secondary)', opacity: quantity <= 1 ? 0.3 : 1 }}
                     >
@@ -229,7 +230,7 @@ export default function ProductDetailPage() {
                     <button
                       onClick={() => setQuantity((q) => Math.min(product.stock_quantity, q + 1))}
                       aria-label="Meer"
-                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none"
+                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded"
                       disabled={quantity >= product.stock_quantity}
                       style={{ color: 'var(--color-text-secondary)', opacity: quantity >= product.stock_quantity ? 0.3 : 1 }}
                     >

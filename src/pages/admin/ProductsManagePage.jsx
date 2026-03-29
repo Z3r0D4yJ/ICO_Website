@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Pencil, Plus, Check, Minus } from '@/lib/icons'
+import { Pencil, Plus, Check, Minus, Trash2 } from '@/lib/icons'
 import { supabase } from '@/config/supabase'
 import { formatPrice } from '@/lib/utils'
 import { PRODUCT_CATEGORIES } from '@/lib/constants'
@@ -76,7 +76,7 @@ function ProductForm({ product, onSave, onCancel }) {
 
       <Textarea label="Beschrijving (NL)" rows={3} value={form.description_nl} onChange={set('description_nl')} />
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Input label="Prijs (€) *" type="number" step="0.01" min="0" value={form.price} onChange={set('price')} />
         <Input label="Doorstreepprijs (€)" type="number" step="0.01" min="0" value={form.compare_at_price} onChange={set('compare_at_price')} />
         <Input label="Voorraad" type="number" min="0" value={form.stock_quantity} onChange={set('stock_quantity')} />
@@ -88,7 +88,7 @@ function ProductForm({ product, onSave, onCancel }) {
             value={form.category}
             onChange={set('category')}
             className="w-full px-3 py-2.5 rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-            style={{ backgroundColor: 'var(--color-surface-overlay)', border: '1px solid rgba(196,130,111,0.2)', color: 'var(--color-text-primary)' }}
+            style={{ backgroundColor: 'var(--color-surface-overlay)', border: '1px solid rgba(196,130,111,0.2)', color: 'var(--color-text-primary)', colorScheme: 'dark' }}
           >
             <option value="">Geen</option>
             {PRODUCT_CATEGORIES.map((c) => (
@@ -125,6 +125,7 @@ export default function ProductsManagePage() {
   const [loading, setLoading] = useState(true)
   const [editingProduct, setEditingProduct] = useState(null)
   const [isNew, setIsNew] = useState(false)
+  const [deletingProduct, setDeletingProduct] = useState(null)
 
   useEffect(() => {
     supabase
@@ -156,109 +157,173 @@ export default function ProductsManagePage() {
     }
   }
 
+  const handleDelete = async () => {
+    const { error } = await supabase.from('products').delete().eq('id', deletingProduct.id)
+    if (error) {
+      showError('Verwijderen mislukt.')
+    } else {
+      setProducts((prev) => prev.filter((p) => p.id !== deletingProduct.id))
+      showSuccess('Product verwijderd.')
+    }
+    setDeletingProduct(null)
+  }
+
   const modalTitle = isNew ? 'Nieuw product' : `Bewerken: ${editingProduct?.name || ''}`
 
   return (
-    <div className="max-w-3xl space-y-5">
-      <div className="flex items-center justify-between gap-4">
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '1.75rem',
-            color: 'var(--color-text-primary)',
-            letterSpacing: '0.03em',
-          }}
-        >
-          PRODUCTEN
-        </h1>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => { setEditingProduct(EMPTY_PRODUCT); setIsNew(true) }}
-          leftIcon={<Plus className="w-4 h-4" />}
-        >
-          Nieuw product
-        </Button>
-      </div>
+    <div className="space-y-5">
+      <h1
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.75rem',
+          color: 'var(--color-text-primary)',
+          letterSpacing: '0.03em',
+        }}
+      >
+        PRODUCTEN
+      </h1>
 
       {loading ? (
-        <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
           {[1, 2, 3, 4].map((i) => <Skeleton key={i} variant="rect" height="72px" className="rounded-xl" />)}
         </div>
-      ) : products.length === 0 ? (
-        <div className="py-16 text-center rounded-xl" style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}>
-          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Geen producten gevonden.</p>
-        </div>
       ) : (
-        <div className="space-y-3">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="rounded-xl p-4 flex items-center gap-4"
-              style={{
-                backgroundColor: 'var(--color-surface-elevated)',
-                border: '1px solid rgba(196,130,111,0.2)',
-                opacity: product.is_active ? 1 : 0.6,
-              }}
-            >
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                  {product.name}
-                </p>
-                <div className="flex items-center gap-3 mt-0.5">
-                  <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>
-                    {formatPrice(product.price)}
-                  </span>
-                  {product.compare_at_price && (
-                    <span className="text-xs line-through" style={{ color: 'var(--color-text-muted)' }}>
-                      {formatPrice(product.compare_at_price)}
+        <div className="space-y-8">
+          {PRODUCT_CATEGORIES.map((cat) => {
+            const catProducts = products.filter((p) => p.category === cat.value)
+            const uncategorized = cat.value === PRODUCT_CATEGORIES[0].value
+              ? products.filter((p) => !p.category || !PRODUCT_CATEGORIES.find((c) => c.value === p.category))
+              : []
+            const allProducts = cat.value === PRODUCT_CATEGORIES[0].value
+              ? [...catProducts, ...uncategorized]
+              : catProducts
+            if (allProducts.length === 0 && cat.value !== PRODUCT_CATEGORIES[0].value) return null
+            return (
+              <div key={cat.value}>
+                {/* Categorie header */}
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-primary)' }}>
+                    {cat.label_nl}
+                    <span className="ml-2 font-normal normal-case tracking-normal" style={{ color: 'var(--color-text-muted)' }}>
+                      ({allProducts.length})
                     </span>
-                  )}
-                  <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                    {product.category || 'Geen categorie'}
-                  </span>
+                  </p>
+                  <button
+                    onClick={() => {
+                      setEditingProduct({ ...EMPTY_PRODUCT, category: cat.value })
+                      setIsNew(true)
+                    }}
+                    className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-lg cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                    style={{ backgroundColor: 'rgba(196,130,111,0.08)', border: '1px solid rgba(196,130,111,0.2)', color: 'var(--color-primary)' }}
+                  >
+                    <Plus className="w-3 h-3" aria-hidden="true" />
+                    Nieuw product
+                  </button>
                 </div>
-              </div>
 
-              {/* Voorraad aanpassen */}
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => updateStock(product, -1)}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                  style={{ border: '1px solid rgba(196,130,111,0.2)' }}
-                  aria-label="Voorraad verminderen"
-                >
-                  <Minus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
-                </button>
-                <span
-                  className="text-sm font-semibold w-8 text-center"
-                  style={{ color: product.stock_quantity === 0 ? 'var(--color-error)' : 'var(--color-text-primary)' }}
-                >
-                  {product.stock_quantity}
-                </span>
-                <button
-                  onClick={() => updateStock(product, 1)}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                  style={{ border: '1px solid rgba(196,130,111,0.2)' }}
-                  aria-label="Voorraad verhogen"
-                >
-                  <Plus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
-                </button>
-              </div>
+                {allProducts.length === 0 ? (
+                  <p className="text-xs py-4 text-center rounded-xl" style={{ color: 'var(--color-text-muted)', border: '1px dashed rgba(196,130,111,0.2)' }}>
+                    Nog geen producten in deze categorie.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {allProducts.map((product) => (
+                      <div
+                        key={product.id}
+                        className="rounded-xl p-3 sm:p-4"
+                        style={{
+                          backgroundColor: 'var(--color-surface-elevated)',
+                          border: '1px solid rgba(196,130,111,0.2)',
+                          opacity: product.is_active ? 1 : 0.6,
+                        }}
+                      >
+                        {/* Info */}
+                        <div className="mb-2">
+                          <p className="text-sm font-semibold truncate" style={{ color: 'var(--color-text-primary)' }}>
+                            {product.name}
+                          </p>
+                          <div className="flex items-center gap-3 mt-0.5">
+                            <span className="text-sm font-semibold" style={{ color: 'var(--color-primary)' }}>
+                              {formatPrice(product.price)}
+                            </span>
+                            {product.compare_at_price && (
+                              <span className="text-xs line-through" style={{ color: 'var(--color-text-muted)' }}>
+                                {formatPrice(product.compare_at_price)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => { setEditingProduct(product); setIsNew(false) }}
-                leftIcon={<Pencil className="w-3.5 h-3.5" />}
-              >
-                Bewerken
-              </Button>
-            </div>
-          ))}
+                        {/* Acties */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* Voorraad */}
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => updateStock(product, -1)}
+                              className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                              style={{ border: '1px solid rgba(196,130,111,0.2)' }}
+                              aria-label="Voorraad verminderen"
+                            >
+                              <Minus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
+                            </button>
+                            <span
+                              className="text-sm font-semibold w-8 text-center"
+                              style={{ color: product.stock_quantity === 0 ? 'var(--color-error)' : 'var(--color-text-primary)' }}
+                            >
+                              {product.stock_quantity}
+                            </span>
+                            <button
+                              onClick={() => updateStock(product, 1)}
+                              className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
+                              style={{ border: '1px solid rgba(196,130,111,0.2)' }}
+                              aria-label="Voorraad verhogen"
+                            >
+                              <Plus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
+                            </button>
+                          </div>
+
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => { setEditingProduct(product); setIsNew(false) }}
+                            leftIcon={<Pencil className="w-3.5 h-3.5" />}
+                          >
+                            Bewerken
+                          </Button>
+                          <button
+                            onClick={() => setDeletingProduct(product)}
+                            className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-red-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 ml-auto"
+                            style={{ border: '1px solid rgba(239,68,68,0.2)', color: 'var(--color-error)' }}
+                            aria-label="Verwijderen"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
+
+      {/* Verwijder bevestiging */}
+      <Modal
+        isOpen={!!deletingProduct}
+        onClose={() => setDeletingProduct(null)}
+        title="Product verwijderen"
+        size="sm"
+      >
+        <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
+          Ben je zeker dat je <strong style={{ color: 'var(--color-text-primary)' }}>{deletingProduct?.name}</strong> wil verwijderen? Dit kan niet ongedaan gemaakt worden.
+        </p>
+        <div className="flex gap-3 justify-end">
+          <Button variant="ghost" onClick={() => setDeletingProduct(null)}>Annuleren</Button>
+          <Button variant="danger" onClick={handleDelete} leftIcon={<Trash2 className="w-4 h-4" />}>Verwijderen</Button>
+        </div>
+      </Modal>
 
       <Modal
         isOpen={!!editingProduct}

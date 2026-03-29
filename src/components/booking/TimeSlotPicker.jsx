@@ -21,7 +21,7 @@ export default function TimeSlotPicker({ date, selected, onSelect }) {
     setLoading(true)
     getBlockedSlots(date)
       .then(setBlockedSlots)
-      .catch(() => setBlockedSlots([]))
+      .catch((err) => { console.error('Failed to load time slots:', err); setBlockedSlots([]) })
       .finally(() => setLoading(false))
   }, [date])
 

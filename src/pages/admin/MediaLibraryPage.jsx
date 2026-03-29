@@ -3,7 +3,7 @@ import { Image } from '@/lib/icons'
 // Supabase Storage media library komt in stap 9/12
 export default function MediaLibraryPage() {
   return (
-    <div className="max-w-3xl space-y-5">
+    <div className="space-y-5">
       <h1
         style={{
           fontFamily: 'var(--font-display)',

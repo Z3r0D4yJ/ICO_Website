@@ -455,7 +455,7 @@ export default function BlogEditorPage() {
 
   if (loadingPost) {
     return (
-      <div className="max-w-5xl space-y-6">
+      <div className="space-y-6">
         <div className="flex items-center gap-4">
           <div className="h-8 w-32 rounded-lg animate-pulse" style={{ backgroundColor: 'var(--color-surface-elevated)' }} />
           <div className="flex-1" />
@@ -468,7 +468,7 @@ export default function BlogEditorPage() {
   }
 
   return (
-    <div className="max-w-5xl space-y-5">
+    <div className="space-y-5">
       {/* Top bar */}
       <div className="flex items-center gap-3 flex-wrap">
         <Link

@@ -22,7 +22,7 @@ function SummaryRow({ icon: Icon, label, value }) {
  * @param {object|null} service - Hoofddienst (wasbeurt)
  * @param {object[]} extras - Extra geselecteerde diensten
  */
-export default function BookingSummary({ data, service, extras = [] }) {
+export default function BookingSummary({ data, service, extras = [], ppfParts = [] }) {
   const vehicleType = VEHICLE_TYPES.find((v) => v.value === data.vehicle_type)
   const timeSlot = TIME_SLOTS.find((t) => t.value === data.preferred_time_slot)
 
@@ -77,6 +77,28 @@ export default function BookingSummary({ data, service, extras = [] }) {
             )}
           </div>
         )}
+
+        {/* PPF-delen */}
+        {ppfParts.map((part) => (
+          <div
+            key={part.id}
+            className="flex items-start justify-between gap-4 pt-2 border-t"
+            style={{ borderColor: 'rgba(196,130,111,0.15)' }}
+          >
+            <div>
+              <p className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{part.title_nl}</p>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>PPF</p>
+            </div>
+            {part.price_from && (
+              <div className="text-right flex-shrink-0">
+                <p className="text-xs mb-0.5" style={{ color: 'var(--color-text-muted)' }}>Vanaf</p>
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', color: 'var(--color-primary)', lineHeight: 1 }}>
+                  {formatPrice(part.price_from)}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
 
         {/* Extra's */}
         {extras.map((extra) => {
@@ -166,7 +188,9 @@ export default function BookingSummary({ data, service, extras = [] }) {
 
       {/* Prijsopmerking */}
       <p className="text-xs text-center" style={{ color: 'var(--color-text-muted)' }}>
-        {exactPrice
+        {ppfParts.length > 0
+          ? 'PPF prijs wordt op maat berekend na inspectie van uw voertuig. Gratis annuleren tot 24u voor de afspraak.'
+          : exactPrice
           ? 'Prijs is berekend op basis van uw voertuigtype. Gratis annuleren tot 24u voor de afspraak.'
           : 'De vermelde prijs is een startprijs. De definitieve prijs wordt bevestigd na inspectie van het voertuig. Gratis annuleren tot 24u voor de afspraak.'
         }
