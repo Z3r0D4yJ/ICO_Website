@@ -58,7 +58,7 @@ export default function Header() {
             <img
               src="/images/logo.png"
               alt="ICO — Intensive Cleaning Organization"
-              className="h-10 w-auto object-contain rounded-md"
+              className="h-16 w-auto object-contain rounded-md"
             />
           </Link>
 

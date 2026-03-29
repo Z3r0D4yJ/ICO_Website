@@ -8,7 +8,7 @@ import { useProjects } from '@/hooks/useProjects'
 
 // ── ICO eigen foto's ────────────────────────────────────────────────────────────
 const PHOTOS = {
-  hero:    '/images/porsche-taycan-zonsondergang.jpg',
+  hero:    '/images/rico&nico_copy.jpg',
   team:    '/images/rico-interieur-reiniging.jpg',
   rico:    '/images/rico-interieur-reiniging.jpg',
   nico:    '/images/nico-exterieur-behandeling.jpg',

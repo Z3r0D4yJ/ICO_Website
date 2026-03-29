@@ -33,7 +33,7 @@ export default function WashbusShowcase() {
             >
               {/* Washbus foto */}
               <img
-                src="/images/washbus.webp"
+                src="/images/Washbus_full.jpg"
                 alt="De ICO Washbus — volledig uitgerust mobiel detailing voertuig"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
@@ -52,17 +52,6 @@ export default function WashbusShowcase() {
                 aria-hidden="true"
                 style={{ background: 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)' }}
               />
-
-              {/* Badge overlay */}
-              <div
-                className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm"
-                style={{
-                  backgroundColor: 'rgba(196,130,111,0.9)',
-                  color: 'var(--color-text-inverse)',
-                }}
-              >
-                De Washbus
-              </div>
             </div>
           </div>
 
