@@ -64,7 +64,7 @@ export default function Footer() {
               <img
                 src="/images/logo.png"
                 alt="ICO — Intensive Cleaning Organization"
-                className="h-14 w-auto object-contain rounded-md"
+                className="h-22 w-auto object-contain rounded-md"
               />
             </Link>
             <p className="text-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>

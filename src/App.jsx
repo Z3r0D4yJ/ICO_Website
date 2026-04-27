@@ -13,6 +13,7 @@ function ScrollToTop() {
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import AdminLayout from '@/components/layout/AdminLayout'
+import MobileActionBar from '@/components/layout/MobileActionBar'
 import ToastContainer from '@/components/ui/Toast'
 import CartDrawer from '@/components/shop/CartDrawer'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
@@ -126,6 +127,8 @@ function PublicLayout({ children }) {
       <Header />
       <main id="main-content">{children}</main>
       <Footer />
+      {/* Mobile spacer zodat MobileActionBar de footer niet overlapt */}
+      <div className="lg:hidden h-20" aria-hidden="true" />
     </>
   )
 }
@@ -279,6 +282,8 @@ export default function App() {
       <ToastContainer />
       {/* Cart drawer — altijd beschikbaar */}
       <CartDrawer />
+      {/* Mobile floating CTA bar — verbergt zichzelf op /admin en /boeken */}
+      <MobileActionBar />
     </Suspense>
     </ErrorBoundary>
   )

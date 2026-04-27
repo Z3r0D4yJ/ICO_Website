@@ -98,8 +98,8 @@
     letter-spacing: 0.02em;
   }
   .btn-secondary:not(:disabled):hover {
-    background-color: rgba(196, 130, 111, 0.14);
-    border-color: rgba(196, 130, 111, 0.55);
+    background-color: rgba(196, 130, 111, 0.20);
+    border-color: rgba(196, 130, 111, 0.65);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
   }

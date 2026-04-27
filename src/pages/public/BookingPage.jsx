@@ -22,6 +22,24 @@ const STEPS = [
   { id: 4, label: 'Bevestigen' },
 ]
 
+// Vertaalt Supabase/Postgres error codes naar duidelijke NL berichten.
+function mapBookingError(err) {
+  const code = err?.code || err?.details?.code
+  const hint = err?.hint || err?.details?.hint
+  const msg  = (err?.message || '').toLowerCase()
+
+  if (hint === 'BOOKING_SLOT_TAKEN' || code === '23505' || msg.includes('net geboekt')) {
+    return 'Dit tijdslot is net door iemand anders geboekt. Kies een ander tijdstip.'
+  }
+  if (code === '22023' || msg.includes('verplicht') || msg.includes('ongeldig')) {
+    return err?.message || 'Niet alle velden zijn correct ingevuld.'
+  }
+  if (msg.includes('failed to fetch') || msg.includes('network')) {
+    return 'Geen verbinding met de server. Controleer je internet en probeer opnieuw.'
+  }
+  return 'Er ging iets mis bij het maken van je boeking. Probeer opnieuw of stuur ons een WhatsApp.'
+}
+
 // Wat is inbegrepen per wasbeurt — visuele bullet-lijst op de keuzekaart
 const WASH_INCLUDES = {
   'easywash': [
@@ -400,7 +418,7 @@ export default function BookingPage() {
       })
       navigate(`/boeken/bevestiging?nummer=${result.booking_number}`)
     } catch (err) {
-      showError('Er ging iets mis. Probeer opnieuw of contacteer ons via WhatsApp.')
+      showError(mapBookingError(err))
       console.error('Booking error:', err)
     } finally {
       setSubmitting(false)

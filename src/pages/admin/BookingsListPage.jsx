@@ -54,7 +54,7 @@ function StatusSelect({ bookingId, current, onChange }) {
       value={current}
       onChange={handleChange}
       disabled={loading}
-      className="text-xs font-medium h-8 px-2.5 rounded-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 transition-opacity"
+      className="text-sm font-medium min-h-[44px] h-11 px-3 pr-8 rounded-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 transition-opacity"
       style={{
         backgroundColor: 'var(--color-surface-overlay)',
         border: '1px solid rgba(196,130,111,0.2)',

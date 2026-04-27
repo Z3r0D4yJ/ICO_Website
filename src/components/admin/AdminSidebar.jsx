@@ -50,7 +50,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
           <img
             src="/images/logo.png"
             alt="ICO"
-            className="h-8 w-auto object-contain rounded mb-1"
+            className="h-16 w-auto object-contain rounded mb-1"
           />
           <p className="text-xs truncate" style={{ color: 'var(--color-text-muted)' }}>
             {user?.email}
