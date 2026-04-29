@@ -74,6 +74,54 @@
   --z-overlay: 300;
   --z-modal: 400;
   --z-toast: 500;
+
+  /* ===========================================
+     Editorial Brand System (designer handoff — april 2026)
+     Warm charcoal × copper rose, editorial type
+     =========================================== */
+
+  /* Charcoal ramp — surface */
+  --ink-000: #080706;
+  --ink-050: #0E0C0B;
+  --ink-100: #14110F;
+  --ink-200: #1C1714;
+  --ink-300: #261F1B;
+  --ink-400: #3A312C;
+  --ink-500: #564A43;
+
+  /* Bone ramp — type */
+  --bone-000: #FAF6F1;
+  --bone-100: #E9E1D7;
+  --bone-200: #B5ADA3;
+  --bone-300: #7A726A;
+
+  /* Copper ramp — signature */
+  --copper-050: #F4E2DA;
+  --copper-100: #E5BFB1;
+  --copper-200: #D89E8C;
+  --copper-400: #B86F5C;
+  --copper-500: #9C5848;
+  --copper-700: #6A2E22;
+  --copper-900: #2E1410;
+
+  /* Functional signal */
+  --signal-go:   #7BAE82;
+  --signal-stop: #C2655A;
+  --signal-wait: #C9A26B;
+
+  /* Editorial fonts */
+  --font-fraunces: 'Fraunces', 'Times New Roman', serif;
+  --font-geist:    'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+
+  /* Editorial type scale */
+  --t-display-1: clamp(72px, 9vw, 144px);
+  --t-display-2: clamp(56px, 6.5vw, 96px);
+  --t-h1-edit:   clamp(40px, 4.5vw, 64px);
+  --t-h2-edit:   clamp(28px, 3vw, 40px);
+
+  /* Copper glow */
+  --glow-copper: 0 0 0 1px rgba(184,111,92,0.4), 0 8px 32px -8px rgba(184,111,92,0.35);
 }
 
 /* Reduced motion — WCAG AA compliance */

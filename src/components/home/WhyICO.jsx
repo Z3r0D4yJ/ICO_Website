@@ -1,149 +1,112 @@
-import { MapPin, Users, Sparkles, ShieldCheck, Clock, Star } from '@/lib/icons'
-
-const FEATURES = [
+const PRINCIPLES = [
   {
-    icon: MapPin,
-    title: 'Wij komen naar u toe',
-    desc: 'Wasbeurten aan huis, op het werk of waar u ook bent in Vlaanderen. Coating en PPF voeren we uit in onze garage in Hamme — optimaal licht, perfecte omstandigheden.',
+    num: '01',
+    title: 'Wij komen naar jou.',
+    body:
+      'Een Washbus die parkeert op je oprit. Geen wateraansluiting, geen stopcontact nodig. Jij rijdt niet, wij wel — overal in Vlaanderen.',
   },
   {
-    icon: Users,
-    title: 'Rico & Nico — altijd samen',
-    desc: 'U wordt steeds bediend door het vaste duo. Twee paar handen = sneller klaar én dubbel zo grondig, elke keer.',
+    num: '02',
+    title: 'Altijd Rico & Nico.',
+    body:
+      'Geen wisselende ploegen. Hetzelfde duo bij elke afspraak — twee paar handen, dubbel zo grondig, en ze kennen je wagen na de tweede beurt.',
   },
   {
-    icon: Sparkles,
-    title: 'Eigen CleanTech producten',
-    desc: 'We werken uitsluitend met onze eigen professionele CleanTech lijn — dezelfde die we ook in onze shop verkopen.',
+    num: '03',
+    title: 'Eigen CleanTech producten.',
+    body:
+      'We werken uitsluitend met onze eigen professionele CleanTech-lijn — dezelfde producten die we ook in onze webshop verkopen.',
   },
   {
-    icon: ShieldCheck,
-    title: 'Alle voertuigen welkom',
-    desc: 'Auto\'s, bestelwagens, motoren, SUV\'s — wij behandelen ze allemaal. Ook voor PPF en coating op maat van uw voertuig.',
-  },
-  {
-    icon: Clock,
-    title: 'Flexibele planning',
-    desc: 'Kies zelf uw tijdslot — 4 vaste blokken per dag, 6 dagen op 7. U ontvangt een bevestiging én herinnering.',
-  },
-  {
-    icon: Star,
-    title: 'Prijzen incl. 21% BTW',
-    desc: 'Geen verrassingen achteraf. Alle weergegeven prijzen zijn inclusief BTW en op maat van uw voertuigtype.',
+    num: '04',
+    title: 'Vlaams, direct, vakmanschap.',
+    body:
+      'Korte lijnen via WhatsApp. Heldere prijzen, BTW inbegrepen. Geen kleine lettertjes — wel auto\'s die behandeld worden alsof het de onze zijn.',
   },
 ]
 
 export default function WhyICO() {
   return (
     <section
-      className="section-padding"
-      style={{ backgroundColor: 'var(--color-surface-elevated)' }}
       aria-labelledby="why-ico-title"
+      style={{
+        backgroundColor: 'var(--ink-050)',
+        padding: '128px 0',
+        borderTop: '1px solid var(--ink-300)',
+      }}
     >
       <div className="container-ico">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-          {/* Links — tekst */}
+        {/* Section head */}
+        <header
+          className="grid gap-6 md:gap-10 mb-12 pb-4"
+          style={{
+            gridTemplateColumns: '80px 1fr',
+            borderBottom: '1px solid var(--ink-300)',
+            alignItems: 'baseline',
+          }}
+        >
+          <div className="edit-sec-num" style={{ paddingTop: 12 }}>
+            02 / Houding
+          </div>
           <div>
-            <p
-              className="text-sm font-semibold uppercase tracking-widest mb-3"
-              style={{ color: 'var(--color-primary)' }}
-            >
-              Waarom Team ICO?
+            <h2 id="why-ico-title" className="edit-sec-title">
+              Vier <em>principes</em>
+            </h2>
+            <p className="edit-sec-sub">
+              De DNA-strands waar elke beslissing op terugvalt — van de keuze van een product
+              tot de manier waarop we een lederen zetel afwerken.
             </p>
-            <h2
-              id="why-ico-title"
-              className="mb-5"
+          </div>
+        </header>
+
+        {/* Principles grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {PRINCIPLES.map(({ num, title, body }) => (
+            <article
+              key={num}
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.03em',
-                lineHeight: 1.1,
+                paddingTop: 24,
+                borderTop: '1px solid var(--copper-700)',
               }}
             >
-              MOBILITEIT ONTMOET{' '}
-              <span style={{ color: 'var(--color-primary)' }}>VAKMANSCHAP</span>
-            </h2>
-            <div className="divider-gold mb-5" style={{ marginLeft: 0 }} aria-hidden="true" />
-            <p
-              className="text-base leading-relaxed mb-6"
-              style={{ color: 'var(--color-text-secondary)' }}
-            >
-              Team ICO is opgericht door Rico en Nico met één doel: premium car detailing
-              toegankelijk maken voor iedereen in Vlaanderen. Wasbeurten komen naar u toe
-              met de Washbus — coating en PPF worden vakkundig uitgevoerd in onze garage
-              in Hamme. Altijd professioneel, stipt en met passie voor elk detail.
-            </p>
-
-            {/* Stat blokjes */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { value: '100+', label: 'Tevreden klanten' },
-                { value: '2', label: 'Man sterk' },
-                { value: '5★', label: 'Gemiddelde score' },
-              ].map(({ value, label }) => (
-                <div
-                  key={label}
-                  className="text-center p-4 rounded-xl"
-                  style={{
-                    backgroundColor: 'var(--color-surface-overlay)',
-                    border: '1px solid rgba(196,130,111,0.2)',
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '1.75rem',
-                      color: 'var(--color-primary)',
-                      lineHeight: 1,
-                    }}
-                  >
-                    {value}
-                  </p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Rechts — feature grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="flex gap-4 p-5 rounded-xl transition-all duration-250 hover:-translate-y-0.5"
+              <p
                 style={{
-                  backgroundColor: 'var(--color-surface)',
-                  border: '1px solid rgba(196,130,111,0.2)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  letterSpacing: '0.2em',
+                  color: 'var(--copper-400)',
+                  margin: '0 0 16px',
                 }}
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ backgroundColor: 'rgba(196,130,111,0.1)' }}
-                >
-                  <Icon
-                    className="w-5 h-5"
-                    style={{ color: 'var(--color-primary)' }}
-                    aria-hidden="true"
-                  />
-                </div>
-                <div>
-                  <p
-                    className="font-semibold text-sm mb-1"
-                    style={{ color: 'var(--color-text-primary)' }}
-                  >
-                    {title}
-                  </p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                    {desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+                — {num}
+              </p>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-fraunces)',
+                  fontWeight: 400,
+                  fontSize: 26,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.01em',
+                  color: 'var(--bone-000)',
+                  margin: '0 0 12px',
+                  textWrap: 'balance',
+                }}
+              >
+                {title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-geist)',
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: 'var(--bone-200)',
+                  margin: 0,
+                }}
+              >
+                {body}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

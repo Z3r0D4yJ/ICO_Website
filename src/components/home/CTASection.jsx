@@ -1,99 +1,135 @@
 import { Link } from 'react-router-dom'
-import { Car, MessageCircle } from '@/lib/icons'
-import { useTranslation } from 'react-i18next'
-import Button from '@/components/ui/Button'
 import { whatsappLink } from '@/lib/utils'
 import { WHATSAPP_NUMBER } from '@/lib/constants'
 
 export default function CTASection() {
-  const { t } = useTranslation()
-
   return (
     <section
-      className="section-padding relative overflow-hidden"
-      style={{ backgroundColor: 'var(--color-surface)' }}
       aria-labelledby="cta-title"
+      className="relative overflow-hidden"
+      style={{
+        backgroundColor: 'var(--ink-050)',
+        padding: '128px 0',
+        borderTop: '1px solid var(--ink-300)',
+      }}
     >
-      {/* Achtergrond glow — ellips centered */}
+      {/* Copper bloom — bottom-center */}
       <div
-        className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(196,130,111,0.12) 0%, transparent 70%)',
+            'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(184,111,92,0.18) 0%, transparent 70%)',
         }}
       />
 
       <div className="container-ico relative z-10">
         <div
-          className="rounded-2xl px-8 py-14 md:px-16 md:py-20 text-center"
+          className="relative overflow-hidden"
           style={{
             background:
-              'linear-gradient(135deg, rgba(196,130,111,0.1) 0%, rgba(196,130,111,0.04) 100%)',
-            border: '1px solid rgba(196,130,111,0.25)',
+              'radial-gradient(ellipse 60% 100% at 90% 0%, rgba(184,111,92,0.10) 0%, transparent 60%), var(--ink-100)',
+            border: '1px solid var(--ink-400)',
+            borderRadius: 24,
+            padding: 'clamp(48px, 6vw, 96px) clamp(32px, 5vw, 80px)',
           }}
         >
-          {/* Label */}
-          <p
-            className="text-sm font-semibold uppercase tracking-widest mb-4"
-            style={{ color: 'var(--color-primary)' }}
-          >
-            Rico & Nico staan voor u klaar
-          </p>
+          {/* Eyebrow */}
+          <p className="edit-eyebrow mb-8">Boek je afspraak</p>
 
-          {/* Headline */}
           <h2
             id="cta-title"
-            className="mb-5"
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 6vw, 3.75rem)',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.03em',
-              lineHeight: 1.05,
+              fontFamily: 'var(--font-fraunces)',
+              fontWeight: 300,
+              fontSize: 'clamp(48px, 7vw, 96px)',
+              lineHeight: 0.95,
+              letterSpacing: '-0.035em',
+              color: 'var(--bone-000)',
+              margin: 0,
+              maxWidth: '14ch',
+              textWrap: 'balance',
             }}
           >
-            UW VOERTUIG VERDIENT{' '}
-            <span className="text-gradient-gold">HET BESTE</span>
+            Klaar voor twee uur{' '}
+            <em
+              style={{
+                fontStyle: 'italic',
+                fontWeight: 400,
+                color: 'var(--copper-200)',
+              }}
+            >
+              echt vakwerk?
+            </em>
           </h2>
 
           <p
-            className="text-base md:text-lg mb-10 max-w-xl mx-auto"
-            style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}
+            style={{
+              fontFamily: 'var(--font-geist)',
+              fontSize: 'clamp(16px, 1.6vw, 19px)',
+              lineHeight: 1.5,
+              color: 'var(--bone-200)',
+              margin: '32px 0 40px',
+              maxWidth: '52ch',
+            }}
           >
-            Wasbeurten aan huis in heel Vlaanderen — coating en PPF in onze
-            professionele garage in Hamme. Rico & Nico staan klaar voor elk
-            voertuig, altijd met passie voor het resultaat.
+            Kies een datum, vul je adres in, wij komen langs. Geen verplichtingen.
+            Gratis annuleren tot 24 uur op voorhand. Betaling ter plaatse of online.
           </p>
 
-          {/* Knoppen */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              as={Link}
-              to="/boeken"
-              variant="primary"
-              size="lg"
-              leftIcon={<Car className="w-4 h-4" />}
-            >
-              {t('common.bookNow')}
-            </Button>
-            <Button
-              as="a"
-              href={whatsappLink(WHATSAPP_NUMBER, 'Hallo! Ik wil graag een afspraak maken voor een DetailWash.')}
+          <div className="flex flex-wrap gap-4">
+            <Link to="/boeken" className="edit-btn edit-btn-primary edit-btn-lg">
+              Boek nu — kies een datum
+              <span className="edit-arrow" aria-hidden="true" />
+            </Link>
+            <a
+              href={whatsappLink(
+                WHATSAPP_NUMBER,
+                'Hallo! Ik wil graag een afspraak maken voor een DetailWash.'
+              )}
               target="_blank"
               rel="noopener noreferrer"
-              variant="secondary"
-              size="lg"
-              leftIcon={<MessageCircle className="w-4 h-4" />}
+              className="edit-btn edit-btn-secondary edit-btn-lg"
             >
-              {t('common.whatsapp')}
-            </Button>
+              Of stuur een WhatsApp
+            </a>
           </div>
 
-          {/* Geruststellende tekst */}
-          <p className="mt-8 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-            Geen verplichtingen · Gratis annuleren tot 24u op voorhand · Betaling ter plaatse of online
-          </p>
+          {/* Bottom rule with reassurance */}
+          <div
+            className="mt-12 pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4"
+            style={{ borderTop: '1px solid var(--ink-400)' }}
+          >
+            {[
+              ['Geen verplichtingen', 'vrijblijvende offerte'],
+              ['Gratis annulatie', 'tot 24u op voorhand'],
+              ['Betaling op maat', 'ter plaatse of online'],
+            ].map(([title, sub]) => (
+              <div key={title} className="flex flex-col gap-1">
+                <span
+                  style={{
+                    fontFamily: 'var(--font-geist)',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: 'var(--bone-000)',
+                  }}
+                >
+                  {title}
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.2em',
+                    color: 'var(--bone-300)',
+                  }}
+                >
+                  — {sub}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

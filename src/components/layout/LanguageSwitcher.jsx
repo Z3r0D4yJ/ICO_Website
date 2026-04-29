@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 
 /**
- * LanguageSwitcher — NL / EN toggle
- * Taal wordt opgeslagen in localStorage ('ico-lang').
+ * LanguageSwitcher — minimal mono NL/EN toggle.
+ * Saved in localStorage ('ico-lang').
  */
 export default function LanguageSwitcher({ className }) {
   const { i18n } = useTranslation()
@@ -17,35 +17,52 @@ export default function LanguageSwitcher({ className }) {
 
   return (
     <div
-      className={cn('flex items-center gap-0.5 rounded-md p-0.5', className)}
-      style={{ backgroundColor: 'var(--color-surface-overlay)' }}
+      className={cn('inline-flex items-center', className)}
       role="group"
       aria-label="Taal kiezen"
+      style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: 11,
+        letterSpacing: '0.2em',
+        textTransform: 'uppercase',
+        color: 'var(--bone-300)',
+      }}
     >
-      {['nl', 'en'].map((lang) => {
+      {['nl', 'en'].map((lang, idx) => {
         const isActive = currentLang === lang
         return (
-          <button
-            key={lang}
-            onClick={() => toggle(lang)}
-            aria-pressed={isActive}
-            aria-label={lang === 'nl' ? 'Nederlands' : 'English'}
-            className={cn(
-              'px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider',
-              'transition-all duration-150 cursor-pointer',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
-              isActive
-                ? 'text-[var(--color-text-inverse)]'
-                : 'hover:text-[var(--color-text-primary)]'
+          <span key={lang} className="flex items-center">
+            {idx > 0 && (
+              <span aria-hidden="true" style={{ color: 'var(--ink-500)', margin: '0 8px' }}>
+                /
+              </span>
             )}
-            style={
-              isActive
-                ? { backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }
-                : { color: 'var(--color-text-muted)' }
-            }
-          >
-            {lang.toUpperCase()}
-          </button>
+            <button
+              type="button"
+              onClick={() => toggle(lang)}
+              aria-pressed={isActive}
+              aria-label={lang === 'nl' ? 'Nederlands' : 'English'}
+              className="cursor-pointer transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(184,111,92,0.45)]/40"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                padding: '4px 0',
+                fontFamily: 'inherit',
+                fontSize: 'inherit',
+                letterSpacing: 'inherit',
+                textTransform: 'inherit',
+                color: isActive ? 'var(--copper-200)' : 'var(--bone-300)',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) e.currentTarget.style.color = 'var(--bone-100)'
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) e.currentTarget.style.color = 'var(--bone-300)'
+              }}
+            >
+              {lang.toUpperCase()}
+            </button>
+          </span>
         )
       })}
     </div>

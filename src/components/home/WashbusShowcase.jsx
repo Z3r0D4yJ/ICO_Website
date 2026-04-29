@@ -1,121 +1,154 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle2, ArrowRight } from '@/lib/icons'
-import Button from '@/components/ui/Button'
 
-const WASHBUS_FEATURES = [
+const FEATURES = [
   'Eigen watervoorraad — geen aansluiting nodig',
   'Generator aan boord — stroom op elke locatie',
   'Professionele extractiemachine voor dieptereiniging',
-  'Coating & PPF: in onze garage in Hamme',
-  'Eigen CleanTech productlijn — exclusief bij ICO',
-  'Auto\'s, SUV\'s, bestelwagens én motoren welkom',
-  'Actief in heel Vlaanderen — 6 dagen op 7',
+  'Eigen CleanTech-productlijn',
+  "Auto's, SUV's, bestelwagens én motoren welkom",
+  'Coating en PPF in onze garage in Hamme',
 ]
 
 export default function WashbusShowcase() {
   return (
     <section
-      className="section-padding"
-      style={{ backgroundColor: 'var(--color-surface)' }}
       aria-labelledby="washbus-title"
+      style={{
+        backgroundColor: 'var(--ink-100)',
+        padding: '128px 0',
+        borderTop: '1px solid var(--ink-300)',
+      }}
     >
       <div className="container-ico">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-          {/* Links — afbeelding placeholder */}
-          <div className="order-2 lg:order-1">
-            <div
-              className="relative rounded-2xl overflow-hidden"
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          {/* Image — left, 7 columns */}
+          <div className="lg:col-span-7 order-2 lg:order-1">
+            <figure
+              className="relative overflow-hidden"
               style={{
                 aspectRatio: '4/3',
-                border: '1px solid rgba(196,130,111,0.2)',
+                borderRadius: '24px',
+                border: '1px solid var(--ink-400)',
+                background: 'var(--ink-200)',
               }}
             >
-              {/* Washbus foto */}
               <img
                 src="/images/Washbus_full.jpg"
                 alt="De ICO Washbus — volledig uitgerust mobiel detailing voertuig"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
+                style={{ filter: 'saturate(0.85) contrast(1.05)' }}
               />
-
-              {/* Subtle dark gradient overlay for depth */}
               <div
                 className="absolute inset-0 pointer-events-none"
-                style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 60%, rgba(196,130,111,0.15) 100%)' }}
+                style={{
+                  background:
+                    'linear-gradient(135deg, rgba(0,0,0,0.25) 0%, transparent 40%, rgba(110,52,40,0.2) 100%)',
+                }}
                 aria-hidden="true"
               />
-
-              {/* Gouden glow corner */}
-              <div
-                className="absolute -bottom-8 -right-8 w-48 h-48 rounded-full pointer-events-none opacity-25"
-                aria-hidden="true"
-                style={{ background: 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)' }}
-              />
-            </div>
+              {/* Caption tag — bottom-left */}
+              <figcaption
+                className="absolute"
+                style={{
+                  left: 24,
+                  bottom: 24,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.25em',
+                  color: 'var(--bone-000)',
+                  padding: '6px 12px',
+                  background: 'rgba(8,7,6,0.6)',
+                  border: '1px solid var(--ink-400)',
+                  borderRadius: 999,
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                — De Washbus
+              </figcaption>
+            </figure>
           </div>
 
-          {/* Rechts — tekst */}
-          <div className="order-1 lg:order-2">
-            <p
-              className="text-sm font-semibold uppercase tracking-widest mb-3"
-              style={{ color: 'var(--color-primary)' }}
-            >
-              Ons geheim wapen
-            </p>
+          {/* Text — right, 5 columns */}
+          <div className="lg:col-span-5 order-1 lg:order-2">
+            <p className="edit-eyebrow mb-6">Ons gereedschap</p>
+
             <h2
               id="washbus-title"
-              className="mb-5"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.03em',
-                lineHeight: 1.1,
+                fontFamily: 'var(--font-fraunces)',
+                fontWeight: 400,
+                fontSize: 'var(--t-h1-edit)',
+                lineHeight: 1,
+                letterSpacing: '-0.02em',
+                color: 'var(--bone-000)',
+                margin: 0,
+                textWrap: 'balance',
               }}
             >
-              DE <span style={{ color: 'var(--color-primary)' }}>WASHBUS</span>
+              Een wasstraat,<br />
+              <em
+                style={{
+                  fontStyle: 'italic',
+                  fontWeight: 300,
+                  color: 'var(--copper-200)',
+                }}
+              >
+                op wielen.
+              </em>
             </h2>
-            <div
-              className="divider-gold mb-5"
-              style={{ marginLeft: 0 }}
-              aria-hidden="true"
-            />
+
             <p
-              className="text-base leading-relaxed mb-6"
-              style={{ color: 'var(--color-text-secondary)' }}
+              className="mt-6"
+              style={{
+                fontFamily: 'var(--font-geist)',
+                fontSize: 18,
+                lineHeight: 1.55,
+                color: 'var(--bone-200)',
+                margin: '24px 0 0',
+                maxWidth: '52ch',
+              }}
             >
-              De Washbus is het hart van Team ICO — volledig uitgerust voor
-              wasbeurten aan huis in heel Vlaanderen. Geen wateraansluiting,
-              geen stopcontact nodig. Voor keramische coating en PPF werken
-              Rico & Nico vanuit hun professionele garage in Hamme, waar
-              perfect licht en een gecontroleerde omgeving het verschil maken.
+              De Washbus is het hart van Team ICO. Volledig uitgerust voor wasbeurten aan huis —
+              geen wateraansluiting, geen stopcontact nodig. Voor coating en PPF werken Rico &amp; Nico
+              in hun garage in Hamme, waar perfect licht en gecontroleerde omstandigheden het verschil maken.
             </p>
 
-            {/* Feature lijst */}
-            <ul className="flex flex-col gap-3 mb-8" role="list">
-              {WASHBUS_FEATURES.map((feature) => (
-                <li key={feature} className="flex items-center gap-3">
-                  <CheckCircle2
-                    className="w-5 h-5 flex-shrink-0"
-                    style={{ color: 'var(--color-success)' }}
+            {/* Feature list — copper dashes */}
+            <ul className="mt-8 flex flex-col gap-3 list-none p-0 m-0">
+              {FEATURES.map((feature) => (
+                <li
+                  key={feature}
+                  style={{
+                    fontFamily: 'var(--font-geist)',
+                    fontSize: 15,
+                    color: 'var(--bone-100)',
+                    paddingLeft: 22,
+                    position: 'relative',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  <span
                     aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 11,
+                      width: 12,
+                      height: 1,
+                      background: 'var(--copper-400)',
+                    }}
                   />
-                  <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                    {feature}
-                  </span>
+                  {feature}
                 </li>
               ))}
             </ul>
 
-            <Button
-              as={Link}
-              to="/over-ons"
-              variant="secondary"
-              rightIcon={<ArrowRight className="w-4 h-4" />}
-            >
-              Meer over Team ICO
-            </Button>
+            <Link to="/over-ons" className="edit-btn edit-btn-ghost mt-10">
+              Lees het verhaal achter ICO
+              <span className="edit-arrow ml-3" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </div>

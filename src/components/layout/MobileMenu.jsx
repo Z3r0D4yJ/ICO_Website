@@ -1,20 +1,19 @@
 import { useEffect, useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { X, Car, Sparkles, ShoppingBag, Image, Users, Phone, HelpCircle } from '@/lib/icons'
+import { X, ShoppingBag } from '@/lib/icons'
 import { useTranslation } from 'react-i18next'
 import { useUiStore } from '@/stores/uiStore'
 import { useCartStore } from '@/stores/cartStore'
 import LanguageSwitcher from './LanguageSwitcher'
-import Button from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
-  { to: '/diensten',  labelKey: 'nav.services', icon: Car },
-  { to: '/shop',      labelKey: 'nav.shop',     icon: ShoppingBag },
-  { to: '/projecten', labelKey: 'nav.projects', icon: Image },
-  { to: '/over-ons',  labelKey: 'nav.about',    icon: Users },
-  { to: '/contact',   labelKey: 'nav.contact',  icon: Phone },
-  { to: '/faq',       labelKey: 'nav.faq',      icon: HelpCircle },
+  { num: '01', to: '/diensten',  labelKey: 'nav.services' },
+  { num: '02', to: '/shop',      labelKey: 'nav.shop' },
+  { num: '03', to: '/projecten', labelKey: 'nav.projects' },
+  { num: '04', to: '/over-ons',  labelKey: 'nav.about' },
+  { num: '05', to: '/faq',       labelKey: 'nav.faq' },
+  { num: '06', to: '/contact',   labelKey: 'nav.contact' },
 ]
 
 export default function MobileMenu() {
@@ -24,7 +23,6 @@ export default function MobileMenu() {
   const menuRef = useRef(null)
   const closeButtonRef = useRef(null)
 
-  // Focus eerste element bij open, scroll lock
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -35,7 +33,6 @@ export default function MobileMenu() {
     return () => { document.body.style.overflow = '' }
   }, [isMobileMenuOpen])
 
-  // Sluit bij Escape
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') closeMobileMenu() }
     document.addEventListener('keydown', handler)
@@ -47,15 +44,20 @@ export default function MobileMenu() {
       {/* Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
+          'fixed inset-0 transition-opacity duration-300 lg:hidden',
           isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
-        style={{ zIndex: 'var(--z-overlay)' }}
+        style={{
+          zIndex: 'var(--z-overlay)',
+          background: 'rgba(8,7,6,0.7)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+        }}
         aria-hidden="true"
         onClick={closeMobileMenu}
       />
 
-      {/* Menu panel — slide van rechts */}
+      {/* Panel */}
       <nav
         ref={menuRef}
         id="mobile-menu"
@@ -63,64 +65,124 @@ export default function MobileMenu() {
         aria-modal="true"
         aria-label="Navigatiemenu"
         className={cn(
-          'fixed top-0 right-0 h-full w-80 max-w-[85vw]',
+          'fixed top-0 right-0 h-full w-[85vw] max-w-md',
           'flex flex-col',
           'transition-transform duration-300 ease-out lg:hidden',
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}
         style={{
-          backgroundColor: 'var(--color-surface-elevated)',
-          borderLeft: '1px solid rgba(196,130,111,0.2)',
+          backgroundColor: 'var(--ink-050)',
+          borderLeft: '1px solid var(--ink-400)',
           zIndex: 'var(--z-modal)',
         }}
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0"
-          style={{ borderColor: 'rgba(196,130,111,0.15)' }}
+          className="flex items-center justify-between px-6 h-16 flex-shrink-0"
+          style={{ borderBottom: '1px solid var(--ink-300)' }}
         >
           <Link
             to="/"
             onClick={closeMobileMenu}
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded-lg"
+            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(184,111,92,0.45)]/40 rounded"
+            aria-label="ICO homepage"
           >
             <img
               src="/images/logo.png"
-              alt="ICO — Intensive Cleaning Organization"
-              className="h-10 w-auto object-contain rounded-md"
+              alt=""
+              className="h-9 w-auto object-contain"
+              style={{ filter: 'drop-shadow(0 4px 12px rgba(184,111,92,0.25))' }}
             />
+            <span
+              style={{
+                fontFamily: 'var(--font-fraunces)',
+                fontStyle: 'italic',
+                fontWeight: 300,
+                fontSize: 15,
+                letterSpacing: '-0.01em',
+                color: 'var(--bone-000)',
+              }}
+            >
+              ICO
+            </span>
           </Link>
 
           <button
             ref={closeButtonRef}
             onClick={closeMobileMenu}
             aria-label="Menu sluiten"
-            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-            style={{ color: 'var(--color-text-muted)' }}
+            className="p-2 rounded transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(184,111,92,0.45)]/40"
+            style={{ color: 'var(--bone-200)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--copper-200)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--bone-200)' }}
           >
             <X className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
 
-        {/* Nav links */}
-        <div className="flex-1 overflow-y-auto px-4 py-6">
-          <ul className="flex flex-col gap-1" role="list">
-            {NAV_ITEMS.map(({ to, labelKey, icon: Icon }) => (
+        {/* Section label */}
+        <div
+          className="px-6 py-5 flex-shrink-0"
+          style={{ borderBottom: '1px solid var(--ink-300)' }}
+        >
+          <span className="edit-eyebrow">Navigatie</span>
+        </div>
+
+        {/* Nav links — editorial: number + Fraunces label */}
+        <div className="flex-1 overflow-y-auto">
+          <ul className="flex flex-col" role="list">
+            {NAV_ITEMS.map(({ num, to, labelKey }) => (
               <li key={to}>
                 <NavLink
                   to={to}
                   onClick={closeMobileMenu}
-                  className={({ isActive }) => cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium',
-                    'transition-colors duration-150 cursor-pointer',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40',
-                    isActive
-                      ? 'text-[var(--color-primary)] bg-[rgba(196,130,111,0.1)]'
-                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-overlay)]'
-                  )}
+                  end={to === '/'}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-baseline gap-5 px-6 py-5 transition-colors duration-150 cursor-pointer',
+                      'focus-visible:outline-none focus-visible:bg-[var(--ink-100)]'
+                    )
+                  }
+                  style={({ isActive }) => ({
+                    borderBottom: '1px solid var(--ink-300)',
+                    color: isActive ? 'var(--bone-000)' : 'var(--bone-100)',
+                    backgroundColor: isActive ? 'var(--ink-100)' : 'transparent',
+                  })}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                  {t(labelKey)}
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          letterSpacing: '0.2em',
+                          color: isActive ? 'var(--copper-400)' : 'var(--bone-300)',
+                          flexShrink: 0,
+                          minWidth: 24,
+                        }}
+                      >
+                        {num}
+                      </span>
+                      <span
+                        className="flex-1"
+                        style={{
+                          fontFamily: 'var(--font-fraunces)',
+                          fontWeight: 400,
+                          fontSize: 26,
+                          lineHeight: 1.1,
+                          letterSpacing: '-0.015em',
+                          color: 'inherit',
+                        }}
+                      >
+                        {t(labelKey)}
+                      </span>
+                      <span
+                        className="edit-arrow"
+                        aria-hidden="true"
+                        style={{ color: isActive ? 'var(--copper-200)' : 'var(--ink-500)' }}
+                      />
+                    </>
+                  )}
                 </NavLink>
               </li>
             ))}
@@ -128,42 +190,51 @@ export default function MobileMenu() {
 
           {/* Cart link */}
           {itemCount > 0 && (
-            <div className="mt-4 pt-4 border-t" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-              <NavLink
-                to="/shop/winkelwagen"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-150 cursor-pointer hover:bg-[var(--color-surface-overlay)]"
-                style={{ color: 'var(--color-text-secondary)' }}
+            <NavLink
+              to="/shop/winkelwagen"
+              onClick={closeMobileMenu}
+              className="flex items-center gap-3 px-6 py-5 transition-colors duration-150 cursor-pointer"
+              style={{
+                borderBottom: '1px solid var(--ink-300)',
+                fontFamily: 'var(--font-geist)',
+                fontSize: 14,
+                color: 'var(--bone-100)',
+              }}
+            >
+              <ShoppingBag className="w-4 h-4" aria-hidden="true" />
+              Winkelwagen
+              <span
+                className="ml-auto"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 11,
+                  padding: '2px 8px',
+                  background: 'var(--copper-400)',
+                  color: 'var(--ink-000)',
+                  borderRadius: 999,
+                }}
               >
-                <ShoppingBag className="w-5 h-5" aria-hidden="true" />
-                Winkelwagen
-                <span
-                  className="ml-auto text-xs font-bold px-2 py-0.5 rounded-full"
-                  style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }}
-                >
-                  {itemCount}
-                </span>
-              </NavLink>
-            </div>
+                {itemCount}
+              </span>
+            </NavLink>
           )}
         </div>
 
-        {/* Footer — Boek Nu CTA + language switcher */}
+        {/* Footer — Boek CTA + lang switcher */}
         <div
-          className="flex-shrink-0 px-6 py-5 border-t space-y-3"
-          style={{ borderColor: 'rgba(196,130,111,0.15)' }}
+          className="flex-shrink-0 px-6 py-5"
+          style={{ borderTop: '1px solid var(--ink-300)' }}
         >
-          <Button
-            as={Link}
+          <Link
             to="/boeken"
-            variant="primary"
-            fullWidth
-            leftIcon={<Car className="w-4 h-4" />}
             onClick={closeMobileMenu}
+            className="edit-btn edit-btn-primary w-full"
+            style={{ width: '100%' }}
           >
             {t('common.bookNow')}
-          </Button>
-          <div className="flex justify-center">
+            <span className="edit-arrow" aria-hidden="true" />
+          </Link>
+          <div className="mt-5 flex justify-center">
             <LanguageSwitcher />
           </div>
         </div>
