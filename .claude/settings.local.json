@@ -37,5 +37,9 @@
       "Bash(rm -rf node_modules/.vite)",
       "Bash(grep -v \"//.*unsplash\")"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase"
+  ],
+  "enableAllProjectMcpServers": true
 }
