@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { HelpCircle, MessageCircle, Car } from '@/lib/icons'
 import { Link } from 'react-router-dom'
 import { useFAQ } from '@/hooks/useFAQ'
@@ -115,7 +114,6 @@ function FAQSkeleton() {
 }
 
 export default function FAQPage() {
-  const { t } = useTranslation()
   const { items: dbItems, loading } = useFAQ()
   const [activeCategory, setActiveCategory] = useState('all')
 
@@ -142,9 +140,9 @@ export default function FAQPage() {
     <>
       <PageHero
         label="Antwoorden op uw vragen"
-        title="VEELGESTELDE"
-        titleAccent="VRAGEN"
-        subtitle="Alles wat u moet weten over onze diensten, boekingen en producten."
+        title="Veelgestelde"
+        titleAccent="vragen"
+        subtitle="Praktische antwoorden over behandelingen, boekingen, CleanTech producten en de manier waarop Rico & Nico werken."
       />
 
       <section

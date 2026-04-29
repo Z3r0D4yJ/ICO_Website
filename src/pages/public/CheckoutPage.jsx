@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft, ShoppingBag, Lock, Truck } from '@/lib/icons'
+import { ArrowLeft, Lock, ShoppingBag, Truck } from '@/lib/icons'
 import { useCartStore } from '@/stores/cartStore'
 import { useUiStore } from '@/stores/uiStore'
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants'
 import { checkoutSchema } from '@/lib/validators'
 import { formatPrice } from '@/lib/utils'
-import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants'
-import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
@@ -23,22 +23,26 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(checkoutSchema) })
 
-  // Lege wagen → terug naar shop
   if (isEmpty) {
     return (
-      <div className="section-padding flex flex-col items-center justify-center text-center" style={{ backgroundColor: 'var(--color-surface)', minHeight: '70vh' }}>
-        <ShoppingBag className="w-12 h-12 mb-4" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
-        <p className="text-lg font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>Winkelwagen is leeg</p>
-        <Button as={Link} to="/shop" variant="primary" className="mt-4">Naar de shop</Button>
-      </div>
+      <main className="section-padding bg-[var(--color-surface)]">
+        <section className="container-ico">
+          <div className="ico-panel mx-auto flex max-w-xl flex-col items-center px-6 py-16 text-center">
+            <ShoppingBag className="mb-5 h-12 w-12 text-[var(--bone-400)]" aria-hidden="true" />
+            <h1 className="font-display text-3xl text-[var(--bone-000)]">Je winkelwagen is leeg</h1>
+            <p className="mt-3 text-sm text-[var(--bone-300)]">Voeg eerst een CleanTech product toe voor je afrekent.</p>
+            <Button as={Link} to="/shop" variant="primary" className="mt-7">
+              Naar de shop
+            </Button>
+          </div>
+        </section>
+      </main>
     )
   }
 
   const onSubmit = async (data) => {
     setSubmitting(true)
     try {
-      // Stap 11: Mollie betaling integratie
-      // Voorlopig: order opslaan in Supabase + bevestigingspagina tonen
       const { supabase } = await import('@/config/supabase')
       const orderNumber = `ICO-ORDER-${Date.now()}`
 
@@ -70,109 +74,87 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
-      <div className="container-ico max-w-4xl">
+    <main className="section-padding bg-[var(--color-surface)]">
+      <div className="container-ico">
+        <Link
+          to="/shop/winkelwagen"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--bone-300)] transition-colors hover:text-[var(--copper-200)]"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Terug naar winkelwagen
+        </Link>
 
-        <div className="flex items-center gap-3 mb-8">
-          <Link
-            to="/shop/winkelwagen"
-            className="flex items-center gap-1.5 text-sm transition-opacity hover:opacity-70 cursor-pointer"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-            Terug naar winkelwagen
-          </Link>
+        <div className="mb-10 border-b border-[var(--color-border)] pb-8">
+          <p className="edit-eyebrow">Veilig afronden</p>
+          <h1 className="edit-sec-title mt-3">Afrekenen</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--bone-300)]">
+            Vul je gegevens rustig in. Rico & Nico zorgen dat je bestelling netjes wordt klaargemaakt en verzonden.
+          </p>
         </div>
 
-        <h1
-          className="mb-8"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            color: 'var(--color-text-primary)',
-            letterSpacing: '0.03em',
-          }}
-        >
-          AFREKENEN
-        </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-          {/* Formulier */}
-          <form onSubmit={handleSubmit(onSubmit)} noValidate className="lg:col-span-2 space-y-6">
-
-            {/* Persoonlijke gegevens */}
-            <section
-              className="rounded-xl p-5 space-y-4"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-            >
-              <h2 className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
-                Persoonlijke gegevens
-              </h2>
-
-              <Input
-                label="Naam *"
-                placeholder="Jan Janssen"
-                error={errors.customer_name?.message}
-                {...register('customer_name')}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+            <section className="ico-panel p-5 sm:p-6">
+              <p className="edit-eyebrow">1. Contact</p>
+              <div className="mt-5 space-y-4">
                 <Input
-                  label="E-mailadres *"
-                  type="email"
-                  placeholder="jan@voorbeeld.be"
-                  error={errors.customer_email?.message}
-                  {...register('customer_email')}
+                  label="Naam *"
+                  placeholder="Jan Janssen"
+                  error={errors.customer_name?.message}
+                  {...register('customer_name')}
                 />
-                <Input
-                  label="Telefoon (optioneel)"
-                  type="tel"
-                  placeholder="0495 123 456"
-                  error={errors.customer_phone?.message}
-                  {...register('customer_phone')}
-                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Input
+                    label="E-mailadres *"
+                    type="email"
+                    placeholder="jan@voorbeeld.be"
+                    error={errors.customer_email?.message}
+                    {...register('customer_email')}
+                  />
+                  <Input
+                    label="Telefoon"
+                    type="tel"
+                    placeholder="0495 123 456"
+                    error={errors.customer_phone?.message}
+                    {...register('customer_phone')}
+                  />
+                </div>
               </div>
             </section>
 
-            {/* Leveringsadres */}
-            <section
-              className="rounded-xl p-5 space-y-4"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-            >
-              <h2 className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
-                Leveringsadres
-              </h2>
-
-              <Input
-                label="Straat en huisnummer *"
-                placeholder="Hoofdstraat 1"
-                error={errors.shipping_address?.message}
-                {...register('shipping_address')}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <section className="ico-panel p-5 sm:p-6">
+              <p className="edit-eyebrow">2. Levering</p>
+              <div className="mt-5 space-y-4">
                 <Input
-                  label="Gemeente *"
-                  placeholder="Gent"
-                  error={errors.shipping_city?.message}
-                  {...register('shipping_city')}
+                  label="Straat en huisnummer *"
+                  placeholder="Hoofdstraat 1"
+                  error={errors.shipping_address?.message}
+                  {...register('shipping_address')}
                 />
-                <Input
-                  label="Postcode *"
-                  placeholder="9000"
-                  maxLength={4}
-                  error={errors.shipping_postal_code?.message}
-                  {...register('shipping_postal_code')}
-                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Input
+                    label="Gemeente *"
+                    placeholder="Gent"
+                    error={errors.shipping_city?.message}
+                    {...register('shipping_city')}
+                  />
+                  <Input
+                    label="Postcode *"
+                    placeholder="9000"
+                    maxLength={4}
+                    error={errors.shipping_postal_code?.message}
+                    {...register('shipping_postal_code')}
+                  />
+                </div>
               </div>
 
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                <Truck className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} aria-hidden="true" />
-                {shippingCost === 0
-                  ? 'Gratis verzending van toepassing'
-                  : `Verzendkosten: ${formatPrice(shippingCost)}`}
+              <div className="mt-5 flex items-start gap-3 rounded-[var(--radius-lg)] border border-[rgba(123,174,130,0.25)] bg-[rgba(123,174,130,0.08)] p-4 text-sm text-[var(--bone-200)]">
+                <Truck className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--signal-go)]" aria-hidden="true" />
+                <p>
+                  {shippingCost === 0
+                    ? 'Gratis verzending is actief.'
+                    : `Verzendkosten: ${formatPrice(shippingCost)}. Gratis vanaf ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`}
+                </p>
               </div>
             </section>
 
@@ -183,76 +165,63 @@ export default function CheckoutPage() {
               size="lg"
               loading={submitting}
               disabled={submitting}
-              leftIcon={<Lock className="w-4 h-4" />}
+              leftIcon={<Lock className="h-4 w-4" />}
             >
               Bestelling plaatsen
             </Button>
 
-            <p className="text-xs text-center" style={{ color: 'var(--color-text-muted)' }}>
-              Betaling via Mollie wordt geactiveerd in een volgende stap.
+            <p className="text-center text-xs text-[var(--bone-400)]">
+              Betaling via Mollie wordt in een volgende stap geactiveerd. Je bestelling wordt nu al correct geregistreerd.
             </p>
           </form>
 
-          {/* Order samenvatting */}
-          <aside className="lg:col-span-1">
-            <div
-              className="rounded-xl p-5 space-y-4 sticky top-24"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-            >
-              <h2 className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
-                Jouw bestelling
-              </h2>
+          <aside className="lg:sticky lg:top-28 lg:self-start" aria-label="Besteloverzicht">
+            <div className="ico-panel p-6">
+              <p className="edit-eyebrow">Jouw bestelling</p>
 
-              <ul className="space-y-3">
+              <ul className="mt-6 space-y-4">
                 {items.map((item) => (
-                  <li key={item.id} className="flex items-center gap-3">
-                    <div
-                      className="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden"
-                      style={{ backgroundColor: 'var(--color-surface-overlay)' }}
-                    >
+                  <li key={item.id} className="grid grid-cols-[56px_1fr_auto] gap-3">
+                    <div className="ico-media h-14 w-14 overflow-hidden rounded-[var(--radius-md)] bg-[rgba(250,246,241,0.04)]">
                       {item.image_url ? (
-                        <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
+                        <img src={item.image_url} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <ShoppingBag className="w-5 h-5" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
-                        </div>
+                        <span className="flex h-full w-full items-center justify-center text-[var(--bone-400)]">
+                          <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+                        </span>
                       )}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium truncate" style={{ color: 'var(--color-text-primary)' }}>
-                        {item.name}
-                      </p>
-                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                        {item.quantity} × {formatPrice(item.price)}
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium text-[var(--bone-000)]">{item.name}</p>
+                      <p className="mt-1 text-xs text-[var(--bone-400)]">
+                        {item.quantity} x {formatPrice(item.price)}
                       </p>
                     </div>
-                    <span className="text-sm font-semibold flex-shrink-0" style={{ color: 'var(--color-primary)' }}>
-                      {formatPrice(item.price * item.quantity)}
-                    </span>
+                    <p className="font-display text-lg text-[var(--copper-200)]">{formatPrice(item.price * item.quantity)}</p>
                   </li>
                 ))}
               </ul>
 
-              <div className="border-t pt-4 space-y-2" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-                <div className="flex justify-between text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                  <span>Subtotaal</span>
-                  <span>{formatPrice(subtotal)}</span>
+              <dl className="mt-6 space-y-3 border-t border-[var(--color-border)] pt-5 text-sm">
+                <div className="flex justify-between gap-6 text-[var(--bone-300)]">
+                  <dt>Subtotaal</dt>
+                  <dd>{formatPrice(subtotal)}</dd>
                 </div>
-                <div className="flex justify-between text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                  <span>Verzending</span>
-                  <span style={{ color: shippingCost === 0 ? 'var(--color-success)' : undefined }}>
+                <div className="flex justify-between gap-6 text-[var(--bone-300)]">
+                  <dt>Verzending</dt>
+                  <dd className={shippingCost === 0 ? 'text-[var(--signal-go)]' : undefined}>
                     {shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}
-                  </span>
+                  </dd>
                 </div>
-                <div className="flex justify-between font-semibold border-t pt-2" style={{ borderColor: 'rgba(196,130,111,0.15)', color: 'var(--color-text-primary)' }}>
-                  <span>Totaal</span>
-                  <span style={{ color: 'var(--color-primary)' }}>{formatPrice(total)}</span>
+                <div className="flex justify-between gap-6 border-t border-[var(--color-border)] pt-4 font-display text-2xl text-[var(--bone-000)]">
+                  <dt>Totaal</dt>
+                  <dd>{formatPrice(total)}</dd>
                 </div>
-              </div>
+              </dl>
             </div>
           </aside>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

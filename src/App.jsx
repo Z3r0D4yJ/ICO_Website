@@ -17,6 +17,7 @@ import MobileActionBar from '@/components/layout/MobileActionBar'
 import ToastContainer from '@/components/ui/Toast'
 import CartDrawer from '@/components/shop/CartDrawer'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
+import Skeleton from '@/components/ui/Skeleton'
 
 // Publieke pagina's (lazy loaded per route)
 const HomePage = lazy(() => import('@/pages/public/HomePage'))
@@ -58,49 +59,14 @@ const QuotesPage = lazy(() => import('@/pages/admin/QuotesPage'))
 // Auth guard
 const AuthGuard = lazy(() => import('@/components/admin/AuthGuard'))
 
-// Loading fallback
-// Loading fallback met een draaiend autowiel
 function PageLoader() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="text-center">
-        {/* Container voor het wiel */}
-        <div 
-          className="w-12 h-12 mx-auto mb-4 animate-spin"
-          style={{ color: 'var(--color-primary)' }}
-        >
-          {/* SVG van een autowiel met velg */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-full h-full"
-          >
-            {/* Buitenband */}
-            <circle cx="12" cy="12" r="10" strokeWidth="2" />
-            {/* Velgrand */}
-            <circle cx="12" cy="12" r="7" />
-            {/* Naaf / Centrum */}
-            <circle cx="12" cy="12" r="2" />
-            {/* Spaken */}
-            <line x1="12" y1="5" x2="12" y2="10" />
-            <line x1="12" y1="14" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="10" y2="12" />
-            <line x1="14" y1="12" x2="19" y2="12" />
-            <line x1="7.05" y1="7.05" x2="10.5" y2="10.5" />
-            <line x1="13.5" y1="13.5" x2="16.95" y2="16.95" />
-            <line x1="7.05" y1="16.95" x2="10.5" y2="13.5" />
-            <line x1="13.5" y1="10.5" x2="16.95" y2="7.05" />
-          </svg>
-        </div>
-        
-        <p style={{ color: 'var(--color-text-muted)' }} className="font-medium tracking-wide">
-          Aan het polijsten...
-        </p>
+    <div className="min-h-[60vh] bg-[var(--ink-050)] flex items-center justify-center px-4">
+      <div className="ico-panel w-full max-w-md p-6">
+        <p className="edit-eyebrow mb-5">ICO wordt geladen</p>
+        <Skeleton variant="line" width="72%" className="mb-3" />
+        <Skeleton variant="line" width="92%" className="mb-3" />
+        <Skeleton variant="rect" height="120px" />
       </div>
     </div>
   )
@@ -111,8 +77,8 @@ function SkipLink() {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold"
-      style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text-inverse)' }}
+      className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:rounded-[var(--radius-lg)] focus:text-sm focus:font-semibold focus:bg-[var(--copper-400)] focus:text-[var(--ink-000)]"
+      style={{ zIndex: 'var(--z-toast)' }}
     >
       Naar hoofdinhoud
     </a>

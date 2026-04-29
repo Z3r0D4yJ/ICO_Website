@@ -4,9 +4,6 @@ import { formatPrice } from '@/lib/utils'
 import { useCartStore } from '@/stores/cartStore'
 import { useUiStore } from '@/stores/uiStore'
 
-/**
- * ProductCard — kaart voor een CleanTech product in het grid.
- */
 export default function ProductCard({ product }) {
   const addItem = useCartStore((s) => s.addItem)
   const showSuccess = useUiStore((s) => s.showSuccess)
@@ -21,119 +18,81 @@ export default function ProductCard({ product }) {
   const discountPct = hasDiscount
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
     : 0
+  const isSoldOut = product.stock_quantity === 0
 
   return (
     <Link
       to={`/shop/${product.slug}`}
-      className="group flex flex-col rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-      style={{
-        backgroundColor: 'var(--color-surface-elevated)',
-        border: '1px solid rgba(196,130,111,0.2)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.border = '1px solid rgba(196,130,111,0.35)'
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.25)'
-        e.currentTarget.style.transform = 'translateY(-2px)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.border = '1px solid rgba(196,130,111,0.2)'
-        e.currentTarget.style.boxShadow = 'none'
-        e.currentTarget.style.transform = 'translateY(0)'
-      }}
+      className="group ico-panel flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(184,111,92,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
     >
-      {/* Afbeelding */}
-      <div
-        className="relative aspect-square overflow-hidden"
-        style={{ backgroundColor: 'var(--color-surface-overlay)' }}
-      >
+      <div className="relative aspect-[4/5] overflow-hidden bg-[var(--ink-200)]">
         {product.image_url ? (
           <img
             src={product.image_url}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <ShoppingBag
-              className="w-12 h-12"
-              style={{ color: 'var(--color-text-muted)' }}
-              aria-hidden="true"
-            />
+          <div className="flex h-full w-full items-center justify-center">
+            <ShoppingBag className="h-12 w-12 text-[var(--bone-300)]" aria-hidden="true" />
           </div>
         )}
 
-        {/* Kortingsbadge */}
-        {hasDiscount && (
-          <div
-            className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-xs font-bold"
-            style={{ backgroundColor: 'var(--color-error)', color: '#fff' }}
-          >
-            -{discountPct}%
-          </div>
-        )}
+        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+          {product.category && (
+            <span className="rounded-[var(--radius-sm)] bg-[rgba(8,7,6,0.72)] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--bone-100)] backdrop-blur-sm">
+              {product.category}
+            </span>
+          )}
+          {hasDiscount && (
+            <span className="rounded-[var(--radius-sm)] bg-[var(--signal-stop)] px-2 py-1 font-mono text-[10px] font-semibold text-[var(--bone-000)]">
+              -{discountPct}%
+            </span>
+          )}
+        </div>
 
-        {/* Uitverkocht */}
-        {product.stock_quantity === 0 && (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-          >
-            <span
-              className="px-3 py-1 rounded-full text-xs font-semibold"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', color: 'var(--color-text-muted)' }}
-            >
+        {isSoldOut && (
+          <div className="absolute inset-0 flex items-center justify-center bg-[rgba(8,7,6,0.62)]">
+            <span className="rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--ink-100)] px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-[var(--bone-200)]">
               Uitverkocht
             </span>
           </div>
         )}
       </div>
 
-      {/* Info */}
-      <div className="flex flex-col flex-1 p-4 gap-3">
+      <div className="flex flex-1 flex-col gap-4 p-4">
         <div className="flex-1">
-          {product.category && (
-            <p className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: 'var(--color-text-muted)' }}>
-              {product.category}
-            </p>
-          )}
-          <h3 className="text-sm font-semibold leading-snug" style={{ color: 'var(--color-text-primary)' }}>
+          <h3 className="font-body text-sm font-semibold leading-snug text-[var(--bone-000)]">
             {product.name}
           </h3>
+          {product.description_nl && (
+            <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--bone-300)]">
+              {product.description_nl}
+            </p>
+          )}
         </div>
 
-        <div className="flex items-center justify-between gap-2">
-          {/* Prijs */}
-          <div className="flex items-baseline gap-2">
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.25rem',
-                color: 'var(--color-primary)',
-                lineHeight: 1,
-              }}
-            >
+        <div className="flex items-end justify-between gap-3 border-t border-[var(--color-border)] pt-4">
+          <div>
+            <div className="font-display text-2xl leading-none text-[var(--bone-000)]">
               {formatPrice(product.price)}
-            </span>
+            </div>
             {hasDiscount && (
-              <span className="text-xs line-through" style={{ color: 'var(--color-text-muted)' }}>
+              <div className="mt-1 text-xs line-through text-[var(--bone-300)]">
                 {formatPrice(product.compare_at_price)}
-              </span>
+              </div>
             )}
           </div>
 
-          {/* Snel toevoegen */}
-          {product.stock_quantity > 0 && (
+          {!isSoldOut && (
             <button
+              type="button"
               onClick={handleAddToCart}
               aria-label={`${product.name} toevoegen aan winkelwagen`}
-              className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-150 hover:scale-110 hover:brightness-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-              style={{
-                backgroundColor: 'var(--color-primary)',
-                color: 'var(--color-text-inverse)',
-              }}
+              className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--copper-400)] text-[var(--ink-000)] transition-all hover:bg-[var(--copper-200)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
             >
-              <Plus className="w-4 h-4" aria-hidden="true" />
+              <Plus className="h-4 w-4" weight="bold" aria-hidden="true" />
             </button>
           )}
         </div>

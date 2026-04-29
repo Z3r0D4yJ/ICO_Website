@@ -3,9 +3,6 @@ import { Car, MessageCircle } from '@/lib/icons'
 import { WHATSAPP_NUMBER } from '@/lib/constants'
 import { whatsappLink } from '@/lib/utils'
 
-// Mobile-only floating action bar.
-// Twee CTA's altijd binnen duimbereik: Boek Nu + WhatsApp.
-// Verbergt zichzelf op /boeken (anders dubbel) en op alle /admin routes.
 export default function MobileActionBar() {
   const { pathname } = useLocation()
 
@@ -16,46 +13,33 @@ export default function MobileActionBar() {
 
   return (
     <div
-      className="lg:hidden fixed left-0 right-0 z-[150]"
+      className="fixed left-0 right-0 lg:hidden"
       style={{
         bottom: 'max(0.75rem, env(safe-area-inset-bottom))',
         paddingLeft: '1rem',
         paddingRight: '1rem',
+        zIndex: 'var(--z-sticky)',
       }}
       aria-label="Snelle acties"
     >
       <div
-        className="mx-auto flex items-center gap-2 p-2 rounded-full shadow-lg backdrop-blur-md"
-        style={{
-          maxWidth: '24rem',
-          backgroundColor: 'rgba(17, 16, 16, 0.92)',
-          border: '1px solid rgba(196, 130, 111, 0.35)',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-        }}
+        className="mx-auto flex max-w-sm items-center gap-2 rounded-[var(--radius-xl)] border border-[rgba(184,111,92,0.38)] bg-[rgba(14,12,11,0.92)] p-2 shadow-[var(--shadow-lg)] backdrop-blur-md"
       >
         <Link
           to="/boeken"
-          className="flex-1 flex items-center justify-center gap-2 h-11 rounded-full text-sm font-semibold transition-colors"
-          style={{
-            backgroundColor: 'var(--color-primary)',
-            color: 'var(--color-text-inverse)',
-          }}
+          className="btn-shell btn-primary min-h-11 flex-1 px-3 text-sm"
         >
-          <Car className="w-4 h-4" aria-hidden="true" />
-          Boek Nu
+          <Car className="h-4 w-4" aria-hidden="true" />
+          Boek afspraak
         </Link>
         <a
           href={waHref}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Stuur ons een WhatsApp bericht"
-          className="flex items-center justify-center w-11 h-11 rounded-full transition-colors"
-          style={{
-            backgroundColor: '#25D366',
-            color: '#fff',
-          }}
+          className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-lg)] border border-[rgba(123,174,130,0.42)] bg-[rgba(123,174,130,0.13)] text-[var(--signal-go)] transition-all hover:bg-[rgba(123,174,130,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(123,174,130,0.45)]"
         >
-          <MessageCircle className="w-5 h-5" aria-hidden="true" />
+          <MessageCircle className="h-5 w-5" aria-hidden="true" />
         </a>
       </div>
     </div>

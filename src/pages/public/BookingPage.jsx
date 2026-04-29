@@ -40,7 +40,7 @@ function mapBookingError(err) {
   return 'Er ging iets mis bij het maken van je boeking. Probeer opnieuw of stuur ons een WhatsApp.'
 }
 
-// Wat is inbegrepen per wasbeurt — visuele bullet-lijst op de keuzekaart
+// Wat is inbegrepen per wasbeurt op de keuzekaart.
 const WASH_INCLUDES = {
   'easywash': [
     'Karosserie handwas',
@@ -58,20 +58,6 @@ const WASH_INCLUDES = {
 }
 
 // ── Kleine auto SVG ────────────────────────────────────────────────────────────
-function CarSVG() {
-  return (
-    <svg width="44" height="20" viewBox="0 0 44 20" fill="none" aria-hidden="true">
-      <rect x="1" y="10" width="42" height="8" rx="2.5" fill="currentColor" />
-      <path d="M9 10L13.5 3.5H30.5L35 10H9Z" fill="currentColor" />
-      <path d="M14.5 9.5L17.5 5H27L29.5 9.5H14.5Z" fill="var(--color-surface)" fillOpacity="0.55" />
-      <circle cx="12" cy="18" r="2.5" fill="var(--color-surface-elevated)" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="32" cy="18" r="2.5" fill="var(--color-surface-elevated)" stroke="currentColor" strokeWidth="1.5" />
-      <rect x="40" y="12" width="2.5" height="4" rx="1.25" fill="#FEF08A" fillOpacity="0.9" />
-      <rect x="1" y="13" width="2" height="3" rx="1" fill="#F87171" fillOpacity="0.7" />
-    </svg>
-  )
-}
-
 // ── Stap-indicator met rijdende auto ──────────────────────────────────────────
 // Verticale layout (px van top van container):
 //   y=3–29  : cirkels (26px diameter, center op y=16)
@@ -80,145 +66,39 @@ function CarSVG() {
 //   y=36–56 : auto (20px hoog, wielen raken weg op y=56)
 //   y=62–76 : labels (tekst onder de weg)
 //   Totaal  : 80px
-function StepIndicator({ currentStep }) {
-  const idx = currentStep - 1
-  const total = STEPS.length - 1
-  const pct = (idx / total) * 100
-
-  const ROAD_Y     = 56   // y van de weg
-  const CIRCLE_CY  = 16   // y van cirkel-centrum
-  const CIRCLE_R   = 13   // straal → diameter 26px
-  const CAR_H      = 20   // hoogte CarSVG
-  // auto top = ROAD_Y - CAR_H = 36 → cirkel bottom = 29 → 7px lucht ✓
-
+function StepIndicatorClean({ currentStep }) {
   return (
     <div className="mb-8" role="list" aria-label="Boekingsstappen">
-      <div className="relative" style={{ height: 80 }}>
-
-        {/* ── Weg achtergrond ── */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: ROAD_Y,
-            left: 0, right: 0,
-            height: 3,
-            borderRadius: 2,
-            backgroundColor: 'rgba(196,130,111,0.18)',
-          }}
-        />
-
-        {/* ── Weg progressie ── */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: ROAD_Y,
-            left: 0,
-            height: 3,
-            borderRadius: 2,
-            width: `${pct}%`,
-            backgroundColor: 'var(--color-primary)',
-            transition: 'width 0.55s ease-in-out',
-          }}
-        />
-
-        {/* ── Auto rijdt over de weg ── */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: ROAD_Y - CAR_H,
-            left: `${pct}%`,
-            transform: 'translateX(-50%)',
-            color: 'var(--color-primary)',
-            transition: 'left 0.55s ease-in-out',
-            zIndex: 30,
-            filter: 'drop-shadow(0 1px 3px rgba(196,130,111,0.4))',
-          }}
-        >
-          <CarSVG />
-        </div>
-
-        {/* ── Step markers ── */}
-        {STEPS.map((step, i) => {
-          const isDone    = step.id < currentStep
+      <div className="grid grid-cols-4 gap-2 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[rgba(250,246,241,0.025)] p-2">
+        {STEPS.map((step) => {
+          const isDone = step.id < currentStep
           const isCurrent = step.id === currentStep
-          const dotPct    = (i / total) * 100
-          const accentColor = isDone || isCurrent ? 'var(--color-primary)' : 'rgba(196,130,111,0.2)'
 
           return (
-            <div key={step.id} role="listitem" aria-current={isCurrent ? 'step' : undefined}>
-
-              {/* Cirkel boven de weg */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: CIRCLE_CY - CIRCLE_R,
-                  left: `${dotPct}%`,
-                  transform: 'translateX(-50%)',
-                  width: CIRCLE_R * 2,
-                  height: CIRCLE_R * 2,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  zIndex: 10,
-                  transition: 'all 0.3s',
-                  backgroundColor: isDone
-                    ? 'var(--color-success)'
-                    : isCurrent
-                    ? 'var(--color-primary)'
-                    : 'var(--color-surface-elevated)',
-                  color: isDone || isCurrent ? '#fff' : 'var(--color-text-muted)',
-                  border: isDone || isCurrent ? 'none' : '1px solid rgba(196,130,111,0.2)',
-                  boxShadow: isCurrent ? '0 0 0 3px rgba(196,130,111,0.2)' : 'none',
-                }}
-              >
-                {isDone ? <Check size={12} weight="bold" aria-hidden="true" /> : step.id}
+            <div
+              key={step.id}
+              role="listitem"
+              aria-current={isCurrent ? 'step' : undefined}
+              className={[
+                'rounded-[var(--radius-lg)] px-3 py-3 transition-all duration-300',
+                isCurrent ? 'bg-[rgba(184,111,92,0.14)] text-[var(--bone-000)]' : 'text-[var(--bone-300)]',
+              ].join(' ')}
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  className={[
+                    'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border font-mono text-[11px]',
+                    isDone
+                      ? 'border-[var(--signal-go)] bg-[rgba(123,174,130,0.14)] text-[var(--signal-go)]'
+                      : isCurrent
+                      ? 'border-[var(--copper-400)] bg-[var(--copper-400)] text-[var(--ink-000)]'
+                      : 'border-[var(--color-border)] text-[var(--bone-300)]',
+                  ].join(' ')}
+                >
+                  {isDone ? <Check size={12} weight="bold" aria-hidden="true" /> : step.id}
+                </span>
+                <span className="hidden text-xs font-medium sm:block">{step.label}</span>
               </div>
-
-              {/* Tick-lijn: van cirkel-onderkant tot weg */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  top: CIRCLE_CY + CIRCLE_R,
-                  left: `${dotPct}%`,
-                  transform: 'translateX(-50%)',
-                  width: 1,
-                  height: ROAD_Y - (CIRCLE_CY + CIRCLE_R),
-                  backgroundColor: accentColor,
-                  transition: 'background-color 0.3s',
-                }}
-              />
-
-              {/* Label onder de weg */}
-              <div
-                className="hidden sm:block"
-                style={{
-                  position: 'absolute',
-                  top: ROAD_Y + 8,
-                  left: `${dotPct}%`,
-                  transform: 'translateX(-50%)',
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  whiteSpace: 'nowrap',
-                  color: isCurrent
-                    ? 'var(--color-primary)'
-                    : isDone
-                    ? 'var(--color-text-secondary)'
-                    : 'var(--color-text-muted)',
-                  transition: 'color 0.3s',
-                }}
-              >
-                {step.label}
-              </div>
-
             </div>
           )
         })}
@@ -227,7 +107,6 @@ function StepIndicator({ currentStep }) {
   )
 }
 
-// ── Hoofd pagina-component ─────────────────────────────────────────────────────
 export default function BookingPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -462,7 +341,7 @@ export default function BookingPage() {
           </h1>
         </div>
 
-        <StepIndicator currentStep={step} />
+        <StepIndicatorClean currentStep={step} />
 
         {/* ===== STAP 1: Dienst + Datum + Tijdslot ===== */}
         {step === 1 && (

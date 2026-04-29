@@ -120,7 +120,7 @@ export default function Footer() {
                 fontWeight: 300,
                 fontSize: 'clamp(20px, 2.2vw, 26px)',
                 color: 'var(--bone-000)',
-                letterSpacing: '-0.01em',
+                letterSpacing: 0,
                 lineHeight: 1.2,
               }}
             >
@@ -165,7 +165,7 @@ export default function Footer() {
                 fontWeight: 300,
                 fontSize: 22,
                 lineHeight: 1.3,
-                letterSpacing: '-0.01em',
+                letterSpacing: 0,
                 color: 'var(--bone-000)',
                 margin: '0 0 16px',
                 maxWidth: '24ch',

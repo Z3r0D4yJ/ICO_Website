@@ -12,10 +12,9 @@ export default function CartDrawer() {
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300',
+          'fixed inset-0 bg-[rgba(8,7,6,0.68)] backdrop-blur-sm transition-opacity duration-300',
           isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         style={{ zIndex: 'var(--z-overlay)' }}
@@ -23,105 +22,97 @@ export default function CartDrawer() {
         onClick={closeCart}
       />
 
-      {/* Drawer */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Winkelwagen"
         className={cn(
-          'fixed top-0 right-0 h-full w-96 max-w-[90vw] flex flex-col',
-          'transition-transform duration-300 ease-out',
+          'fixed right-0 top-0 flex h-full w-96 max-w-[92vw] flex-col border-l border-[var(--color-border)] shadow-[var(--shadow-lg)] transition-transform duration-300 ease-[var(--ease-out)]',
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
         )}
         style={{
-          backgroundColor: 'var(--color-surface-elevated)',
-          borderLeft: '1px solid rgba(196,130,111,0.2)',
+          background:
+            'radial-gradient(circle at 100% 0%, rgba(184,111,92,0.10), transparent 18rem), var(--ink-100)',
           zIndex: 'var(--z-modal)',
         }}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)', fontSize: '1.25rem', letterSpacing: '0.05em' }}>
-            WINKELWAGEN {items.length > 0 && <span style={{ color: 'var(--color-primary)' }}>({items.reduce((n, i) => n + i.quantity, 0)})</span>}
-          </h2>
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
+          <div>
+            <p className="ico-eyebrow">Shop</p>
+            <h2 className="mt-1 font-display text-2xl text-[var(--bone-000)]">
+              Winkelwagen {items.length > 0 && <span className="text-[var(--copper-200)]">({items.reduce((n, i) => n + i.quantity, 0)})</span>}
+            </h2>
+          </div>
           <button
+            type="button"
             onClick={closeCart}
             aria-label="Winkelwagen sluiten"
-            className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-            style={{ color: 'var(--color-text-muted)' }}
+            className="rounded-[var(--radius-sm)] p-2 text-[var(--bone-300)] transition-colors hover:bg-[var(--ink-200)] hover:text-[var(--bone-000)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
           >
-            <X className="w-5 h-5" aria-hidden="true" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <div className="flex-1 overflow-y-auto px-5 py-4">
           {isEmpty ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-4">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-surface-overlay)' }}>
-                <ShoppingBag className="w-8 h-8" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+            <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[rgba(250,246,241,0.035)]">
+                <ShoppingBag className="h-8 w-8 text-[var(--bone-300)]" aria-hidden="true" />
               </div>
               <div>
-                <p className="font-medium mb-1" style={{ color: 'var(--color-text-primary)' }}>Winkelwagen is leeg</p>
-                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Voeg producten toe uit onze shop</p>
+                <p className="font-display text-2xl text-[var(--bone-000)]">Nog niets gekozen</p>
+                <p className="mt-1 text-sm text-[var(--bone-300)]">CleanTech producten die Rico en Nico zelf gebruiken.</p>
               </div>
               <Button variant="secondary" size="sm" as={Link} to="/shop" onClick={closeCart}>
-                Naar de Shop
+                Naar de shop
               </Button>
             </div>
           ) : (
             <ul className="flex flex-col gap-4" role="list">
               {items.map((item) => (
-                <li key={item.id} className="flex gap-3">
-                  {/* Thumbnail */}
-                  <div
-                    className="w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden"
-                    style={{ backgroundColor: 'var(--color-surface-overlay)' }}
-                  >
+                <li key={item.id} className="grid grid-cols-[4rem_1fr_auto] gap-3">
+                  <div className="h-16 w-16 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--ink-200)]">
                     {item.image_url ? (
-                      <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
+                      <img src={item.image_url} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ShoppingBag className="w-6 h-6" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+                      <div className="flex h-full w-full items-center justify-center">
+                        <ShoppingBag className="h-6 w-6 text-[var(--bone-300)]" aria-hidden="true" />
                       </div>
                     )}
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate" style={{ color: 'var(--color-text-primary)' }}>{item.name}</p>
-                    <p className="text-sm font-bold mt-0.5" style={{ color: 'var(--color-primary)' }}>{formatPrice(item.price)}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-[var(--bone-000)]">{item.name}</p>
+                    <p className="mt-0.5 font-display text-xl leading-none text-[var(--copper-200)]">{formatPrice(item.price)}</p>
 
-                    {/* Quantity stepper */}
-                    <div className="flex items-center gap-2 mt-2">
+                    <div className="mt-2 inline-flex items-center rounded-[var(--radius-sm)] border border-[var(--color-border)]">
                       <button
+                        type="button"
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         aria-label={`Minder ${item.name}`}
-                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                        style={{ border: '1px solid rgba(196,130,111,0.2)' }}
+                        className="flex h-7 w-7 items-center justify-center text-[var(--bone-200)] transition-colors hover:bg-[var(--ink-200)]"
                       >
-                        <Minus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
+                        <Minus className="h-3 w-3" aria-hidden="true" />
                       </button>
-                      <span className="text-sm w-6 text-center" style={{ color: 'var(--color-text-primary)' }}>{item.quantity}</span>
+                      <span className="w-7 text-center text-sm text-[var(--bone-000)]">{item.quantity}</span>
                       <button
+                        type="button"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         aria-label={`Meer ${item.name}`}
-                        className="w-6 h-6 rounded flex items-center justify-center cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                        style={{ border: '1px solid rgba(196,130,111,0.2)' }}
+                        className="flex h-7 w-7 items-center justify-center text-[var(--bone-200)] transition-colors hover:bg-[var(--ink-200)]"
                       >
-                        <Plus className="w-3 h-3" style={{ color: 'var(--color-text-secondary)' }} aria-hidden="true" />
+                        <Plus className="h-3 w-3" aria-hidden="true" />
                       </button>
                     </div>
                   </div>
 
-                  {/* Verwijder */}
                   <button
+                    type="button"
                     onClick={() => removeItem(item.id)}
                     aria-label={`${item.name} verwijderen`}
-                    className="p-1.5 rounded cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-error)] flex-shrink-0 self-start"
-                    style={{ color: 'var(--color-text-muted)' }}
+                    className="self-start rounded-[var(--radius-sm)] p-1.5 text-[var(--bone-300)] transition-colors hover:bg-[rgba(194,101,90,0.12)] hover:text-[var(--signal-stop)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--signal-stop)]"
                   >
-                    <Trash2 className="w-4 h-4" aria-hidden="true" />
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
                 </li>
               ))}
@@ -129,32 +120,27 @@ export default function CartDrawer() {
           )}
         </div>
 
-        {/* Footer — totalen + checkout */}
         {!isEmpty && (
-          <div className="flex-shrink-0 px-6 py-5 border-t space-y-3" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
-            <div className="flex justify-between text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+          <div className="flex-shrink-0 space-y-3 border-t border-[var(--color-border)] px-5 py-5">
+            <div className="flex justify-between text-sm text-[var(--bone-200)]">
               <span>Subtotaal</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
-            <div className="flex justify-between text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+            <div className="flex justify-between text-sm text-[var(--bone-200)]">
               <span>Verzending</span>
-              <span>{shippingCost === 0 ? <span style={{ color: 'var(--color-success)' }}>Gratis</span> : formatPrice(shippingCost)}</span>
+              <span className={shippingCost === 0 ? 'text-[var(--signal-go)]' : ''}>
+                {shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}
+              </span>
             </div>
-            <div className="flex justify-between font-semibold border-t pt-3" style={{ borderColor: 'rgba(196,130,111,0.15)', color: 'var(--color-text-primary)' }}>
+            <div className="flex justify-between border-t border-[var(--color-border)] pt-3 font-semibold text-[var(--bone-000)]">
               <span>Totaal</span>
-              <span style={{ color: 'var(--color-primary)' }}>{formatPrice(total)}</span>
+              <span className="text-[var(--copper-200)]">{formatPrice(total)}</span>
             </div>
-            <Button
-              as={Link}
-              to="/shop/afrekenen"
-              variant="primary"
-              fullWidth
-              onClick={closeCart}
-            >
+            <Button as={Link} to="/shop/afrekenen" variant="primary" fullWidth onClick={closeCart}>
               Afrekenen
             </Button>
             <Button variant="ghost" fullWidth size="sm" onClick={closeCart}>
-              Verder Winkelen
+              Verder winkelen
             </Button>
           </div>
         )}

@@ -81,7 +81,7 @@ export default function WashbusShowcase() {
                 fontWeight: 400,
                 fontSize: 'var(--t-h1-edit)',
                 lineHeight: 1,
-                letterSpacing: '-0.02em',
+                letterSpacing: 0,
                 color: 'var(--bone-000)',
                 margin: 0,
                 textWrap: 'balance',

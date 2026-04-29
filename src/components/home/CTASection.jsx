@@ -44,7 +44,7 @@ export default function CTASection() {
               fontWeight: 300,
               fontSize: 'clamp(48px, 7vw, 96px)',
               lineHeight: 0.95,
-              letterSpacing: '-0.035em',
+              letterSpacing: 0,
               color: 'var(--bone-000)',
               margin: 0,
               maxWidth: '14ch',

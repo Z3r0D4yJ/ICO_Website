@@ -123,7 +123,7 @@ export default function Hero() {
                   fontWeight: 300,
                   fontSize: 'clamp(56px, 7.5vw, 112px)',
                   lineHeight: 0.92,
-                  letterSpacing: '-0.035em',
+                  letterSpacing: 0,
                   color: 'var(--bone-000)',
                   margin: 0,
                   textWrap: 'balance',
@@ -192,7 +192,7 @@ export default function Hero() {
                     fontWeight: 400,
                     fontSize: '20px',
                     color: 'var(--bone-000)',
-                    letterSpacing: '-0.01em',
+                    letterSpacing: 0,
                   }}
                 >
                   {value}

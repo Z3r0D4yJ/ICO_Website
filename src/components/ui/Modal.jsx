@@ -3,18 +3,6 @@ import { createPortal } from 'react-dom'
 import { X } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 
-/**
- * ICO Modal component
- * - Focus trap binnen modal
- * - Escape toets sluit modal
- * - Scroll lock op body
- * - Slide-up animatie
- *
- * @param {boolean} isOpen
- * @param {function} onClose
- * @param {string} title
- * @param {'sm'|'md'|'lg'|'xl'|'full'} size
- */
 export default function Modal({
   isOpen,
   onClose,
@@ -36,13 +24,10 @@ export default function Modal({
     full: 'max-w-4xl',
   }
 
-  // Scroll lock + focus management
   useEffect(() => {
     if (isOpen) {
       previouslyFocusedRef.current = document.activeElement
       document.body.style.overflow = 'hidden'
-
-      // Focus eerste focusbaar element in modal
       requestAnimationFrame(() => {
         const focusable = modalRef.current?.querySelectorAll(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -51,7 +36,6 @@ export default function Modal({
       })
     } else {
       document.body.style.overflow = ''
-      // Geef focus terug aan eerder gefocust element
       previouslyFocusedRef.current?.focus()
     }
 
@@ -60,15 +44,12 @@ export default function Modal({
     }
   }, [isOpen])
 
-  // Focus trap
   const handleKeyDown = useCallback((e) => {
     if (!isOpen) return
-
     if (e.key === 'Escape') {
       onClose?.()
       return
     }
-
     if (e.key !== 'Tab') return
 
     const focusable = modalRef.current?.querySelectorAll(
@@ -79,16 +60,12 @@ export default function Modal({
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
 
-    if (e.shiftKey) {
-      if (document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
-      }
-    } else {
-      if (document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
-      }
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      first.focus()
     }
   }, [isOpen, onClose])
 
@@ -101,69 +78,58 @@ export default function Modal({
 
   return createPortal(
     <div
-      className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4"
+      className="fixed inset-0 flex items-end justify-center p-0 sm:items-center sm:p-4"
       style={{ zIndex: 'var(--z-overlay)' }}
       role="presentation"
     >
-      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-[rgba(8,7,6,0.72)] backdrop-blur-sm animate-fade-in"
         aria-hidden="true"
         onClick={closeOnBackdrop ? onClose : undefined}
       />
 
-      {/* Modal container */}
       <div
         ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
         className={cn(
-          'relative w-full rounded-t-xl sm:rounded-xl shadow-[var(--shadow-lg)]',
-          'animate-slide-up',
-          'border border-[rgba(196,130,111,0.2)]',
-          'max-h-[90vh] overflow-y-auto',
-          sizes[size],
+          'relative w-full max-h-[90vh] overflow-y-auto rounded-t-[var(--radius-2xl)] border border-[var(--color-border)] shadow-[var(--shadow-lg)] animate-slide-up sm:rounded-[var(--radius-2xl)]',
+          sizes[size] || sizes.md,
           className
         )}
         style={{
-          backgroundColor: 'var(--color-surface-overlay)',
+          background:
+            'radial-gradient(circle at 100% 0%, rgba(184,111,92,0.10), transparent 18rem), var(--ink-100)',
           zIndex: 'var(--z-modal)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile drag indicator */}
-        <div className="sm:hidden flex justify-center pt-2 pb-0">
-          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: 'rgba(196,130,111,0.3)' }} />
+        <div className="flex justify-center pb-0 pt-2 sm:hidden">
+          <div className="h-1 w-10 rounded-full bg-[rgba(233,225,215,0.16)]" />
         </div>
 
-        {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b" style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
+          <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-4 sm:px-6">
             {title && (
-              <h2
-                id="modal-title"
-                className="text-base sm:text-lg font-semibold"
-                style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-display)', letterSpacing: '0.03em' }}
-              >
+              <h2 id="modal-title" className="font-display text-2xl text-[var(--bone-000)]">
                 {title}
               </h2>
             )}
             {showCloseButton && (
               <button
+                type="button"
                 onClick={onClose}
                 aria-label="Modal sluiten"
-                className="p-2 rounded-md cursor-pointer transition-colors duration-150 hover:bg-[var(--color-surface-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                style={{ color: 'var(--color-text-muted)', marginLeft: 'auto' }}
+                className="ml-auto rounded-[var(--radius-sm)] p-2 text-[var(--bone-300)] transition-colors hover:bg-[var(--ink-200)] hover:text-[var(--bone-000)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
               >
-                <X className="w-5 h-5" aria-hidden="true" />
+                <X className="h-5 w-5" aria-hidden="true" />
               </button>
             )}
           </div>
         )}
 
-        {/* Content */}
-        <div className="px-4 sm:px-6 py-4 sm:py-5">
+        <div className="px-4 py-5 sm:px-6">
           {children}
         </div>
       </div>
@@ -172,10 +138,9 @@ export default function Modal({
   )
 }
 
-// Subcomponenten
 Modal.Footer = function ModalFooter({ className, children }) {
   return (
-    <div className={cn('flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 mt-6 pt-4 border-t', className)} style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
+    <div className={cn('mt-6 flex flex-col-reverse items-stretch justify-end gap-2 border-t border-[var(--color-border)] pt-4 sm:flex-row sm:items-center sm:gap-3', className)}>
       {children}
     </div>
   )

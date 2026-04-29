@@ -1,94 +1,90 @@
 import { cn } from '@/lib/utils'
 
-/**
- * Korte pagina-hero — voor alle interne pagina's (niet fullscreen zoals homepage).
- * Gebruik op: Diensten, Shop, Blog, Over Ons, Contact, FAQ, ...
- *
- * @param {string} label - Klein label boven de titel (optioneel)
- * @param {string} title - Hoofdtitel (Bebas Neue)
- * @param {string} titleAccent - Deel van de titel in goud (optioneel, wordt achter title geplaatst)
- * @param {string} subtitle - Beschrijving onder de titel
- * @param {React.ReactNode} children - Extra content (badges, knoppen, ...)
- * @param {'center'|'left'} align
- * @param {'sm'|'md'|'lg'} size
- */
 export default function PageHero({
   label,
+  eyebrow,
   title,
   titleAccent,
   subtitle,
   children,
   align = 'center',
   size = 'md',
+  image,
+  imageAlt = '',
+  variant = 'default',
   className,
 }) {
   const sizes = {
     sm: 'py-12 md:py-16',
-    md: 'py-14 md:py-20',
-    lg: 'py-16 md:py-24',
+    md: 'py-16 md:py-24',
+    lg: 'py-20 md:py-32',
   }
 
-  const alignClass = align === 'center' ? 'text-center' : 'text-left'
-  const maxWidthClass = align === 'center' ? 'mx-auto' : ''
+  const isCenter = align === 'center'
+  const heroLabel = eyebrow || label
 
   return (
     <section
-      className={cn('relative overflow-hidden', sizes[size], className)}
-      style={{
-        background: 'linear-gradient(180deg, var(--color-secondary) 0%, var(--color-surface) 100%)',
-        borderBottom: '1px solid rgba(196,130,111,0.2)',
-      }}
+      className={cn(
+        'relative overflow-hidden border-b border-[var(--ink-300)]',
+        sizes[size] || sizes.md,
+        variant === 'compact' && 'py-12 md:py-16',
+        className
+      )}
+      style={{ backgroundColor: 'var(--ink-050)' }}
     >
-      {/* Subtiele grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px),' +
-            'repeating-linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px)',
+          background:
+            'radial-gradient(ellipse 70% 55% at 82% 20%, rgba(184,111,92,0.13) 0%, transparent 62%), radial-gradient(ellipse 55% 70% at 8% 100%, rgba(106,46,34,0.22) 0%, transparent 60%)',
         }}
       />
 
+      {image && (
+        <div className="absolute inset-y-0 right-0 hidden lg:block w-[46%]" aria-hidden={imageAlt ? undefined : true}>
+          <img src={image} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to right, var(--ink-050) 0%, rgba(14,12,11,0.72) 22%, transparent 58%), linear-gradient(to bottom, var(--ink-050) 0%, transparent 18%, var(--ink-050) 100%)',
+            }}
+          />
+        </div>
+      )}
+
       <div className="container-ico relative z-10">
-        <div className={cn('max-w-2xl', alignClass, maxWidthClass)}>
-          {label && (
-            <p
-              className="text-sm font-semibold uppercase tracking-widest mb-3"
-              style={{ color: 'var(--color-primary)' }}
-            >
-              {label}
+        <div
+          className={cn(
+            'max-w-3xl',
+            isCenter && !image ? 'mx-auto text-center' : 'text-left'
+          )}
+        >
+          {heroLabel && (
+            <p className={cn('edit-eyebrow mb-6', isCenter && !image && 'justify-center')}>
+              {heroLabel}
             </p>
           )}
 
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.25rem, 6vw, 4rem)',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.03em',
-              lineHeight: 1.05,
-            }}
-          >
+          <h1 className="font-display text-[2.75rem] md:text-[4.5rem] leading-none text-[var(--bone-000)]">
             {title}
             {titleAccent && (
               <>
                 {' '}
-                <span style={{ color: 'var(--color-primary)' }}>{titleAccent}</span>
+                <em className="not-italic text-[var(--copper-200)]">{titleAccent}</em>
               </>
             )}
           </h1>
 
           {subtitle && (
-            <p
-              className="mt-4 text-base md:text-lg"
-              style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}
-            >
+            <p className={cn('ico-lede mt-6', isCenter && !image && 'mx-auto')}>
               {subtitle}
             </p>
           )}
 
-          {children && <div className="mt-6">{children}</div>}
+          {children && <div className="mt-8">{children}</div>}
         </div>
       </div>
     </section>

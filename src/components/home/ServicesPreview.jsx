@@ -107,7 +107,7 @@ function ServiceCard({ pkg }) {
           fontWeight: 400,
           fontSize: 32,
           lineHeight: 1.05,
-          letterSpacing: '-0.02em',
+          letterSpacing: 0,
           color: 'var(--bone-000)',
           margin: 0,
           textWrap: 'balance',
@@ -182,7 +182,7 @@ function ServiceCard({ pkg }) {
             fontWeight: 400,
             fontSize: 36,
             color: 'var(--bone-000)',
-            letterSpacing: '-0.02em',
+            letterSpacing: 0,
             lineHeight: 1,
           }}
         >

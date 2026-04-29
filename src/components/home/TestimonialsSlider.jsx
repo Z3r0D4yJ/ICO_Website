@@ -33,7 +33,7 @@ function TestimonialCard({ testimonial, lang }) {
           lineHeight: 0.6,
           color: 'var(--copper-700)',
           height: 32,
-          letterSpacing: '-0.05em',
+          letterSpacing: 0,
           marginBottom: 16,
         }}
       >
@@ -49,7 +49,7 @@ function TestimonialCard({ testimonial, lang }) {
           lineHeight: 1.35,
           color: 'var(--bone-000)',
           margin: 0,
-          letterSpacing: '-0.01em',
+          letterSpacing: 0,
           textWrap: 'pretty',
         }}
       >
@@ -225,7 +225,7 @@ export default function TestimonialsSlider() {
               fontStyle: 'italic',
               fontSize: 22,
               color: 'var(--bone-000)',
-              letterSpacing: '-0.01em',
+              letterSpacing: 0,
             }}
           >
             5,0 <span style={{ color: 'var(--copper-200)' }}>/</span>{' '}

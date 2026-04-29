@@ -91,7 +91,7 @@ function EditorialPageHero() {
             fontWeight: 300,
             fontSize: 'clamp(48px, 7vw, 96px)',
             lineHeight: 0.95,
-            letterSpacing: '-0.035em',
+            letterSpacing: 0,
             color: 'var(--bone-000)',
             margin: 0,
             maxWidth: '14ch',
@@ -296,7 +296,7 @@ function ServiceCard({ service, lang, t, isBookable, navigate }) {
             fontWeight: 400,
             fontSize: 26,
             lineHeight: 1.1,
-            letterSpacing: '-0.015em',
+            letterSpacing: 0,
             color: 'var(--bone-000)',
             margin: 0,
             textWrap: 'balance',
@@ -348,7 +348,7 @@ function ServiceCard({ service, lang, t, isBookable, navigate }) {
                   fontWeight: 400,
                   fontSize: 32,
                   color: 'var(--bone-000)',
-                  letterSpacing: '-0.02em',
+                  letterSpacing: 0,
                   lineHeight: 1,
                 }}
               >
@@ -375,7 +375,7 @@ function ServiceCard({ service, lang, t, isBookable, navigate }) {
                 fontWeight: 300,
                 fontSize: 22,
                 color: 'var(--copper-200)',
-                letterSpacing: '-0.01em',
+                letterSpacing: 0,
               }}
             >
               op aanvraag
@@ -560,7 +560,7 @@ function CustomQuoteBlock() {
                 fontWeight: 400,
                 fontSize: 'clamp(28px, 3.5vw, 44px)',
                 lineHeight: 1.05,
-                letterSpacing: '-0.02em',
+                letterSpacing: 0,
                 color: 'var(--bone-000)',
                 margin: 0,
                 textWrap: 'balance',

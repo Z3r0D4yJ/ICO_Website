@@ -5,6 +5,7 @@ import { PRODUCT_CATEGORIES } from '@/lib/constants'
 import ProductCard from '@/components/shop/ProductCard'
 import { SkeletonCard } from '@/components/ui/Skeleton'
 import CTASection from '@/components/home/CTASection'
+import PageHero from '@/components/ui/PageHero'
 
 const ALL_CATEGORIES = [{ value: '', label_nl: 'Alles' }, ...PRODUCT_CATEGORIES]
 
@@ -14,106 +15,61 @@ export default function ShopPage() {
 
   return (
     <>
-      {/* Hero */}
-      <div
-        className="relative py-14 md:py-20 border-b overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, var(--color-secondary) 0%, var(--color-surface) 100%)',
-          borderColor: 'rgba(196,130,111,0.15)',
-        }}
-      >
-        {/* Grid patroon */}
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px),' +
-              'repeating-linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 1px, transparent 1px, transparent 64px)',
-          }}
-        />
-        <div className="container-ico relative z-10 text-center">
-          <p
-            className="text-sm font-semibold uppercase tracking-widest mb-3"
-            style={{ color: 'var(--color-primary)' }}
-          >
-            CleanTech Producten
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.03em',
-              lineHeight: 1,
-            }}
-          >
-            ONZE SHOP
-          </h1>
-          <p className="mt-4 max-w-xl mx-auto text-base" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-            Premium auto-verzorgingsproducten van het merk CleanTech — dezelfde producten die wij gebruiken bij elke wasbeurt.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        label="CleanTech producten"
+        title="Shop voor"
+        titleAccent="vakwerk."
+        subtitle="Een compacte selectie producten die Rico en Nico zelf gebruiken: droogdoeken, coatings, reinigers en accessoires zonder winkelrek-ruis."
+        image="/images/ceramixmax.jpg"
+        align="left"
+      />
 
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
+      <section className="section-padding bg-[var(--ink-050)]">
         <div className="container-ico">
-
-          {/* Categorie filters */}
-          <div className="flex flex-wrap gap-2 mb-8" role="group" aria-label="Categorie filter">
-            {ALL_CATEGORIES.map((cat) => {
-              const isActive = activeCategory === cat.value
-              return (
-                <button
-                  key={cat.value}
-                  onClick={() => setActiveCategory(cat.value)}
-                  aria-pressed={isActive}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                  style={
-                    isActive
-                      ? {
-                          backgroundColor: 'var(--color-primary)',
-                          color: 'var(--color-text-inverse)',
-                        }
-                      : {
-                          backgroundColor: 'var(--color-surface-elevated)',
-                          color: 'var(--color-text-secondary)',
-                          border: '1px solid rgba(196,130,111,0.2)',
-                        }
-                  }
-                >
-                  {cat.label_nl}
-                </button>
-              )
-            })}
+          <div className="mb-10 flex flex-col gap-5 border-b border-[var(--color-border)] pb-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="edit-sec-num">CleanTech / selectie</p>
+              <h2 className="mt-3 font-display text-4xl text-[var(--bone-000)]">
+                Producten die wij zelf durven gebruiken.
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Categorie filter">
+              {ALL_CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat.value
+                return (
+                  <button
+                    key={cat.value}
+                    type="button"
+                    onClick={() => setActiveCategory(cat.value)}
+                    aria-pressed={isActive}
+                    className={`filter-chip ${isActive ? 'is-active' : ''}`}
+                  >
+                    {cat.label_nl}
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
-          {/* Product grid */}
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {[1, 2, 3, 4].map((i) => <SkeletonCard key={i} />)}
             </div>
           ) : products.length === 0 ? (
-            <div className="py-20 text-center">
-              <ShoppingBag className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
-              <p className="text-base font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-                Geen producten gevonden in deze categorie.
-              </p>
+            <div className="ico-panel flex flex-col items-center gap-4 py-20 text-center">
+              <ShoppingBag className="h-12 w-12 text-[var(--bone-300)]" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-[var(--bone-000)]">Geen producten gevonden</p>
+                <p className="mt-1 text-sm text-[var(--bone-300)]">Kies een andere categorie of bekijk later opnieuw.</p>
+              </div>
             </div>
           ) : (
             <>
-              {/* Desktop grid */}
               <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+                {products.map((product) => <ProductCard key={product.id} product={product} />)}
               </div>
 
-              {/* Mobile — horizontaal scroll */}
-              <div
-                className="sm:hidden -mx-4 overflow-x-auto snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', scrollPaddingInline: '1.5rem' }}
-              >
+              <div className="sm:hidden -mx-4 overflow-x-auto snap-x snap-mandatory" style={{ scrollbarWidth: 'none', scrollPaddingInline: '1.5rem' }}>
                 <div className="flex gap-4 px-4" role="list" aria-label="Producten">
                   {products.map((product) => (
                     <div key={product.id} className="snap-start flex-shrink-0 w-[calc(100vw-3rem)]" role="listitem">

@@ -1,28 +1,17 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Link } from 'react-router-dom'
-import {
-  Phone,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Car,
-  CheckCircle2,
-  Facebook,
-  Instagram,
-  Clock,
-} from '@/lib/icons'
+import { Car, CheckCircle2, Clock, Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from '@/lib/icons'
+import { useRateLimit } from '@/hooks/useRateLimit'
 import { WHATSAPP_NUMBER } from '@/lib/constants'
 import { whatsappLink } from '@/lib/utils'
-import { useRateLimit } from '@/hooks/useRateLimit'
-import PageHero from '@/components/ui/PageHero'
-import Input, { Textarea } from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import Input, { Textarea } from '@/components/ui/Input'
+import PageHero from '@/components/ui/PageHero'
 import CTASection from '@/components/home/CTASection'
 
-// Validatieschema
 const contactSchema = z.object({
   name: z.string().min(2, 'Naam is verplicht (min. 2 tekens)'),
   email: z.string().email('Voer een geldig e-mailadres in'),
@@ -34,9 +23,9 @@ const contactSchema = z.object({
 const INFO_ITEMS = [
   {
     icon: Phone,
-    label: 'Telefoon / WhatsApp',
-    value: '+32 000 00 00 00',
-    href: whatsappLink(WHATSAPP_NUMBER, 'Hallo! Ik neem contact op via de website.'),
+    label: 'WhatsApp',
+    value: 'Snelste antwoord',
+    href: whatsappLink(WHATSAPP_NUMBER, 'Hallo Rico en Nico, ik heb een vraag via de website.'),
     external: true,
   },
   {
@@ -44,38 +33,23 @@ const INFO_ITEMS = [
     label: 'E-mail',
     value: 'info@ico-detailing.be',
     href: 'mailto:info@ico-detailing.be',
-    external: false,
   },
   {
     icon: MapPin,
     label: 'Werkgebied',
-    value: 'Heel Vlaanderen — mobiele service',
-    href: null,
+    value: 'Mobiel in Vlaanderen, garage in Hamme',
   },
   {
     icon: Clock,
     label: 'Bereikbaar',
-    value: 'Ma–Za, 08:00–19:00',
-    href: null,
+    value: 'Ma tot za, 08:00 tot 19:00',
   },
 ]
 
 const SOCIAL_LINKS = [
-  {
-    icon: Instagram,
-    label: 'Instagram',
-    href: 'https://instagram.com/ico_detailing',
-  },
-  {
-    icon: Facebook,
-    label: 'Facebook',
-    href: 'https://facebook.com/icodetailing',
-  },
-  {
-    icon: MessageCircle,
-    label: 'WhatsApp',
-    href: whatsappLink(WHATSAPP_NUMBER, 'Hallo! Ik neem contact op via de website.'),
-  },
+  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/ico_detailing' },
+  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/icodetailing' },
+  { icon: MessageCircle, label: 'WhatsApp', href: whatsappLink(WHATSAPP_NUMBER, 'Hallo Rico en Nico, ik kom via de website.') },
 ]
 
 export default function ContactPage() {
@@ -88,15 +62,12 @@ export default function ContactPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
-    resolver: zodResolver(contactSchema),
-  })
+  } = useForm({ resolver: zodResolver(contactSchema) })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     if (!checkLimit()) return
     setSubmitting(true)
     recordAttempt()
-    // Simuleer verzenden — integreer later met Resend/Supabase Edge Function
     await new Promise((resolve) => setTimeout(resolve, 1200))
     setSubmitted(true)
     setSubmitting(false)
@@ -106,82 +77,76 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        label="Neem contact op"
-        title="CONTACT"
-        subtitle="Heeft u een vraag, speciale wens of wilt u een offerte aanvragen? Wij helpen u graag verder."
+        label="Contact"
+        title="Praat met"
+        titleAccent="Rico & Nico"
+        subtitle="Een vraag over een behandeling, offerte of CleanTech product? WhatsApp is het snelst, het formulier is er voor iets uitgebreidere aanvragen."
+        image="/images/rico&nico.webp"
+        align="left"
       />
 
-      <section
-        className="section-padding"
-        style={{ backgroundColor: 'var(--color-surface)' }}
-      >
+      <section className="section-padding bg-[var(--color-surface)]">
         <div className="container-ico">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-
-            {/* Links — contactinfo */}
-            <div className="lg:col-span-2 space-y-8">
-
-              <div>
-                <h2
-                  className="mb-6"
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '1.75rem',
-                    color: 'var(--color-text-primary)',
-                    letterSpacing: '0.02em',
-                  }}
+          <div className="grid gap-8 lg:grid-cols-[minmax(280px,0.85fr)_minmax(0,1.15fr)]">
+            <aside className="space-y-5">
+              <div className="ico-panel p-6">
+                <p className="edit-eyebrow">Direct contact</p>
+                <h2 className="mt-3 font-display text-3xl text-[var(--bone-000)]">WhatsApp eerst, formulier als het meer uitleg vraagt.</h2>
+                <p className="mt-4 text-sm leading-relaxed text-[var(--bone-300)]">
+                  Stuur gerust een foto van je wagen mee. Dan kunnen Rico & Nico sneller inschatten welke behandeling of productkeuze klopt.
+                </p>
+                <Button
+                  as="a"
+                  href={whatsappLink(WHATSAPP_NUMBER, 'Hallo Rico en Nico, ik heb een vraag over ICO.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="primary"
+                  fullWidth
+                  className="mt-6"
+                  leftIcon={<MessageCircle className="h-4 w-4" />}
                 >
-                  Gegevens
-                </h2>
+                  Open WhatsApp
+                </Button>
+                <Button
+                  as={Link}
+                  to="/boeken"
+                  variant="secondary"
+                  fullWidth
+                  className="mt-3"
+                  leftIcon={<Car className="h-4 w-4" />}
+                >
+                  Boek direct
+                </Button>
+              </div>
 
-                <ul className="space-y-5">
+              <div className="ico-panel p-6">
+                <p className="edit-eyebrow">Gegevens</p>
+                <ul className="mt-5 space-y-4">
                   {INFO_ITEMS.map(({ icon: Icon, label, value, href, external }) => (
-                    <li key={label} className="flex items-start gap-4">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{
-                          backgroundColor: 'rgba(196,130,111,0.1)',
-                          border: '1px solid rgba(196,130,111,0.2)',
-                        }}
-                      >
-                        <Icon
-                          className="w-4 h-4"
-                          style={{ color: 'var(--color-primary)' }}
-                          aria-hidden="true"
-                        />
-                      </div>
+                    <li key={label} className="flex gap-3">
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[rgba(250,246,241,0.035)] text-[var(--copper-300)]">
+                        <Icon className="h-4 w-4" aria-hidden="true" />
+                      </span>
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wide mb-0.5" style={{ color: 'var(--color-text-muted)' }}>
-                          {label}
-                        </p>
+                        <p className="text-xs text-[var(--bone-400)]">{label}</p>
                         {href ? (
                           <a
                             href={href}
-                            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                            className="text-sm font-medium transition-colors duration-150 cursor-pointer"
-                            style={{ color: 'var(--color-text-primary)' }}
-                            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-primary)' }}
-                            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)' }}
+                            target={external ? '_blank' : undefined}
+                            rel={external ? 'noopener noreferrer' : undefined}
+                            className="text-sm font-medium text-[var(--bone-000)] transition-colors hover:text-[var(--copper-200)]"
                           >
                             {value}
                           </a>
                         ) : (
-                          <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
-                            {value}
-                          </p>
+                          <p className="text-sm font-medium text-[var(--bone-000)]">{value}</p>
                         )}
                       </div>
                     </li>
                   ))}
                 </ul>
-              </div>
 
-              {/* Sociale media */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--color-text-muted)' }}>
-                  Volg ons
-                </p>
-                <div className="flex gap-3">
+                <div className="mt-6 flex gap-2">
                   {SOCIAL_LINKS.map(({ icon: Icon, label, href }) => (
                     <a
                       key={label}
@@ -189,201 +154,72 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={label}
-                      className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-150 cursor-pointer"
-                      style={{
-                        backgroundColor: 'var(--color-surface-overlay)',
-                        border: '1px solid rgba(196,130,111,0.2)',
-                        color: 'var(--color-text-secondary)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(196,130,111,0.12)'
-                        e.currentTarget.style.borderColor = 'rgba(196,130,111,0.4)'
-                        e.currentTarget.style.color = 'var(--color-primary)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--color-surface-overlay)'
-                        e.currentTarget.style.borderColor = 'rgba(196,130,111,0.2)'
-                        e.currentTarget.style.color = 'var(--color-text-secondary)'
-                      }}
+                      className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] text-[var(--bone-300)] transition-colors hover:border-[rgba(184,111,92,0.45)] hover:text-[var(--copper-200)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
                     >
-                      <Icon className="w-4 h-4" aria-hidden="true" />
+                      <Icon className="h-4 w-4" aria-hidden="true" />
                     </a>
                   ))}
                 </div>
               </div>
+            </aside>
 
-              {/* WhatsApp highlight */}
-              <div
-                className="rounded-xl p-5"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(196,130,111,0.1) 0%, rgba(196,130,111,0.04) 100%)',
-                  border: '1px solid rgba(196,130,111,0.25)',
-                }}
-              >
-                <p className="text-sm font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                  Snelste weg: WhatsApp
-                </p>
-                <p className="text-xs mb-4" style={{ color: 'var(--color-text-secondary)' }}>
-                  Rico & Nico reageren doorgaans binnen het uur via WhatsApp tijdens werkdagen.
-                </p>
-                <Button
-                  as="a"
-                  href={whatsappLink(WHATSAPP_NUMBER, 'Hallo! Ik neem contact op via de website.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="primary"
-                  size="sm"
-                  fullWidth
-                  leftIcon={<MessageCircle className="w-4 h-4" />}
-                >
-                  Open WhatsApp
-                </Button>
-              </div>
-
-            </div>
-
-            {/* Rechts — contactformulier */}
-            <div className="lg:col-span-3">
-              <div
-                className="rounded-2xl p-6 md:p-8"
-                style={{
-                  backgroundColor: 'var(--color-surface-elevated)',
-                  border: '1px solid rgba(196,130,111,0.2)',
-                }}
-              >
-                {submitted ? (
-                  // Bevestiging na verzenden
-                  <div className="flex flex-col items-center text-center py-10">
-                    <div
-                      className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                      style={{
-                        backgroundColor: 'rgba(196,130,111,0.1)',
-                        border: '1px solid rgba(196,130,111,0.3)',
-                      }}
-                    >
-                      <CheckCircle2
-                        className="w-7 h-7"
-                        style={{ color: 'var(--color-success)' }}
-                        aria-hidden="true"
-                      />
+            <section className="ico-panel p-5 sm:p-8">
+              {submitted ? (
+                <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+                  <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-[var(--radius-lg)] border border-[rgba(123,174,130,0.28)] bg-[rgba(123,174,130,0.08)] text-[var(--signal-go)]">
+                    <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
+                  </span>
+                  <h2 className="font-display text-3xl text-[var(--bone-000)]">Bericht verzonden</h2>
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--bone-300)]">
+                    Bedankt. Rico of Nico neemt zo snel mogelijk contact met je op.
+                  </p>
+                  <Button variant="secondary" className="mt-7" onClick={() => setSubmitted(false)}>
+                    Nieuw bericht
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <p className="edit-eyebrow">Aanvraag</p>
+                  <h2 className="mt-3 font-display text-3xl text-[var(--bone-000)]">Stuur ons de details</h2>
+                  <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-7 space-y-5">
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <Input label="Naam" required placeholder="Jan Janssen" error={errors.name?.message} {...register('name')} />
+                      <Input label="E-mail" required type="email" placeholder="jan@voorbeeld.be" error={errors.email?.message} {...register('email')} />
                     </div>
-                    <h3
-                      className="mb-2"
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.75rem',
-                        color: 'var(--color-text-primary)',
-                        letterSpacing: '0.02em',
-                      }}
-                    >
-                      Bericht verzonden!
-                    </h3>
-                    <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
-                      Bedankt voor uw bericht. Wij nemen zo snel mogelijk contact met u op.
-                    </p>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => setSubmitted(false)}
-                    >
-                      Nieuw bericht
-                    </Button>
-                  </div>
-                ) : (
-                  <>
-                    <h2
-                      className="mb-6"
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.75rem',
-                        color: 'var(--color-text-primary)',
-                        letterSpacing: '0.02em',
-                      }}
-                    >
-                      Stuur ons een bericht
-                    </h2>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <Input label="Telefoonnummer" type="tel" placeholder="+32 499 00 00 00" hint="Optioneel" error={errors.phone?.message} {...register('phone')} />
+                      <Input label="Onderwerp" required placeholder="Offerte, boeking of productvraag" error={errors.subject?.message} {...register('subject')} />
+                    </div>
+                    <Textarea
+                      label="Bericht"
+                      required
+                      rows={7}
+                      placeholder="Vertel kort over je wagen, locatie en wat je graag wil laten doen."
+                      error={errors.message?.message}
+                      {...register('message')}
+                    />
 
-                    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <Input
-                          label="Naam"
-                          required
-                          placeholder="Jan Janssen"
-                          error={errors.name?.message}
-                          {...register('name')}
-                        />
-                        <Input
-                          label="E-mail"
-                          required
-                          type="email"
-                          placeholder="jan@voorbeeld.be"
-                          error={errors.email?.message}
-                          {...register('email')}
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <Input
-                          label="Telefoonnummer"
-                          type="tel"
-                          placeholder="+32 499 00 00 00"
-                          hint="Optioneel"
-                          error={errors.phone?.message}
-                          {...register('phone')}
-                        />
-                        <Input
-                          label="Onderwerp"
-                          required
-                          placeholder="bv. Offerte PPF, Vraag over boeking"
-                          error={errors.subject?.message}
-                          {...register('subject')}
-                        />
-                      </div>
-
-                      <Textarea
-                        label="Bericht"
-                        required
-                        rows={5}
-                        placeholder="Schrijf hier uw vraag of opmerking..."
-                        error={errors.message?.message}
-                        {...register('message')}
-                      />
-
-                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                        Door dit formulier in te dienen gaat u akkoord met ons{' '}
-                        <Link
-                          to="/privacy"
-                          className="underline transition-colors duration-150"
-                          style={{ color: 'var(--color-primary)' }}
-                        >
-                          privacybeleid
-                        </Link>
-                        .
+                    {blocked && (
+                      <p className="rounded-[var(--radius-md)] border border-[rgba(199,89,79,0.28)] bg-[rgba(199,89,79,0.08)] px-4 py-3 text-sm text-[var(--signal-stop)]">
+                        Te veel pogingen. Wacht nog {Math.ceil(cooldown / 1000)} seconden.
                       </p>
+                    )}
 
-                      {blocked && (
-                        <p className="text-xs font-medium" style={{ color: 'var(--color-error)' }}>
-                          Te veel pogingen. Probeer het later opnieuw.
-                        </p>
-                      )}
-
-                      <Button
-                        type="submit"
-                        variant="primary"
-                        size="md"
-                        fullWidth
-                        loading={submitting}
-                        disabled={submitting || cooldown || blocked}
-                        leftIcon={<Mail className="w-4 h-4" />}
-                      >
-                        {blocked ? 'Even geduld...' : cooldown ? 'Even wachten...' : submitting ? 'Verzenden...' : 'Bericht verzenden'}
-                      </Button>
-                    </form>
-                  </>
-                )}
-              </div>
-            </div>
-
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="lg"
+                      fullWidth
+                      loading={submitting}
+                      disabled={submitting || blocked}
+                      leftIcon={<MessageCircle className="h-4 w-4" />}
+                    >
+                      Bericht verzenden
+                    </Button>
+                  </form>
+                </>
+              )}
+            </section>
           </div>
         </div>
       </section>

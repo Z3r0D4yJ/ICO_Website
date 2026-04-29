@@ -3,17 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICO — Brand Foundations</title>
+<title>ICO - Brand Foundations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- Editorial serif (display) + technical sans (body) + mono (labels) -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
     /* ---------- Surface — warm charcoal ramp ---------- */
     --ink-000: #080706;        /* obsidian — full-bleed background */
     --ink-050: #0E0C0B;        /* page base */
     --ink-100: #14110F;        /* card surface */
+    --ink-150: #181411;        /* soft surface */
     --ink-200: #1C1714;        /* raised surface, hover */
     --ink-300: #261F1B;        /* divider tint, input field */
     --ink-400: #3A312C;        /* hairline borders */
@@ -29,6 +30,7 @@
     --copper-050: #F4E2DA;     /* tint — pill bg on light */
     --copper-100: #E5BFB1;     /* hover light */
     --copper-200: #D89E8C;     /* highlight, focus ring */
+    --copper-300: #C98572;     /* bridge tone */
     --copper-400: #B86F5C;     /* PRIMARY accent — buttons, links */
     --copper-500: #9C5848;     /* pressed */
     --copper-700: #6A2E22;     /* deep — emblem, edges */
@@ -38,6 +40,7 @@
     --signal-go: #7BAE82;      /* confirmation */
     --signal-stop: #C2655A;    /* error — derived from copper for harmony */
     --signal-wait: #C9A26B;    /* warning — antique brass */
+    --signal-info: #8FA7AA;    /* calm info */
 
     /* ---------- Spacing scale (4-based, with editorial generosity) ---------- */
     --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
@@ -45,11 +48,12 @@
     --s-9: 96px;  --s-10: 128px; --s-11: 192px;
 
     /* ---------- Radius ---------- */
-    --r-xs: 2px;   /* hairline detail */
+    --r-xs: 3px;   /* hairline detail */
     --r-sm: 4px;   /* inputs, small chips */
-    --r-md: 8px;   /* buttons */
-    --r-lg: 14px;  /* cards */
-    --r-xl: 24px;  /* hero panels */
+    --r-md: 6px;   /* buttons */
+    --r-lg: 8px;   /* cards */
+    --r-xl: 12px;  /* hero panels */
+    --r-2xl: 16px; /* media frames */
     --r-pill: 999px;
 
     /* ---------- Type scale (editorial: serif display, sans body) ---------- */
@@ -57,10 +61,10 @@
     --font-body:    "Geist", ui-sans-serif, system-ui, sans-serif;
     --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 
-    --t-display-1: clamp(72px, 9vw, 144px);
-    --t-display-2: clamp(56px, 6.5vw, 96px);
-    --t-h1: clamp(40px, 4.5vw, 64px);
-    --t-h2: clamp(28px, 3vw, 40px);
+    --t-display-1: 112px;
+    --t-display-2: 72px;
+    --t-h1: 64px;
+    --t-h2: 40px;
     --t-h3: 24px;
     --t-h4: 18px;
     --t-body-lg: 18px;
@@ -70,10 +74,19 @@
     --t-label: 11px;
 
     /* ---------- Shadow / depth ---------- */
-    --shadow-sm: 0 1px 0 rgba(255,255,255,0.03), 0 1px 2px rgba(0,0,0,0.4);
-    --shadow-md: 0 8px 24px -8px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.04) inset;
-    --shadow-lg: 0 24px 60px -20px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.04) inset;
-    --glow-copper: 0 0 0 1px rgba(184,111,92,0.4), 0 8px 32px -8px rgba(184,111,92,0.35);
+    --shadow-sm: 0 1px 2px rgba(8,7,6,0.22);
+    --shadow-md: 0 16px 40px -28px rgba(8,7,6,0.88);
+    --shadow-lg: 0 28px 70px -42px rgba(8,7,6,0.95);
+    --glow-copper: 0 0 0 1px rgba(184,111,92,0.34), 0 18px 42px -30px rgba(184,111,92,0.65);
+  }
+
+  @media (max-width: 720px) {
+    :root {
+      --t-display-1: 58px;
+      --t-display-2: 48px;
+      --t-h1: 40px;
+      --t-h2: 32px;
+    }
   }
 
   * { box-sizing: border-box; }

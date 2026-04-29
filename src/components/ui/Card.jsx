@@ -1,12 +1,5 @@
 import { cn } from '@/lib/utils'
 
-/**
- * ICO Card component
- *
- * @param {'default'|'elevated'|'glass'|'highlight'} variant
- * @param {boolean} hoverable - Lift effect op hover
- * @param {boolean} clickable - cursor-pointer + hover states
- */
 export default function Card({
   variant = 'default',
   hoverable = false,
@@ -16,45 +9,23 @@ export default function Card({
   children,
   ...props
 }) {
-  const base = [
-    'rounded-xl overflow-hidden',
-    'transition-all duration-200',
-  ]
-
   const variants = {
-    default: [
-      'bg-[var(--color-surface-elevated)]',
-      'border border-[rgba(196,130,111,0.18)]',
-    ],
-    elevated: [
-      'bg-[var(--color-surface-elevated)]',
-      'border border-[rgba(196,130,111,0.18)]',
-      'shadow-[var(--shadow-md)]',
-    ],
-    glass: [
-      'bg-[var(--color-surface-elevated)]/80',
-      'backdrop-blur-md',
-      'border border-[rgba(196,130,111,0.2)]',
-    ],
-    highlight: [
-      'bg-[var(--color-surface-elevated)]',
-      'border border-[var(--color-primary)]',
-      'shadow-[0_0_20px_rgba(196,130,111,0.15)]',
-    ],
+    default: 'ico-panel',
+    elevated: 'ico-panel',
+    glass: 'ico-panel-soft',
+    highlight: 'ico-panel-copper',
   }
-
-  const hoverClass = hoverable || clickable
-    ? [
-        'hover:-translate-y-0.5',
-        'hover:border-[rgba(196,130,111,0.35)]',
-        'hover:shadow-[0_4px_16px_rgba(0,0,0,0.25)]',
-        clickable ? 'cursor-pointer' : '',
-      ]
-    : []
 
   return (
     <div
-      className={cn(base, variants[variant], hoverClass, padding ? 'p-6' : '', className)}
+      className={cn(
+        'overflow-hidden transition-all duration-300 ease-[var(--ease-out)]',
+        variants[variant] || variants.default,
+        padding && 'p-5 md:p-6',
+        (hoverable || clickable) && 'hover:-translate-y-0.5 hover:border-[rgba(184,111,92,0.45)]',
+        clickable && 'cursor-pointer',
+        className
+      )}
       {...props}
     >
       {children}
@@ -62,10 +33,9 @@ export default function Card({
   )
 }
 
-// Sub-componenten voor gestructureerde card inhoud
 Card.Header = function CardHeader({ className, children, ...props }) {
   return (
-    <div className={cn('mb-4', className)} {...props}>
+    <div className={cn('mb-5', className)} {...props}>
       {children}
     </div>
   )
@@ -81,7 +51,7 @@ Card.Body = function CardBody({ className, children, ...props }) {
 
 Card.Footer = function CardFooter({ className, children, ...props }) {
   return (
-    <div className={cn('mt-4 pt-4 border-t border-[rgba(196,130,111,0.2)]', className)} {...props}>
+    <div className={cn('mt-5 pt-5 border-t border-[var(--color-border)]', className)} {...props}>
       {children}
     </div>
   )

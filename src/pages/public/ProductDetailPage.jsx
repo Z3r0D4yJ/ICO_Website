@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Link, useParams, Navigate } from 'react-router-dom'
-import { ShoppingBag, Plus, Minus, ArrowLeft, CheckCircle2, Truck } from '@/lib/icons'
+import { Link, Navigate, useParams } from 'react-router-dom'
+import { ArrowLeft, CheckCircle2, Minus, Plus, ShoppingBag, Truck } from '@/lib/icons'
 import { useProduct, useProducts } from '@/hooks/useProducts'
 import { useCartStore } from '@/stores/cartStore'
 import { useUiStore } from '@/stores/uiStore'
-import { formatPrice } from '@/lib/utils'
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants'
+import { formatPrice } from '@/lib/utils'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import Button from '@/components/ui/Button'
 import Skeleton, { SkeletonText } from '@/components/ui/Skeleton'
@@ -24,13 +24,13 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="container-ico section-padding">
-        <Skeleton variant="line" width="200px" height="20px" className="mb-8" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <Skeleton variant="rect" className="rounded-2xl aspect-square" />
-          <div><SkeletonText lines={8} /></div>
+      <main className="container-ico section-padding">
+        <Skeleton variant="line" width="220px" height="20px" className="mb-8" />
+        <div className="grid gap-10 lg:grid-cols-2">
+          <Skeleton variant="rect" className="aspect-square rounded-[var(--radius-xl)]" />
+          <SkeletonText lines={8} />
         </div>
-      </div>
+      </main>
     )
   }
 
@@ -42,7 +42,6 @@ export default function ProductDetailPage() {
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
     : 0
   const inStock = product.stock_quantity > 0
-
   const related = allProducts.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4)
 
   const handleAddToCart = () => {
@@ -53,226 +52,181 @@ export default function ProductDetailPage() {
 
   return (
     <>
-      {/* Breadcrumb */}
-      <div style={{ backgroundColor: 'var(--color-surface-elevated)', borderBottom: '1px solid rgba(196,130,111,0.2)' }}>
+      <div className="border-b border-[var(--color-border)] bg-[var(--ink-100)]">
         <div className="container-ico">
-          <Breadcrumb items={[
-            { label: 'Shop', to: '/shop' },
-            { label: product.name },
-          ]} />
+          <Breadcrumb items={[{ label: 'Shop', to: '/shop' }, { label: product.name }]} />
         </div>
       </div>
 
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
+      <main className="section-padding bg-[var(--color-surface)]">
         <div className="container-ico">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <Link
+            to="/shop"
+            className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--bone-300)] transition-colors hover:text-[var(--copper-200)]"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Terug naar shop
+          </Link>
 
-            {/* Afbeeldingen */}
+          <section className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-start">
             <div className="space-y-3">
-              <div
-                className="rounded-2xl overflow-hidden aspect-square"
-                style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-              >
+              <div className="ico-media aspect-square overflow-hidden rounded-[var(--radius-xl)] bg-[var(--ink-200)]">
                 {images.length > 0 ? (
                   <img
                     src={images[activeImage]}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                     loading="lazy"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <ShoppingBag className="w-20 h-20" style={{ color: 'var(--color-text-muted)' }} aria-hidden="true" />
+                  <div className="flex h-full w-full items-center justify-center text-[var(--bone-400)]">
+                    <ShoppingBag className="h-20 w-20" aria-hidden="true" />
                   </div>
                 )}
               </div>
 
-              {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="flex gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-1" aria-label="Productafbeeldingen">
                   {images.map((img, idx) => (
                     <button
-                      key={idx}
+                      key={`${img}-${idx}`}
+                      type="button"
                       onClick={() => setActiveImage(idx)}
-                      className="w-16 h-16 rounded-lg overflow-hidden cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40"
-                      style={{
-                        border: idx === activeImage
-                          ? '2px solid var(--color-primary)'
-                          : '1px solid rgba(196,130,111,0.18)',
-                      }}
                       aria-label={`Afbeelding ${idx + 1}`}
                       aria-pressed={idx === activeImage}
+                      className={[
+                        'h-20 w-20 flex-shrink-0 overflow-hidden rounded-[var(--radius-md)] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]',
+                        idx === activeImage ? 'border-[var(--copper-300)]' : 'border-[var(--color-border)] hover:border-[rgba(184,111,92,0.45)]',
+                      ].join(' ')}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      <img src={img} alt="" className="h-full w-full object-cover" loading="lazy" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Product info */}
-            <div className="space-y-6">
-              {product.category && (
-                <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-primary)' }}>
-                  {product.category}
-                </p>
-              )}
-
-              <h1
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                  color: 'var(--color-text-primary)',
-                  letterSpacing: '0.02em',
-                  lineHeight: 1.1,
-                }}
-              >
+            <aside className="ico-panel p-5 sm:p-7 lg:sticky lg:top-28">
+              <p className="edit-eyebrow">{product.category || 'CleanTech selectie'}</p>
+              <h1 className="mt-4 font-display text-4xl leading-[1.05] text-[var(--bone-000)] sm:text-5xl">
                 {product.name}
               </h1>
 
-              {/* Prijs */}
-              <div className="flex items-baseline gap-3">
-                <span
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '2.25rem',
-                    color: 'var(--color-primary)',
-                    lineHeight: 1,
-                  }}
-                >
+              <div className="mt-6 flex flex-wrap items-end gap-3">
+                <p className="font-display text-4xl leading-none text-[var(--copper-200)]">
                   {formatPrice(product.price)}
-                </span>
+                </p>
                 {hasDiscount && (
                   <>
-                    <span className="text-lg line-through" style={{ color: 'var(--color-text-muted)' }}>
-                      {formatPrice(product.compare_at_price)}
-                    </span>
-                    <span
-                      className="text-sm font-bold px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: 'var(--color-error)', color: '#fff' }}
-                    >
+                    <p className="text-base line-through text-[var(--bone-400)]">{formatPrice(product.compare_at_price)}</p>
+                    <span className="rounded-[var(--radius-sm)] bg-[var(--signal-stop)] px-2.5 py-1 font-mono text-xs font-semibold text-[var(--bone-000)]">
                       -{discountPct}%
                     </span>
                   </>
                 )}
               </div>
 
-              {/* Beschrijving */}
               {product.description_nl && (
-                <p className="text-base leading-relaxed" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                <p className="mt-6 text-base leading-relaxed text-[var(--bone-200)]">
                   {product.description_nl}
                 </p>
               )}
 
-              {/* Voordelen */}
-              <ul className="space-y-2">
+              <ul className="mt-6 grid gap-3 text-sm text-[var(--bone-200)]">
                 {[
-                  'Professionele kwaliteit',
-                  'Zelfde product als gebruikt door Team ICO',
-                  'Snelle verzending in België',
+                  'Professionele kwaliteit, gekozen uit dagelijks gebruik',
+                  'Geschikt voor zorgvuldig onderhoud tussen behandelingen',
+                  'Persoonlijke selectie van Rico & Nico',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} aria-hidden="true" />
-                    <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{item}</span>
+                  <li key={item} className="flex gap-3">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--signal-go)]" aria-hidden="true" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
 
-              {/* Gratis verzending melding */}
-              <div
-                className="flex items-center gap-2.5 px-4 py-3 rounded-xl"
-                style={{
-                  backgroundColor: 'rgba(34,197,94,0.07)',
-                  border: '1px solid rgba(34,197,94,0.2)',
-                }}
-              >
-                <Truck className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} aria-hidden="true" />
-                <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                  Gratis verzending bij bestelling vanaf{' '}
-                  <strong style={{ color: 'var(--color-text-primary)' }}>{formatPrice(FREE_SHIPPING_THRESHOLD)}</strong>
-                </p>
+              <div className="mt-6 rounded-[var(--radius-lg)] border border-[rgba(123,174,130,0.25)] bg-[rgba(123,174,130,0.08)] p-4">
+                <div className="flex gap-3 text-sm leading-relaxed text-[var(--bone-200)]">
+                  <Truck className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--signal-go)]" aria-hidden="true" />
+                  <p>
+                    Gratis verzending vanaf <strong className="text-[var(--bone-000)]">{formatPrice(FREE_SHIPPING_THRESHOLD)}</strong>.
+                    Bestellingen worden met zorg verpakt.
+                  </p>
+                </div>
               </div>
 
-              {/* Voorraad */}
-              {!inStock ? (
-                <p className="text-sm font-medium" style={{ color: 'var(--color-error)' }}>
-                  Tijdelijk uitverkocht
-                </p>
-              ) : (
-                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-                  Nog {product.stock_quantity} op voorraad
-                </p>
-              )}
+              <p className={['mt-5 text-sm', inStock ? 'text-[var(--bone-300)]' : 'text-[var(--signal-stop)]'].join(' ')}>
+                {inStock ? `Nog ${product.stock_quantity} op voorraad` : 'Tijdelijk uitverkocht'}
+              </p>
 
-              {/* Aantal + In winkelwagen */}
               {inStock && (
-                <div className="flex items-center gap-4 flex-wrap">
-                  {/* Quantity stepper */}
-                  <div
-                    className="flex items-center gap-3 rounded-xl px-4 py-2"
-                    style={{
-                      backgroundColor: 'var(--color-surface-elevated)',
-                      border: '1px solid rgba(196,130,111,0.2)',
-                    }}
-                  >
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <div className="flex w-full items-center justify-between rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[rgba(250,246,241,0.035)] sm:w-36">
                     <button
+                      type="button"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      aria-label="Minder"
-                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded"
                       disabled={quantity <= 1}
-                      style={{ color: 'var(--color-text-secondary)', opacity: quantity <= 1 ? 0.3 : 1 }}
+                      aria-label="Minder"
+                      className="flex h-12 w-12 items-center justify-center text-[var(--bone-300)] transition-colors hover:text-[var(--copper-200)] disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
                     >
-                      <Minus className="w-4 h-4" aria-hidden="true" />
+                      <Minus className="h-4 w-4" aria-hidden="true" />
                     </button>
-                    <span className="w-8 text-center font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                      {quantity}
-                    </span>
+                    <span className="font-mono text-sm text-[var(--bone-000)]">{quantity}</span>
                     <button
-                      onClick={() => setQuantity((q) => Math.min(product.stock_quantity, q + 1))}
+                      type="button"
+                      onClick={() => setQuantity((q) => q + 1)}
                       aria-label="Meer"
-                      className="cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(196,130,111,0.45)]/40 rounded"
-                      disabled={quantity >= product.stock_quantity}
-                      style={{ color: 'var(--color-text-secondary)', opacity: quantity >= product.stock_quantity ? 0.3 : 1 }}
+                      className="flex h-12 w-12 items-center justify-center text-[var(--bone-300)] transition-colors hover:text-[var(--copper-200)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(216,158,140,0.45)]"
                     >
-                      <Plus className="w-4 h-4" aria-hidden="true" />
+                      <Plus className="h-4 w-4" aria-hidden="true" />
                     </button>
                   </div>
-
                   <Button
+                    type="button"
                     variant="primary"
                     size="lg"
+                    className="flex-1"
                     onClick={handleAddToCart}
-                    leftIcon={<ShoppingBag className="w-4 h-4" />}
+                    leftIcon={<ShoppingBag className="h-4 w-4" />}
                   >
                     In winkelwagen
                   </Button>
                 </div>
               )}
-            </div>
-          </div>
-        </div>
-      </section>
+            </aside>
+          </section>
 
-      {/* Gerelateerde producten */}
+          <section className="mt-16 grid gap-4 md:grid-cols-3">
+            {[
+              ['Gebruik', 'Breng aan op een koele ondergrond en werk in kleine zones voor de meeste controle.'],
+              ['Onderhoud', 'Combineer met zachte microvezel en vermijd agressieve reinigers.'],
+              ['Advies', 'Twijfel je over toepassing? Stuur Rico & Nico even een foto via WhatsApp.'],
+            ].map(([title, text]) => (
+              <div key={title} className="ico-panel p-5">
+                <p className="edit-eyebrow">{title}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--bone-300)]">{text}</p>
+              </div>
+            ))}
+          </section>
+        </div>
+      </main>
+
       {related.length > 0 && (
-        <section
-          className="section-padding"
-          style={{ backgroundColor: 'var(--color-surface-elevated)' }}
-        >
+        <section className="section-padding bg-[var(--ink-100)]">
           <div className="container-ico">
-            <h2
-              className="mb-8 text-center"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '2rem',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.03em',
-              }}
-            >
-              GERELATEERDE PRODUCTEN
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {related.map((p) => <ProductCard key={p.id} product={p} />)}
+            <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="edit-eyebrow">Ook interessant</p>
+                <h2 className="edit-sec-title mt-3">Meer uit dezelfde selectie</h2>
+              </div>
+              <Button as={Link} to="/shop" variant="secondary">
+                Bekijk alles
+              </Button>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {related.map((item) => (
+                <ProductCard key={item.id} product={item} />
+              ))}
             </div>
           </div>
         </section>

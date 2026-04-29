@@ -1,41 +1,54 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle2, ArrowRight, MapPin, Star, Car, Users, Sparkle, MessageCircle, Image } from '@/lib/icons'
-import Button from '@/components/ui/Button'
-import CTASection from '@/components/home/CTASection'
-import { WHATSAPP_NUMBER, SERVICE_CATEGORIES } from '@/lib/constants'
+import { ArrowRight, Car, CheckCircle2, Image, MapPin, MessageCircle, Sparkle, Star, Users } from '@/lib/icons'
+import { SERVICE_CATEGORIES, WHATSAPP_NUMBER } from '@/lib/constants'
 import { whatsappLink } from '@/lib/utils'
 import { useProjects } from '@/hooks/useProjects'
+import Button from '@/components/ui/Button'
+import CTASection from '@/components/home/CTASection'
 
-// ── ICO eigen foto's ────────────────────────────────────────────────────────────
 const PHOTOS = {
-  hero:    '/images/rico&nico_copy.jpg',
-  team:    '/images/rico-interieur-reiniging.jpg',
-  rico:    '/images/rico-interieur-reiniging.jpg',
-  nico:    '/images/nico-exterieur-behandeling.jpg',
+  hero: '/images/rico&nico_copy.jpg',
+  team: '/images/rico-interieur-reiniging.jpg',
+  rico: '/images/rico-interieur-reiniging.jpg',
+  nico: '/images/nico-exterieur-behandeling.jpg',
   washbus: '/images/washbus.webp',
 }
 
 const STATS = [
-  { value: '500+', label: 'Wagens gereinigd' },
-  { value: '98%', label: 'Tevreden klanten' },
-  { value: '2',   label: 'Man sterk team' },
-  { value: 'Vlndrn', label: 'Werkgebied' },
+  { value: '500+', label: 'Wagens behandeld' },
+  { value: '2', label: 'Vaste vakmensen' },
+  { value: '6/7', label: 'Dagen onderweg' },
+  { value: 'Vlaanderen', label: 'Werkgebied' },
 ]
 
 const VALUES = [
-  { icon: Star,       title: 'Kwaliteit boven alles', desc: 'Elk detail telt. We nemen de tijd die het nodig heeft — niet meer, niet minder.' },
-  { icon: Car,        title: 'Mobiel & flexibel',     desc: 'Wij komen naar jou. Thuis, op het werk, overal in Vlaanderen.' },
-  { icon: Users,      title: 'Persoonlijke service',  desc: 'Je werkt altijd rechtstreeks met Rico of Nico. Geen tussenpersonen.' },
-  { icon: Sparkle,    title: 'Premium producten',     desc: 'Alleen de beste CleanTech producten — dezelfde die wij zelf ook vertrouwen.' },
+  {
+    icon: Star,
+    title: 'Rustige perfectie',
+    desc: 'Geen haastwerk. Elke wagen krijgt de aandacht die de lak, velgen en het interieur vragen.',
+  },
+  {
+    icon: Car,
+    title: 'Mobiel waar het kan',
+    desc: 'Met de Washbus komen Rico & Nico naar thuis, werk of bedrijfslocatie wanneer de behandeling dat toelaat.',
+  },
+  {
+    icon: Users,
+    title: 'Altijd persoonlijk',
+    desc: 'Je spreekt rechtstreeks met de mensen die de behandeling uitvoeren. Dat houdt afspraken helder.',
+  },
+  {
+    icon: Sparkle,
+    title: 'Producten met reden',
+    desc: 'CleanTech producten worden gekozen vanuit dagelijks gebruik, niet omdat ze mooi in een rek staan.',
+  },
 ]
 
 const WASHBUS_FEATURES = [
-  'Eigen watervoorraad — geen aansluiting nodig',
-  'Professionele extractiemachine aan boord',
-  'Stille generator voor stroom op elke locatie',
-  'Volledig CleanTech productensortiment mee',
-  'Dubbelwandige laadruimte voor materiaal',
-  'GPS-tracking voor optimale routeplanning',
+  'Eigen materiaal en professionele producten aan boord',
+  'Mobiele behandelingen op locatie in Vlaanderen',
+  'Interieurreiniging, handwas en onderhoud op maat',
+  'Duidelijke voorbereiding voor coating, PPF en garagewerk',
 ]
 
 function serviceLabel(value) {
@@ -45,397 +58,213 @@ function serviceLabel(value) {
 export default function AboutPage() {
   const { projects } = useProjects()
   const recentProjects = projects.slice(0, 6)
+
   return (
     <>
-      {/* ── Hero met foto-achtergrond ── */}
-      <section className="relative overflow-hidden" style={{ minHeight: '70vh', display: 'flex', alignItems: 'flex-end' }}>
-        {/* Achtergrond foto */}
+      <section className="relative flex min-h-[72vh] items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={PHOTOS.hero}
-            alt=""
-            className="w-full h-full object-cover"
-            loading="eager"
-            aria-hidden="true"
-          />
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, var(--color-surface) 15%, rgba(17,16,16,0.65) 60%, rgba(17,16,16,0.4) 100%)' }}
-          />
+          <img src={PHOTOS.hero} alt="" className="h-full w-full object-cover" loading="eager" aria-hidden="true" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-surface)_8%,rgba(8,7,6,0.72)_58%,rgba(8,7,6,0.35)_100%)]" />
         </div>
 
-        {/* Content */}
-        <div className="container-ico relative z-10 pb-16 md:pb-24 pt-32">
-          <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-            Leer ons kennen
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3rem, 8vw, 6rem)',
-              color: '#fff',
-              letterSpacing: '0.03em',
-              lineHeight: 1.0,
-            }}
-          >
-            OVER <span style={{ color: 'var(--color-primary)' }}>TEAM ICO</span>
+        <div className="container-ico relative z-10 pb-16 pt-32 md:pb-24">
+          <p className="edit-eyebrow">Rico & Nico</p>
+          <h1 className="mt-4 max-w-4xl font-display text-5xl leading-[0.98] text-[var(--bone-000)] sm:text-6xl lg:text-7xl">
+            De handen achter ICO.
           </h1>
-          <p
-            className="mt-4 max-w-xl text-base md:text-lg"
-            style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.65 }}
-          >
-            Premium mobile car detailing door Rico & Nico — twee gedreven vakmensen die van elke wasbeurt een belevenis maken.
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--bone-200)] md:text-lg">
+            Twee vakmensen met een gedeelde obsessie voor nette lijnen, eerlijke uitleg en auto&apos;s die weer verzorgd aanvoelen.
           </p>
-        </div>
-      </section>
-
-      {/* ── Ons verhaal ── */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
-        <div className="container-ico">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* Foto */}
-            <div className="relative">
-              <div
-                className="rounded-2xl overflow-hidden"
-                style={{ aspectRatio: '4/3', border: '1px solid rgba(196,130,111,0.2)' }}
-              >
-                <img
-                  src={PHOTOS.team}
-                  alt="Rico en Nico aan het werk"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              {/* Gouden accent */}
-              <div
-                className="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl -z-10"
-                aria-hidden="true"
-                style={{ backgroundColor: 'rgba(196,130,111,0.15)', border: '1px solid rgba(196,130,111,0.3)' }}
-              />
-            </div>
-
-            {/* Tekst */}
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-                Ons verhaal
-              </p>
-              <h2
-                className="mb-6"
-                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--color-text-primary)', letterSpacing: '0.03em', lineHeight: 1.1 }}
-              >
-                PASSIE VOOR <span style={{ color: 'var(--color-primary)' }}>PERFECTIE</span>
-              </h2>
-              <div className="divider-gold mb-6" style={{ marginLeft: 0 }} aria-hidden="true" />
-
-              <div className="space-y-4 text-base" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75 }}>
-                <p>
-                  ICO — Intensive Cleaning Organization — is ontstaan vanuit een gedeelde passie voor auto's en een obsessie met detail. Rico en Nico, twee vrienden uit Vlaanderen, begonnen in hun vrije tijd met het detailen van wagens in de buurt. Wat als hobby startte, groeide snel uit tot een serieuze onderneming.
-                </p>
-                <p>
-                  Vandaag rijden ze met hun volledig uitgeruste Washbus door heel Vlaanderen en brengen ze een premium wasbeurt rechtstreeks naar de klant. Geen wasstraat, geen gedoe — gewoon vakmanschap aan huis.
-                </p>
-                <p>
-                  <strong style={{ color: 'var(--color-text-primary)' }}>Hun motto?</strong> Elke auto verdient de beste behandeling. Of het nu een dagelijkse rijder is of een exclusieve sportwagen — ze geven altijd 100%.
-                </p>
-              </div>
-
-              <div className="mt-8 flex gap-4">
-                <Button
-                  as={Link}
-                  to="/boeken"
-                  variant="primary"
-                  rightIcon={<ArrowRight className="w-4 h-4" />}
-                >
-                  Maak een afspraak
-                </Button>
-                <Button
-                  as="a"
-                  href={whatsappLink(WHATSAPP_NUMBER, 'Hallo, ik wil graag meer info over jullie diensten.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="ghost"
-                  leftIcon={<MessageCircle className="w-4 h-4" />}
-                >
-                  WhatsApp
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Stats ── */}
-      <section style={{ backgroundColor: 'var(--color-surface-elevated)', borderTop: '1px solid rgba(196,130,111,0.15)', borderBottom: '1px solid rgba(196,130,111,0.15)' }}>
-        <div className="container-ico py-10 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p
-                  style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: 'var(--color-primary)', lineHeight: 1, letterSpacing: '0.02em' }}
-                >
-                  {stat.value}
-                </p>
-                <p className="mt-1 text-sm" style={{ color: 'var(--color-text-muted)' }}>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Het team ── */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
-        <div className="container-ico">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-              De mensen achter ICO
-            </p>
-            <h2
-              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--color-text-primary)', letterSpacing: '0.03em' }}
-            >
-              MAAK KENNIS MET HET <span style={{ color: 'var(--color-primary)' }}>TEAM</span>
-            </h2>
-            <div className="divider-gold mt-4" aria-hidden="true" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {/* Rico */}
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-            >
-              <div className="w-full" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
-                <img
-                  src={PHOTOS.rico}
-                  alt="Rico — medeoprichter ICO"
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', color: 'var(--color-text-primary)', letterSpacing: '0.02em' }}>Rico</h3>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(196,130,111,0.12)', color: 'var(--color-primary)' }}>Co-founder</span>
-                </div>
-                <p className="text-sm" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}>
-                  Rico is de perfectionist van het duo. Gespecialiseerd in coating, PPF en alles wat met lakbehandeling te maken heeft. Hij staat erop dat elk detail klopt voor de klant vertrekt.
-                </p>
-                <div className="mt-4 flex items-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                  <MapPin className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-                  <span>Actief in heel Vlaanderen</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Nico */}
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-            >
-              <div className="w-full" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
-                <img
-                  src={PHOTOS.nico}
-                  alt="Nico — medeoprichter ICO"
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', color: 'var(--color-text-primary)', letterSpacing: '0.02em' }}>Nico</h3>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(196,130,111,0.12)', color: 'var(--color-primary)' }}>Co-founder</span>
-                </div>
-                <p className="text-sm" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}>
-                  Nico is de organisator en klantencontact. Hij zorgt dat elke boeking vlot verloopt en dat klanten altijd weten wat ze kunnen verwachten. Specialiteit: interieur reiniging en dieptereiniging.
-                </p>
-                <div className="mt-4 flex items-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                  <MapPin className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-                  <span>Actief in heel Vlaanderen</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── De Washbus ── */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface-elevated)' }}>
-        <div className="container-ico">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* Tekst links */}
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-                Ons geheim wapen
-              </p>
-              <h2
-                className="mb-5"
-                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--color-text-primary)', letterSpacing: '0.03em', lineHeight: 1.1 }}
-              >
-                DE <span style={{ color: 'var(--color-primary)' }}>WASHBUS</span>
-              </h2>
-              <div className="divider-gold mb-6" style={{ marginLeft: 0 }} aria-hidden="true" />
-              <p className="text-base mb-8" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75 }}>
-                Onze volledig uitgeruste Washbus is meer dan een bestelwagen — het is ons rijdend laboratorium. Geen wateraansluiting nodig, geen stopcontact. Wij brengen alles mee voor een perfecte wasbeurt, waar je ook bent in Vlaanderen.
-              </p>
-
-              <ul className="space-y-3 mb-8" role="list">
-                {WASHBUS_FEATURES.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--color-success)' }} aria-hidden="true" />
-                    <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Foto rechts */}
-            <div className="relative">
-              <div
-                className="rounded-2xl overflow-hidden"
-                style={{ aspectRatio: '4/3', border: '1px solid rgba(196,130,111,0.2)' }}
-              >
-                <img
-                  src={PHOTOS.washbus}
-                  alt="De ICO Washbus"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{ background: 'linear-gradient(to top, rgba(17,16,16,0.4) 0%, transparent 50%)' }}
-                  aria-hidden="true"
-                />
-              </div>
-              {/* Gouden accent */}
-              <div
-                className="absolute -top-4 -left-4 w-32 h-32 rounded-2xl -z-10"
-                aria-hidden="true"
-                style={{ backgroundColor: 'rgba(196,130,111,0.1)', border: '1px solid rgba(196,130,111,0.25)' }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Onze waarden ── */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface)' }}>
-        <div className="container-ico">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-              Waar wij voor staan
-            </p>
-            <h2
-              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--color-text-primary)', letterSpacing: '0.03em' }}
-            >
-              ONZE <span style={{ color: 'var(--color-primary)' }}>WAARDEN</span>
-            </h2>
-            <div className="divider-gold mt-4" aria-hidden="true" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {VALUES.map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="rounded-xl p-6"
-                style={{ backgroundColor: 'var(--color-surface-elevated)', border: '1px solid rgba(196,130,111,0.2)' }}
-              >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                  style={{ backgroundColor: 'rgba(196,130,111,0.1)', border: '1px solid rgba(196,130,111,0.25)' }}
-                >
-                  <Icon className="w-6 h-6" style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
-                </div>
-                <h3
-                  className="mb-2"
-                  style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'var(--color-text-primary)', letterSpacing: '0.02em' }}
-                >
-                  {title}
-                </h3>
-                <p className="text-sm" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.65 }}>
-                  {desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Projecten galerij ── */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-surface-elevated)' }}>
-        <div className="container-ico">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--color-primary)' }}>
-              Ons werk spreekt voor zich
-            </p>
-            <h2
-              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: 'var(--color-text-primary)', letterSpacing: '0.03em' }}
-            >
-              RECENTE <span style={{ color: 'var(--color-primary)' }}>PROJECTEN</span>
-            </h2>
-            <div className="divider-gold mt-4" aria-hidden="true" />
-          </div>
-
-          {recentProjects.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {recentProjects.map((project, i) => {
-                const label = [
-                  project.service_type ? serviceLabel(project.service_type) : null,
-                  project.vehicle_brand,
-                ].filter(Boolean).join(' — ')
-                return (
-                  <Link
-                    key={project.id}
-                    to={`/projecten/${project.slug}`}
-                    className="group relative rounded-xl overflow-hidden"
-                    style={{
-                      aspectRatio: i % 5 === 0 || i % 5 === 3 ? '3/4' : '4/3',
-                      border: '1px solid rgba(196,130,111,0.2)',
-                    }}
-                  >
-                    {project.cover_image_url ? (
-                      <img
-                        src={project.cover_image_url}
-                        alt={project.title_nl}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div
-                        className="w-full h-full flex items-center justify-center"
-                        style={{ background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-surface) 100%)' }}
-                        aria-hidden="true"
-                      >
-                        <Image className="w-10 h-10 opacity-20" style={{ color: 'var(--color-primary)' }} />
-                      </div>
-                    )}
-                    <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end"
-                      style={{ background: 'linear-gradient(to top, rgba(17,16,16,0.85) 0%, transparent 60%)' }}
-                    >
-                      <p className="p-4 text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
-                        {label || project.title_nl}
-                      </p>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
-
-          <div className="text-center mt-10">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button as={Link} to="/boeken" variant="primary" rightIcon={<ArrowRight className="h-4 w-4" />}>
+              Boek een behandeling
+            </Button>
             <Button
-              as={Link}
-              to="/projecten"
+              as="a"
+              href={whatsappLink(WHATSAPP_NUMBER, 'Hallo Rico en Nico, ik wil graag meer weten over ICO.')}
+              target="_blank"
+              rel="noopener noreferrer"
               variant="secondary"
-              rightIcon={<ArrowRight className="w-4 h-4" />}
+              leftIcon={<MessageCircle className="h-4 w-4" />}
             >
-              Bekijk alle projecten
+              Stel je vraag
             </Button>
           </div>
         </div>
       </section>
+
+      <section className="section-padding bg-[var(--color-surface)]">
+        <div className="container-ico grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
+          <div className="relative">
+            <div className="ico-media aspect-[4/3] overflow-hidden rounded-[var(--radius-xl)]">
+              <img src={PHOTOS.team} alt="Rico en Nico aan het werk" className="h-full w-full object-cover" loading="lazy" />
+            </div>
+          </div>
+
+          <div>
+            <p className="edit-eyebrow">Ons verhaal</p>
+            <h2 className="edit-sec-title mt-4">Passie zonder afstand.</h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--bone-200)]">
+              <p>
+                ICO is begonnen vanuit liefde voor wagens en het plezier van zichtbaar resultaat. Rico en Nico merkten dat klanten niet alleen een propere auto zoeken, maar ook iemand die uitlegt wat er gebeurt en waarom.
+              </p>
+              <p>
+                Vandaag combineren ze mobiele service met garagebehandelingen in Hamme. De Washbus maakt onderhoud makkelijk op locatie, terwijl coating, PPF en intensiever werk in een gecontroleerde omgeving gebeuren.
+              </p>
+              <p className="font-medium text-[var(--bone-000)]">
+                Het doel blijft simpel: premium verzorging die warm, duidelijk en persoonlijk blijft.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[var(--color-border)] bg-[var(--ink-100)]">
+        <div className="container-ico grid grid-cols-2 gap-6 py-10 md:grid-cols-4">
+          {STATS.map((stat) => (
+            <div key={stat.label}>
+              <p className="font-display text-4xl text-[var(--copper-200)] md:text-5xl">{stat.value}</p>
+              <p className="mt-2 text-sm text-[var(--bone-300)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-padding bg-[var(--color-surface)]">
+        <div className="container-ico">
+          <div className="mb-10 max-w-2xl">
+            <p className="edit-eyebrow">Het team</p>
+            <h2 className="edit-sec-title mt-4">Twee gezichten, een standaard.</h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              {
+                name: 'Rico',
+                role: 'Lak, coating en afwerking',
+                image: PHOTOS.rico,
+                text: 'Rico kijkt naar het oppervlak: glans, bescherming, voorbereiding en de kleine details die een behandeling echt strak maken.',
+              },
+              {
+                name: 'Nico',
+                role: 'Interieur, planning en klantcontact',
+                image: PHOTOS.nico,
+                text: 'Nico bewaakt de flow van aanvraag tot oplevering en houdt behandelingen praktisch, duidelijk en netjes uitgevoerd.',
+              },
+            ].map((member) => (
+              <article key={member.name} className="ico-panel overflow-hidden">
+                <div className="ico-media aspect-[4/3] overflow-hidden bg-[var(--ink-200)]">
+                  <img src={member.image} alt={`${member.name} van ICO`} className="h-full w-full object-cover object-top" loading="lazy" />
+                </div>
+                <div className="p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-display text-3xl text-[var(--bone-000)]">{member.name}</h3>
+                      <p className="mt-1 text-sm text-[var(--copper-200)]">{member.role}</p>
+                    </div>
+                    <span className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--bone-300)]">
+                      ICO
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-[var(--bone-300)]">{member.text}</p>
+                  <p className="mt-5 flex items-center gap-2 text-xs text-[var(--bone-400)]">
+                    <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                    Actief in Vlaanderen
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-[var(--ink-100)]">
+        <div className="container-ico grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="edit-eyebrow">De Washbus</p>
+            <h2 className="edit-sec-title mt-4">Een atelier op wielen.</h2>
+            <p className="mt-5 text-base leading-relaxed text-[var(--bone-200)]">
+              Voor mobiele behandelingen brengt ICO de werkomgeving mee. Zo blijft de afspraak makkelijk voor de klant en blijft de uitvoering professioneel.
+            </p>
+            <ul className="mt-7 grid gap-3">
+              {WASHBUS_FEATURES.map((feature) => (
+                <li key={feature} className="flex gap-3 text-sm text-[var(--bone-200)]">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--signal-go)]" aria-hidden="true" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="ico-media aspect-[4/3] overflow-hidden rounded-[var(--radius-xl)]">
+            <img src={PHOTOS.washbus} alt="De ICO Washbus" className="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-[var(--color-surface)]">
+        <div className="container-ico">
+          <div className="mb-10 max-w-2xl">
+            <p className="edit-eyebrow">Waar ICO voor staat</p>
+            <h2 className="edit-sec-title mt-4">Premium, maar nooit kil.</h2>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map(({ icon: Icon, title, desc }) => (
+              <article key={title} className="ico-panel p-5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[rgba(250,246,241,0.035)] text-[var(--copper-300)]">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="mt-5 font-display text-2xl text-[var(--bone-000)]">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--bone-300)]">{desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {recentProjects.length > 0 && (
+        <section className="section-padding bg-[var(--ink-100)]">
+          <div className="container-ico">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="edit-eyebrow">Recent werk</p>
+                <h2 className="edit-sec-title mt-4">Resultaten uit de praktijk.</h2>
+              </div>
+              <Button as={Link} to="/projecten" variant="secondary" rightIcon={<ArrowRight className="h-4 w-4" />}>
+                Alle projecten
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+              {recentProjects.map((project, index) => {
+                const label = [
+                  project.service_type ? serviceLabel(project.service_type) : null,
+                  project.vehicle_brand,
+                ].filter(Boolean).join(' - ')
+
+                return (
+                  <Link
+                    key={project.id}
+                    to={`/projecten/${project.slug}`}
+                    className="group ico-media relative overflow-hidden rounded-[var(--radius-lg)]"
+                    style={{ aspectRatio: index % 5 === 0 || index % 5 === 3 ? '3/4' : '4/3' }}
+                  >
+                    {project.cover_image_url ? (
+                      <img src={project.cover_image_url} alt={project.title_nl} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy" />
+                    ) : (
+                      <span className="flex h-full w-full items-center justify-center bg-[var(--ink-200)] text-[var(--bone-400)]">
+                        <Image className="h-10 w-10" aria-hidden="true" />
+                      </span>
+                    )}
+                    <span className="absolute inset-x-0 bottom-0 bg-[linear-gradient(to_top,rgba(8,7,6,0.82),transparent)] p-4 text-sm font-medium text-[var(--bone-000)] opacity-0 transition-opacity group-hover:opacity-100">
+                      {label || project.title_nl}
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       <CTASection />
     </>

@@ -99,7 +99,7 @@ export default function MobileMenu() {
                 fontStyle: 'italic',
                 fontWeight: 300,
                 fontSize: 15,
-                letterSpacing: '-0.01em',
+                letterSpacing: 0,
                 color: 'var(--bone-000)',
               }}
             >
@@ -170,7 +170,7 @@ export default function MobileMenu() {
                           fontWeight: 400,
                           fontSize: 26,
                           lineHeight: 1.1,
-                          letterSpacing: '-0.015em',
+                          letterSpacing: 0,
                           color: 'inherit',
                         }}
                       >

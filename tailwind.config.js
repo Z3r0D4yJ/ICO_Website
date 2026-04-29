@@ -7,7 +7,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Brand kleuren via CSS custom properties — eenvoudig te swappen bij rebranding
         brand: {
           primary: 'var(--color-primary)',
           'primary-dark': 'var(--color-primary-dark)',
@@ -28,8 +27,9 @@ export default {
         },
       },
       fontFamily: {
-        display: ['var(--font-display)', 'sans-serif'],
-        body: ['var(--font-body)', 'sans-serif'],
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
       },
       screens: {
         xs: '375px',
@@ -44,10 +44,10 @@ export default {
         22: '5.5rem',
       },
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-in-right': 'slideInRight 0.3s ease-out',
-        'skeleton-pulse': 'skeletonPulse 1.5s ease-in-out infinite',
+        'fade-in': 'fadeIn 420ms var(--ease-out)',
+        'slide-up': 'slideUp 520ms var(--ease-soft)',
+        'slide-in-right': 'slideInRight 420ms var(--ease-soft)',
+        'skeleton-pulse': 'skeletonPulse 1.6s var(--ease-soft) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -55,22 +55,17 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '0%': { opacity: '0', transform: 'translateY(18px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(16px)' },
+          '0%': { opacity: '0', transform: 'translateX(18px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         skeletonPulse: {
           '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' },
+          '50%': { opacity: '0.48' },
         },
-      },
-      transitionDuration: {
-        150: '150ms',
-        250: '250ms',
-        300: '300ms',
       },
     },
   },

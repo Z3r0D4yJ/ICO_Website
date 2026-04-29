@@ -70,7 +70,7 @@ function FAQRow({ item, isOpen, onToggle }) {
             fontWeight: 400,
             fontSize: 'clamp(20px, 2.2vw, 26px)',
             lineHeight: 1.2,
-            letterSpacing: '-0.01em',
+            letterSpacing: 0,
             color: 'var(--bone-000)',
           }}
         >

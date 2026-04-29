@@ -86,7 +86,7 @@ export default function WhyICO() {
                   fontWeight: 400,
                   fontSize: 26,
                   lineHeight: 1.1,
-                  letterSpacing: '-0.01em',
+                  letterSpacing: 0,
                   color: 'var(--bone-000)',
                   margin: '0 0 12px',
                   textWrap: 'balance',

@@ -2,37 +2,14 @@ import { useState, useRef, useId } from 'react'
 import { ChevronDown } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 
-/**
- * ICO Accordion component — voor FAQ pagina
- *
- * Gebruik:
- * ```jsx
- * <Accordion>
- *   <Accordion.Item title="Vraag hier">Antwoord hier</Accordion.Item>
- *   <Accordion.Item title="Andere vraag">Ander antwoord</Accordion.Item>
- * </Accordion>
- *
- * // Of als standalone met items array:
- * <AccordionGroup items={[{ question, answer }]} />
- * ```
- */
 export default function Accordion({ children, className }) {
   return (
-    <div
-      className={cn('flex flex-col divide-y', className)}
-      style={{ borderColor: 'rgba(196,130,111,0.15)' }}
-    >
+    <div className={cn('flex flex-col divide-y divide-[var(--color-border)]', className)}>
       {children}
     </div>
   )
 }
 
-/**
- * Enkel accordion item
- * @param {string} title
- * @param {boolean} defaultOpen
- * @param {React.ReactNode} children
- */
 Accordion.Item = function AccordionItem({ title, defaultOpen = false, className, children }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const contentRef = useRef(null)
@@ -41,62 +18,38 @@ Accordion.Item = function AccordionItem({ title, defaultOpen = false, className,
   const panelId = `accordion-panel-${uid}`
 
   return (
-    <div
-      className={cn('', className)}
-      style={{ borderColor: 'rgba(196,130,111,0.15)' }}
-    >
-      {/* Trigger */}
+    <div className={cn('', className)}>
       <button
         id={headerId}
+        type="button"
         aria-expanded={isOpen}
         aria-controls={panelId}
         onClick={() => setIsOpen((prev) => !prev)}
-        className={cn(
-          'flex items-center justify-between w-full py-5 text-left',
-          'cursor-pointer',
-          'transition-colors duration-150',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset',
-          'group',
-        )}
-        style={{
-          color: isOpen ? 'var(--color-primary)' : 'var(--color-text-primary)',
-          '--tw-ring-color': 'var(--color-primary)',
-        }}
+        className="group flex w-full items-start justify-between gap-5 py-5 text-left transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[rgba(216,158,140,0.45)]"
       >
-        <span
-          className="text-base font-medium pr-4 group-hover:text-[var(--color-primary)] transition-colors duration-150"
-          style={{ fontFamily: 'var(--font-body)' }}
-        >
+        <span className="font-display text-xl leading-snug text-[var(--bone-000)] transition-colors group-hover:text-[var(--copper-200)]">
           {title}
         </span>
-
-        {/* Chevron */}
-        <ChevronDown
-          className={cn(
-            'w-5 h-5 flex-shrink-0 transition-transform duration-300',
-            isOpen ? 'rotate-180' : 'rotate-0'
-          )}
-          style={{ color: isOpen ? 'var(--color-primary)' : 'var(--color-text-muted)' }}
-          aria-hidden="true"
-        />
+        <span className="mt-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--copper-300)] transition-all group-hover:border-[rgba(184,111,92,0.45)]">
+          <ChevronDown
+            className={cn('w-4 h-4 transition-transform duration-300', isOpen && 'rotate-180')}
+            aria-hidden="true"
+          />
+        </span>
       </button>
 
-      {/* Panel — animatie via max-height */}
       <div
         id={panelId}
         role="region"
         aria-labelledby={headerId}
         ref={contentRef}
-        className="overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out"
+        className="overflow-hidden transition-[max-height,opacity] duration-300 ease-[var(--ease-out)]"
         style={{
           maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 1000}px` : '0px',
           opacity: isOpen ? 1 : 0,
         }}
       >
-        <div
-          className="pb-5 text-sm leading-relaxed"
-          style={{ color: 'var(--color-text-secondary)' }}
-        >
+        <div className="pb-5 pr-8 text-sm leading-relaxed text-[var(--bone-200)]">
           {children}
         </div>
       </div>
@@ -104,15 +57,11 @@ Accordion.Item = function AccordionItem({ title, defaultOpen = false, className,
   )
 }
 
-/**
- * Convenience component — geeft een lijst van items mee als prop
- * @param {Array<{question: string, answer: string, category?: string}>} items
- */
 export function AccordionGroup({ items = [], className }) {
   return (
-    <Accordion className={cn('border-t border-b', className)} style={{ borderColor: 'rgba(196,130,111,0.15)' }}>
+    <Accordion className={cn('border-y border-[var(--color-border)]', className)}>
       {items.map((item, i) => (
-        <Accordion.Item key={i} title={item.question}>
+        <Accordion.Item key={item.id || i} title={item.question}>
           {item.answer}
         </Accordion.Item>
       ))}
